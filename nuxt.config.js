@@ -4,6 +4,11 @@ export default {
   /*
   ** Headers of the page
   */
+  watchers: {
+    webpack: {
+      poll: true
+    }
+  },
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -48,5 +53,9 @@ export default {
     */
     extend(config, ctx) {
     }
-  }
+  },
+
+  srcDir: 'client/',
+
+  serverMiddleware: ["../api/"],
 }

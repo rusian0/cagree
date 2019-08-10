@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+<title>DynamoDB Admin</title>
+<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+<meta http-equiv='x-ua-compatible' content='ie=edge'>
+<link rel='stylesheet' href='/assets/css/bootstrap.min.css'>
+<style>
+html, body {
+  height: 100%;
+}
+
+body {
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+a pre {
+  color: inherit;
+}
+
+.preformatted {
+  white-space: pre;
+}
+
+/* go away, LastPass */
+form[autocomplete="off"] input[type="text"] {
+  background-position: 150% 50% !important;
+}
+</style>
+
+  <script src='/assets/vendor/bootstrap/jquery-3.3.1.slim.min.js'></script>
+<script src='/assets/vendor/bootstrap/bootstrap.bundle.min.js'></script>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+
+</head>
+<body class='container'>
+  <header>
+    <ol class="breadcrumb">
+      <a class="breadcrumb-item active" href="/">Tables</a>
+    </ol>
+  </header>
+  <main>
+    <script>
+    $(document).ready(() => {
+      $('#filter-input')
+        .on('input', event => {
+          const query = event.target.value.trim().toLowerCase()
+          const words = query.split(' ').map(word => word.trim()).filter(word => word)
+          $('#table-list .list-group-item').show().each((index, element) => {
+            const lowerTableName = element.dataset.tableName.toLowerCase()
+            for (const word of words) {
+              if (!lowerTableName.includes(word)) {
+                $(element).hide()
+                return
+              }
+            }
+            $(element).show()
+          })
+        })
+        .trigger('input')
+    })
+
+    function deleteTable (TableName) {
+      if(!confirm(`Are you sure you want to delete table "${TableName}" ?`)){
+        return
+      }
+
+      fetch(`/tables/${TableName}`, {
+        method: 'delete'
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error
+        }
+        location.reload()
+      })
+      .catch((err) => {
+        window.alert(`There was an error when attempting to delete the table:\n\n${err}`)
+      })
+    }
+
+    function purgeTable(TableName) {
+      if(!confirm(`Are you sure you want to purge all records from table "${TableName}" ?`)){
+        return
+      }
+
+      fetch(`/tables/${TableName}/all`, {
+        method: 'delete'
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error
+        }
+        location.reload()
+      }).catch(() => {
+        window.alert('There was an error when attempting to purge the table.')
+      })
+    }
+    </script>
+
+    <div class="form-group">
+      <input type="text" class="form-control mb-3" id="filter-input" placeholder="Filter tables">
+    </div>
+
+    <ul class="list-group" id="table-list">
+      
+        <li class="list-group-item" data-table-name="test">
+          <a href='/tables/test'>
+            test
+          </a>
+          <a href="#" onClick="deleteTable('test'); return false"
+              class="badge badge-danger badge-pill float-right ml-1">
+            Delete
+          </a>
+          <a href="/" onClick="purgeTable('test'); return false"
+             class="badge badge-warning badge-pill float-right ml-1">
+            Purge
+          </a>
+          <span class="badge badge-secondary badge-pill float-right ml-1">
+            0
+          </span>
+        </li>
+      
+    </ul>
+    <div style="margin-top: 12px;">
+      <a href='/create-table' class="btn btn-primary">
+        Create table
+      </a>
+    </div>
+  </main>
+</body>
+</html>
