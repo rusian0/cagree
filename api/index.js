@@ -10,12 +10,22 @@ AWS.config.update({
       region: "dynamo-admin:8002"
   })
 
-const dynamodb = new AWS.DynamoDB({ endpoint: new AWS.Endpoint('http://dynamo-admin:8002') })
+const db = new AWS.DynamoDB.DocumentClient({ endpoint: new AWS.Endpoint('http://dynamo-admin:8002') });
 
-app.get("/", function(req, res) {
+app.get("/get_table", function(req, res) {
 
-    dynamodb.listTables(function(err, data){
-        res.send(data)
+    var param = req.query;
+
+    // res.send(get_param)
+    // var param = {TableName: get_param.name}
+
+    db.scan(param, function(err, data){
+        if(err){
+            res.send(err.message);
+        }
+        else{
+            res.send(data.Items)
+        }
     })
 
 });

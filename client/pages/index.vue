@@ -2,6 +2,7 @@
   <div class="container">
     <div>
       <logo />
+      <dynamo />
       <h1 class="title">
         cagree
       </h1>
@@ -30,10 +31,12 @@
 
 <script>
 import Logo from '~/components/Logo.vue'
+import Dynamo from '~/components/Dynamo.vue'
 
 export default {
   components: {
-    Logo
+    Logo,
+    Dynamo
   }
 }
 </script>
