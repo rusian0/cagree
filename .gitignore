@@ -86,3 +86,17 @@ sw.*
 
 # Mac OSX
 .DS_Store
+
+
+# etc
+
+.bash_history
+.bash_logout
+.bash_profile
+.bashrc
+.viminfo
+.Xauthority
+.mozilla
+.ssh
+.local
+db_data
