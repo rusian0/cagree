@@ -45,6 +45,9 @@ export default {
   modules: [
     '@nuxtjs/axios'
   ],
+  axios: [
+
+  ],
   /*
   ** Build configuration
   */

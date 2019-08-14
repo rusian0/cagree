@@ -1,34 +1,31 @@
 <template>
-  <div>
-    <header>
-        <nav>
-          <ul>
-              <nuxt-link tag="li" to=/><a>Top</a></nuxt-link>
-              <nuxt-link tag="li" to=/all><a>All</a></nuxt-link>
-              <nuxt-link tag="li" to=/publicroom><a>Room</a></nuxt-link>
-              <nuxt-link tag="li" to=/category><a>Category</a></nuxt-link>
-          </ul>
-          <div class="auth">
+   <header>
+      <Nuxt />
+      <nav>
+         <ul>
+            <router-link tag="li" to=/><a>Top</a></router-link>
+            <router-link tag="li" to=/all><a>All</a></router-link>
+            <router-link tag="li" to=/publicroom><a>Room</a></router-link>
+            <router-link tag="li" to=/category><a>Category</a></router-link>
+         </ul>
+         <div class="auth">
 
-              <div v-if="isLogin">
-                <nuxt-link to=/mypage>Mypage</nuxt-link>
-                <a @click="logout" href="#" v-if="isLogin">Logout</a>
-              </div>
+            <div v-if="isLogin">
+               <router-link to=/mypage>Mypage</router-link>
+               <a @click="logout" href="#" v-if="isLogin">Logout</a>
+            </div>
 
-              <div v-else>
-                <nuxt-link to=/auth/register>Register</nuxt-link>
-                <nuxt-link to=/auth/login  >Login</nuxt-link>
-              </div>
+            <div v-else>
+               <router-link to=/register>Register</router-link>
+               <router-link to=/login  >Login</router-link>
+            </div>
 
-          <div>
+         <div>
 
-              </div>
-          </div>
-        </nav>
-
-    </header>
-    <Nuxt />
-  </div>
+            </div>
+         </div>
+      </nav>
+   </header>
 </template>
 
 <style>
