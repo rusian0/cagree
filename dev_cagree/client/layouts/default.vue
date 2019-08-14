@@ -1,46 +1,46 @@
 <template>
-  <div>
-    <header>
-        <nav>
-          <ul>
-              <nuxt-link tag="li" to=/><a>Top</a></nuxt-link>
-              <nuxt-link tag="li" to=/all><a>All</a></nuxt-link>
-              <nuxt-link tag="li" to=/publicroom><a>Room</a></nuxt-link>
-              <nuxt-link tag="li" to=/category><a>Category</a></nuxt-link>
-          </ul>
-          <div class="auth">
+<div>
+   <header>
+      <nav>
+         <ul>
+            <nuxt-link tag="li" to=/><a>Top</a></nuxt-link>
+            <nuxt-link tag="li" to=/all><a>All</a></nuxt-link>
+            <nuxt-link tag="li" to=/publicroom><a>Room</a></nuxt-link>
+            <nuxt-link tag="li" to=/category><a>Category</a></nuxt-link>
+         </ul>
+         <div class="auth">
 
-              <div v-if="isLogin">
-                <nuxt-link to=/mypage>Mypage</nuxt-link>
-                <a @click="logout" href="#" v-if="isLogin">Logout</a>
-              </div>
+            <div v-if="isLogin">
+               <nuxt-link to=/mypage>Mypage</nuxt-link>
+               <a @click="logout" v-if="isLogin">Logout</a>
+            </div>
 
-              <div v-else>
-                <nuxt-link to=/auth/register>Register</nuxt-link>
-                <nuxt-link to=/auth/login  >Login</nuxt-link>
-              </div>
+            <div v-else>
+               <nuxt-link to=/auth/register>Register</nuxt-link>
+               <nuxt-link to=/auth/login>Login</nuxt-link>
+            </div>
 
-          <div>
+         <div>
 
-              </div>
-          </div>
-        </nav>
+            </div>
+         </div>
+      </nav>
 
-    </header>
-    <Nuxt />
-  </div>
+   </header>
+   <Nuxt />
+</div>
 </template>
 
 <style>
- body {
-    margin: 0;
- }
+body {
+   margin: 0;
+}
 </style>
 
 <script>
 
 export default {
-  data () {
+data () {
       return {
       }
    },
@@ -59,9 +59,9 @@ export default {
       async logout () {
          await this.$store.dispatch('auth/logout')
 
-         this.$router.push('/login')
+         this.$router.push('/auth/login')
       }
-  }
+}
 }
 </script>
 
