@@ -6,7 +6,7 @@ services:
     tty: true
     working_dir: /var/www
     volumes:
-      - ./dev_cagree:/var/www
+      - ./dev_thincro:/var/www
     environment:
       PORT: 9090
       HOST: 0.0.0.0
@@ -21,7 +21,7 @@ services:
   workspace:
     <<: *app_base
     ports:
-      - "127.0.0.1:9090:9090"
+      - "127.0.0.1:${HTTP_PORT}:9090"
     command: yarn dev
     networks:
       - default
