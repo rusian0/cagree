@@ -21,7 +21,6 @@
             <!-- <button @click="login()">ログイン</button> -->
             <!-- <button @click="login()" :disabled="!email || !password">ログイン</button> -->
             <button type="submit">ログイン</button>
-            <button @click="test" type="button">郵便</button>
         </form>
     <router-link to=/register>会員登録はこちら</router-link>
     </div>
@@ -49,10 +48,6 @@ export default {
             this.$router.push('/mypage')
             // console.log('ok');
         },
-
-        async test (){
-            await this.$store.dispatch('test/testaction')
-        }
     }
 
 }

@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.5.4",
+    "@nuxtjs/dotenv": "^1.4.0",
+    "aws-amplify": "^1.1.36",
     "aws-sdk": "^2.506.0",
     "nuxt": "^2.0.0"
   },
