@@ -4,7 +4,7 @@
       <logo />
       <dynamo />
       <h1 class="title">
-        cagree
+        thincro
       </h1>
       <h2 class="subtitle">
         My slick Nuxt.js project
