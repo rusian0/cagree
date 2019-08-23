@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "moviesharespa-dev-20190823175146-authRole",
+            "UnauthRoleArn": "arn:aws:iam::084003470642:role/moviesharespa-dev-20190823175146-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::084003470642:role/moviesharespa-dev-20190823175146-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "moviesharespa-dev-20190823175146-deployment",
+            "UnauthRoleName": "moviesharespa-dev-20190823175146-unauthRole",
+            "StackName": "moviesharespa-dev-20190823175146",
+            "StackId": "arn:aws:cloudformation:us-east-1:084003470642:stack/moviesharespa-dev-20190823175146/3de05350-c583-11e9-b02c-0e85eb8bafe8"
+        },
+        "categories": {
+            "auth": {
+                "moviesharespa690a8744": {}
+            }
+        }
+    }
+}

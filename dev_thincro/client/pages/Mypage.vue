@@ -10,10 +10,13 @@
 <template>
     <div>
         <h1>Mypage</h1>
+
     </div>
 </template>
 <script>
 export default {
+
+    middleware: 'auth',
 
     data: function(){
         return {
@@ -28,15 +31,7 @@ export default {
     },
     methods: {
 
-        login () {
-            this.$store.dispatch('login',
-                {
-                    email: this.email,
-                    password: this.password,
-                    remember: this.remember,
-                }
-            )
-        }
+        
     }
 
 }

@@ -9,20 +9,20 @@
 
 <template>
     <div>
-        <h1>Register</h1>
-        <form @submit.prevent="register">
+        <h1>Register Confirm</h1>
+        <form @submit.prevent="register_confirm">
             <!-- <label>名前</label>
             <input v-model="formData.name" name="username" type="email"/> -->
             <label>メールアドレス</label>
-            <input v-model="formData.username" name="username" type="email"/>
-            <label>パスワード</label>
-            <input v-model="formData.password" name="password" type="password"/>
+            <input v-model="formData.email" type="email"/>
+            <label>認証コード</label>
+            <input v-model="formData.code" name="code"/>
 
 
             <!-- <label>パスワード(確認)</label> -->
             <!-- <input v-model="formData.password_confirmation" name="password-confirm" type="password"/> -->
             <!-- <button @click="login()" :disabled="!password || password !== password_confirm">登録</button> -->
-            <input type="submit" value="仮登録">
+            <input type="submit" value="本登録">
         </form>
     </div>
 </template>
@@ -32,8 +32,9 @@ export default {
     data: function(){
         return {
             formData: {
-                username: '',
-                password: '',
+                email: this.$store.getters['auth/username'],
+                code: '',
+                errors: ''
             }
         }
     },
@@ -43,8 +44,8 @@ export default {
     },
     methods: {
 
-        register () {
-            this.$store.dispatch('auth/register',this.formData)
+        register_confirm () {
+            this.$store.dispatch('auth/register_confirm',this.formData)
         }
     }
 

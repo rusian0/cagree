@@ -10,11 +10,13 @@
          </ul>
          <div class="auth">
 
+            <!-- <div> -->
             <div v-if="isLogin">
                <nuxt-link to=/mypage>Mypage</nuxt-link>
-               <a @click="logout" v-if="isLogin">Logout</a>
+               <a style="cursor:pointer" @click="logout">Logout</a>
             </div>
 
+            <!-- <div> -->
             <div v-else>
                <nuxt-link to=/auth/register>Register</nuxt-link>
                <nuxt-link to=/auth/login>Login</nuxt-link>
@@ -47,7 +49,9 @@ data () {
 
    computed: {
       isLogin () {
-            return this.$store.getters['auth/check']
+         this.$store.dispatch('auth/check')
+
+         return this.$store.getters['auth/check']
       },
       username () {
          return this.$store.getters['auth/username']
@@ -59,7 +63,7 @@ data () {
       async logout () {
          await this.$store.dispatch('auth/logout')
 
-         this.$router.push('/auth/login')
+         // this.$router.push('/auth/login')
       }
 }
 }
