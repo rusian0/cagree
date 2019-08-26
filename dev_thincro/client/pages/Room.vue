@@ -59,6 +59,7 @@
     </div>
 </template>
 <script>
+
 export default {
 
     mounted: async function (){
@@ -114,6 +115,7 @@ export default {
                 this.msg = 'ルームへ入室してください';
                 return;
             }
+            console.log(this.send_msg)
             this.room.send(this.send_msg)
             this.chats.push(this.send_msg);
             this.send_msg = '';

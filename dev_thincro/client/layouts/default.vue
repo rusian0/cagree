@@ -5,7 +5,7 @@
          <ul>
             <nuxt-link tag="li" to=/><a>Top</a></nuxt-link>
             <nuxt-link tag="li" to=/all><a>All</a></nuxt-link>
-            <nuxt-link tag="li" to=/publicroom><a>Room</a></nuxt-link>
+            <nuxt-link tag="li" to=/room><a>Room</a></nuxt-link>
             <nuxt-link tag="li" to=/category><a>Category</a></nuxt-link>
          </ul>
          <div class="auth">

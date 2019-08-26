@@ -36,6 +36,10 @@ export default {
     {
       src: 'plugins/amplify.js',
       ssr: false
+    },
+    {
+      src: 'plugins/skyway-latest.js',
+      // ssr: false
     }
   ],
   /*
@@ -47,7 +51,7 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
   ],
   axios: [
 
