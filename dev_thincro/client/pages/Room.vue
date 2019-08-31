@@ -55,6 +55,8 @@
         <button @click="join('3')">ルーム3</button>
 
         <div v-if="room != ''">
+                    {{ videoId }}
+
             <div class="video">
                 Youtube動画URL：<input type="text" v-model="video_url" v-on:keydown.enter="url_play">
                 <button @click="url_play">送信</button>
@@ -67,6 +69,7 @@
                     @ended="ended"
                     @paused="paused"
                     @playing="playing"
+                    @buffering="buffering"
                 />
                 <br>
                 <!-- <button @click="playVideo">play</button>
@@ -86,7 +89,6 @@
                 <button @click="send">送信</button>
             </div>
         </div>
-        {{ videoId }}
     </div>
     
 </template>
@@ -123,7 +125,8 @@ export default {
     methods: {
 
         url_play(){
-            this.videoId = this.video_url.split('v=')[1]
+            this.videoId = this.video_url.match(/[\/?=]([a-zA-Z0-9]{11})[&\?]?/)[1];
+
             this.room.send({event:'id_play', videoId: this.videoId})
             this.video_url = ''
         },
@@ -152,12 +155,15 @@ export default {
         },
         paused(){
             console.log('paused')
-
-            var _this = this;
-            this.player.getCurrentTime().then((time) => {
-                _this.room.send({event: 'videoCtrl', action: 'toSeek', seconds: time})
-                _this.room.send({event: 'videoCtrl', action: 'paused'})
-            })
+            this.room.send({event: 'videoCtrl', action: 'paused'})
+        },
+        buffering(){
+            console.log('buffering')
+            // var _this = this;
+            // this.player.getCurrentTime()
+            // .then((time) => {
+            //     _this.room.send({event: 'videoCtrl', action: 'toSeek', seconds: time})
+            // })
         },
 
         join: function(num){
@@ -218,7 +224,7 @@ export default {
                     break;
                 case 'toSeek':
                     this.player.seekTo(data)
-                    // console.log('seek')
+                    console.log('seek')
                     break;
             
                 default:

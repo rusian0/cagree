@@ -1,12 +1,13 @@
 <template>
   <div class="container">
     <div>
-      <logo />
-      <dynamo />
+      <!-- <logo /> -->
+      <!-- <dynamo /> -->
       <h1 class="title">
         thincro
+        top
       </h1>
-      <h2 class="subtitle">
+      <!-- <h2 class="subtitle">
         My slick Nuxt.js project
       </h2>
       <div class="links">
@@ -23,8 +24,8 @@
           class="button--grey"
         >
           GitHub
-        </a>
-      </div>
+        </a> -->
+      <!-- </div> -->
     </div>
   </div>
 </template>
