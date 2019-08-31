@@ -47,7 +47,7 @@
 
 <template>
     <div>
-        <h1>room component</h1>
+        <h1>room_component</h1>
 
     <br>
         <button @click="join('1')">ルーム1</button>
