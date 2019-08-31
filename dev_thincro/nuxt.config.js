@@ -1,4 +1,3 @@
-
 export default {
   mode: 'spa',
   /*
@@ -39,8 +38,12 @@ export default {
     },
     {
       src: 'plugins/skyway-latest.js',
-      // ssr: false
-    }
+      ssr: false
+    },
+    {
+      src: 'plugins/vue-youtube.js',
+      ssr: false
+    },
   ],
   /*
   ** Nuxt.js dev-modules
@@ -52,10 +55,15 @@ export default {
   */
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/dotenv'
   ],
   axios: [
 
   ],
+
+  router:{
+    middleware: ['init_auth']
+  },
   /*
   ** Build configuration
   */
@@ -63,8 +71,8 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    // extend(config, ctx) {
-    // }
+    extend(config, ctx) {
+    }
     // extend(config, ctx) {
     //   const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
     //   config.plugins.push(new HardSourceWebpackPlugin())

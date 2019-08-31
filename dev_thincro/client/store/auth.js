@@ -64,7 +64,9 @@ export const actions = {
         await Auth.currentUserInfo()
             .then(data => {
                 context.commit('setUser', data.username)
-                console.log('authcheck')
+            })
+            .catch(error => {
+                context.commit('setUser', '')
             })
         
     }

@@ -2,18 +2,20 @@
 <div>
    <header>
       <nav>
+
          <ul>
             <nuxt-link tag="li" to=/><a>Top</a></nuxt-link>
             <nuxt-link tag="li" to=/all><a>All</a></nuxt-link>
             <nuxt-link tag="li" to=/room><a>Room</a></nuxt-link>
             <nuxt-link tag="li" to=/category><a>Category</a></nuxt-link>
          </ul>
+
          <div class="auth">
 
             <!-- <div> -->
             <div v-if="isLogin">
                <nuxt-link to=/mypage>Mypage</nuxt-link>
-               <a style="cursor:pointer" @click="logout">Logout</a>
+               <a @click="logout">Logout</a>
             </div>
 
             <!-- <div> -->
@@ -33,11 +35,7 @@
 </div>
 </template>
 
-<style>
-body {
-   margin: 0;
-}
-</style>
+
 
 <script>
 
@@ -49,8 +47,6 @@ data () {
 
    computed: {
       isLogin () {
-         this.$store.dispatch('auth/check')
-
          return this.$store.getters['auth/check']
       },
       username () {
@@ -69,9 +65,16 @@ data () {
 }
 </script>
 
+<style>
 
+   body {
+      margin: 0;
+   }
 
+</style>
 <style scoped>
+
+
 
    header {
       background-color: #920000;
@@ -103,6 +106,7 @@ data () {
 
    .auth a  {
       /* float: right; */
+      cursor: pointer;
       border: 2px solid #fff;
       border-radius: 5px;
       padding: 10px;
