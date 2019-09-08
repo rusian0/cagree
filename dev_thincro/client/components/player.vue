@@ -1,9 +1,51 @@
+<style>
+.video {
+    width: 100%;
+}
+.youtube-movie {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    overflow: hidden;
+    margin-bottom: 50px;
+}
+.youtube-movie iframe {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 768px;
+    max-height: 432px;
+}
+
+
+input[type=text] {
+    border: 2px solid black;
+    padding: 5px 10px;
+    width: 250px;
+    margin-left: 10px;
+    font-size: 13px;
+}
+
+button {
+        border: 1px solid #797979;
+        background: rgb(87, 87, 87);
+        color: #ffffff;
+        font-size: 12px;
+        padding: 4px 8px;
+        margin-bottom: 30px;
+
+}
+</style>
 <template>
     <div class="video">
-        {{ videoId }}
-        Youtube動画URL：<input type="text" v-model="video_url" v-on:keydown.enter="url_play">
+        <!-- {{ videoId }} -->
+        <input type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="YouTube動画URL">
         <button @click="url_play">送信</button>
         <br>
+    <div class="youtube-movie">
         <youtube
             ref="youtube"
             :video-id="videoId"
@@ -12,7 +54,9 @@
             @paused="paused"
             @playing="playing"
         />
+    </div>
         <br>
+
     </div>
 </template>
 
@@ -26,7 +70,8 @@ export default {
     },
     data: function(){
         return {
-            videoId: 'ZbZSe6N_BXs',
+            is_send: true,
+            videoId: '__01xmWny3M',
             video_url: '',
             playerVars: {
                 autoplay: 1,
@@ -43,7 +88,6 @@ export default {
             this.videoId = this.$youtube.getIdFromUrl(this.video_url)
             this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: this.videoId}})
             this.video_url = ''
-            this.player.playing.stopPropagation();
         },
         id_play(video_id){
             this.videoId = video_id;
@@ -55,25 +99,29 @@ export default {
             this.player.pauseVideo()
         },
         ready() {console.log('ready')},
-        playing(event) {
-            console.log('playing')
-            this.player.removeEventListener('playing', 'playing')
-            this.room.send({event: 'playerCtrl', action: 'playing'})
+        playing() {
+            if(this.is_send){
+                console.log('playing')
+                this.player.getCurrentTime()
+                    .then((currentTime) => {
+                        this.room.send({event: 'playerCtrl', action: 'seekTo', datas:{currentTime: currentTime}})
+                        this.room.send({event: 'playerCtrl', action: 'playing'})
+                    })
+
+            } else {
+                console.log('take playing')
+                this.is_send = true;
+            }
         },
         paused(){
-            console.log('pause')
-            this.room.send({event: 'playerCtrl', action: 'paused'})
-        },
-        buffering(){
-            console.log('buffering')
-            // var _this = this;
-            // this.player.getCurrentTime()
-            // .then((time) => {
-            //     _this.room.send({event: 'playerCtrl', action: 'toSeek', seconds: time})
-            // })
-        },
-        eventfunc: function(){
-            console.log('custome iven')
+            if(this.is_send){
+                console.log('pause')
+                this.room.send({event: 'playerCtrl', action: 'paused'})
+                
+            } else {
+                console.log('take pause')
+                this.is_send = true;
+            }
         },
         playbackRateChange: function(){
             // var _this = this;
@@ -86,19 +134,11 @@ export default {
             // this.player.removeEventListener('playbackRateChange', function(){return})
             // this.player.addEventListener('', 'playbackRateChange')
             console.log('rate controll')
-            
-
-        },
-        playbackRateChanges: function(){
-            console.log('event update')   
-
-        },
-        playerStateChange: function(){
-            console.log('statechange')
-
         },
 
         playerCtrl: function(action, data){
+            this.is_send = false;
+            
             switch (action) {
                 case 'playing':
                     this.player.playVideo()
@@ -109,8 +149,8 @@ export default {
                 case 'paused':
                     this.player.pauseVideo()
                     break;
-                case 'toSeek':
-                    this.player.seekTo(data)
+                case 'seekTo':
+                    this.player.seekTo(data.currentTime)
                     console.log('seek')
                     break;
                 case 'changeRate':

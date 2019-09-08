@@ -1,24 +1,21 @@
 <template>
 <div>
    <header>
-      <nav>
+      <h2>PlaybackLink</h2>
+      <!-- <nav>
 
          <ul>
             <nuxt-link tag="li" to=/><a>Top</a></nuxt-link>
-            <nuxt-link tag="li" to=/all><a>All</a></nuxt-link>
             <nuxt-link tag="li" to=/room><a>Room</a></nuxt-link>
-            <nuxt-link tag="li" to=/category><a>Category</a></nuxt-link>
          </ul>
 
          <div class="auth">
 
-            <!-- <div> -->
             <div v-if="isLogin">
                <nuxt-link to=/mypage>Mypage</nuxt-link>
                <a @click="logout">Logout</a>
             </div>
 
-            <!-- <div> -->
             <div v-else>
                <nuxt-link to=/auth/register>Register</nuxt-link>
                <nuxt-link to=/auth/login>Login</nuxt-link>
@@ -28,7 +25,7 @@
 
             </div>
          </div>
-      </nav>
+      </nav> -->
 
    </header>
    <Nuxt />
@@ -78,7 +75,7 @@ data () {
 
    header {
       background-color: #920000;
-      padding: 30px;
+      padding: 5px 30px;
    }
 
    ul {
@@ -112,6 +109,11 @@ data () {
       padding: 10px;
       color: white;
       text-decoration: none;
+   }
+
+   h2 {
+      color: #ffffff;
+      letter-spacing: 2px;
    }
 </style>
 
