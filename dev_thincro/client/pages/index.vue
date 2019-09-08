@@ -4,8 +4,7 @@
       <!-- <logo /> -->
       <!-- <dynamo /> -->
       <h1 class="title">
-        thincro
-        top
+        playbacklink
       </h1>
       <!-- <h2 class="subtitle">
         My slick Nuxt.js project

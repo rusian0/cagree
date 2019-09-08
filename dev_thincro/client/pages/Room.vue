@@ -53,29 +53,11 @@
         <button @click="join('1')">ルーム1</button>
         <button @click="join('2')">ルーム2</button>
         <button @click="join('3')">ルーム3</button>
+        <!-- <button @click="$test()">plugin</button> -->
 
         <div v-if="room != ''">
-                    {{ videoId }}
-
-            <div class="video">
-                Youtube動画URL：<input type="text" v-model="video_url" v-on:keydown.enter="url_play">
-                <button @click="url_play">送信</button>
-                <br>
-                <youtube
-                    ref="youtube"
-                    :video-id="videoId"
-                    :player-vars="{autoplay:1}"
-                    @ready="ready"
-                    @ended="ended"
-                    @paused="paused"
-                    @playing="playing"
-                    @buffering="buffering"
-                />
-                <br>
-                <!-- <button @click="playVideo">play</button>
-                <button @click="pauseVideo">pause</button> -->
-                <!-- <button @click="stopVideo">stop</button> -->
-            </div>
+            <br>
+            <youtubeplayer :room="room" ref="youtubeplayer"/>
             <br>
 
             <div class="chatbox">
@@ -85,17 +67,20 @@
                         <li v-for="chat in chats">{{ chat }}</li>
                     </ul>
                 </div>
-                チャット：<input v-model="send_msg" @keydown.enter="send">
-                <button @click="send">送信</button>
+                チャット：<input v-model="send_msg" @keydown.enter="msg_send">
+                <button @click="msg_send">送信</button>
             </div>
         </div>
     </div>
     
 </template>
 <script>
-export default {
-    
+import youtubeplayer from '~/components/player.vue'
 
+export default {
+    components: {
+        youtubeplayer
+    },
     mounted: async function (){
         this.peer = new Peer({key: process.env.SKYWAY_APIKEY,debug: 3});
     },
@@ -111,60 +96,10 @@ export default {
             send_msg: '',
             chats: [],
             room: '',
-            videoId: '',
-            video_url: '',
-        }
-    },
-
-    computed: {
-        player() {
-            return this.$refs.youtube.player
         }
     },
 
     methods: {
-
-        url_play(){
-            this.videoId = this.video_url.match(/[\/?=]([a-zA-Z0-9]{11})[&\?]?/)[1];
-
-            this.room.send({event:'id_play', videoId: this.videoId})
-            this.video_url = ''
-        },
-        id_play(video_id){
-            this.videoId = video_id;
-        },
-        playVideo() {
-            this.player.playVideo()
-        },
-        pauseVideo() {
-            this.player.pauseVideo()
-        },
-        stopVideo() {
-            this.player.stopVideo()
-        },
-        ready() {
-            console.log('ready')
-        },
-        ended() {
-            console.log('ended')
-        },
-        playing() {
-            console.log('playing')
-            this.room.send({event: 'videoCtrl', action: 'playing'})
-            // this.room.send({event: 'videoCtrl', action: 'toSeek', seconds: this.player.getCurrentTime()})
-        },
-        paused(){
-            console.log('paused')
-            this.room.send({event: 'videoCtrl', action: 'paused'})
-        },
-        buffering(){
-            console.log('buffering')
-            // var _this = this;
-            // this.player.getCurrentTime()
-            // .then((time) => {
-            //     _this.room.send({event: 'videoCtrl', action: 'toSeek', seconds: time})
-            // })
-        },
 
         join: function(num){
 
@@ -185,13 +120,8 @@ export default {
                         _this.chats.push(data.msg);
                         break;
 
-                    case 'id_play':
-                        _this.id_play(data.videoId)
-                        break;
-
-                    case 'videoCtrl':
-                        _this.videoCtrl(data.action, data.seconds)
-                        break;
+                    case 'playerCtrl':
+                        _this.$refs.youtubeplayer.playerCtrl(data.action, data.datas)
                 
                     default:
                         break;
@@ -202,7 +132,7 @@ export default {
         },
 
         //チャット送信処理
-        send: function(){
+        msg_send: function(){
             // console.log(this.send_msg)
             if(this.room == ''){
                 this.msg = 'ルームへ入室してください';
@@ -213,25 +143,6 @@ export default {
             this.chats.push(this.send_msg);
             this.send_msg = '';
         },
-
-        videoCtrl: function(action, data){
-            switch (action) {
-                case 'playing':
-                    this.player.playVideo()
-                    break;
-                case 'paused':
-                    this.player.pauseVideo()
-                    break;
-                case 'toSeek':
-                    this.player.seekTo(data)
-                    console.log('seek')
-                    break;
-            
-                default:
-                    break;
-            }
-        },
-    },
-
+    }
 }
 </script>

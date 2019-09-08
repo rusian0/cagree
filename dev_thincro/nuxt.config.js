@@ -32,18 +32,9 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    {
-      src: 'plugins/amplify.js',
-      ssr: false
-    },
-    {
-      src: 'plugins/skyway-latest.js',
-      ssr: false
-    },
-    {
-      src: 'plugins/vue-youtube.js',
-      ssr: false
-    },
+    {src: 'plugins/amplify.js',ssr: false},
+    {src: 'plugins/skyway-latest.js',ssr: false},
+    {src: 'plugins/vue-youtube.js',ssr: false},
   ],
   /*
   ** Nuxt.js dev-modules

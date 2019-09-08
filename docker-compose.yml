@@ -12,7 +12,7 @@ services:
     environment:
       PORT: 9090
       HOST: 0.0.0.0
-    restart: always
+    # restart: always
     # networks:
     #   - default
     # links:
