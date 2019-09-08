@@ -1,7 +1,8 @@
 <template>
 <div>
    <header>
-      <h2>PlaybackLink</h2>
+      <nuxt-link tag="h2" to=/room><a>PlaybackLink</a></nuxt-link>
+
       <!-- <nav>
 
          <ul>
@@ -93,6 +94,11 @@ data () {
    ul li a {
       color: #fbfbfb;
       text-decoration: none;
+   }
+
+   a {
+      text-decoration: none;
+      color: #ffffff;
    }
 
    .auth {
