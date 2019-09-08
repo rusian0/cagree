@@ -120,6 +120,8 @@ data () {
    h2 {
       color: #ffffff;
       letter-spacing: 2px;
+
+      font-family:"游ゴシック Medium",YuGothic,YuGothicM,"Hiragino Kaku Gothic ProN","Hiragino Kaku Gothic Pro",メイリオ,Meiryo,sans-serif;
    }
 </style>
 
