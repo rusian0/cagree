@@ -4,20 +4,19 @@
 }
 .youtube-movie {
     position: relative;
-    width: 100%;
+    max-width: 640px;
+    max-height: 360px;
     height: 0;
     padding-bottom: 56.25%;
     overflow: hidden;
-    margin-bottom: 50px;
+    margin: 0 auto;
 }
 .youtube-movie iframe {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     position: absolute;
     top: 0;
     left: 0;
-    max-width: 768px;
-    max-height: 432px;
 }
 
 
@@ -41,7 +40,7 @@ button {
 </style>
 <template>
     <div class="video">
-        <!-- {{ videoId }} -->
+        {{ videoId }}
         <input type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="YouTube動画URL">
         <button @click="url_play">送信</button>
         <br>
@@ -55,7 +54,7 @@ button {
             @playing="playing"
         />
     </div>
-        <br>
+    <br>
 
     </div>
 </template>
@@ -71,10 +70,11 @@ export default {
     data: function(){
         return {
             is_send: true,
-            videoId: '__01xmWny3M',
+            videoId: 'QkPAQfTwnL0',
             video_url: '',
             playerVars: {
                 autoplay: 1,
+                playsinline: 1
             }
         }
     },
@@ -92,13 +92,10 @@ export default {
         id_play(video_id){
             this.videoId = video_id;
         },
-        playVideo() {
-            this.player.playVideo()
+        ready() {
+            console.log('ready')
+            this.player.on('playbackRateChange', this.playbackRateChange)
         },
-        pauseVideo() {
-            this.player.pauseVideo()
-        },
-        ready() {console.log('ready')},
         playing() {
             if(this.is_send){
                 console.log('playing')
@@ -124,16 +121,16 @@ export default {
             }
         },
         playbackRateChange: function(){
-            // var _this = this;
-            // this.player.getPlaybackRate()
-            // .then((rate) => {
-            //     _this.room.send({event: 'playerCtrl', action: 'changeRate', datas: {rate:rate}})
-            //     // console.log(rate)
-            // })
-            // this.player.removeEventListener('playbackRateChange')
-            // this.player.removeEventListener('playbackRateChange', function(){return})
-            // this.player.addEventListener('', 'playbackRateChange')
-            console.log('rate controll')
+            if(this.is_send){
+                this.player.getPlaybackRate()
+                .then((rate) => {
+                    this.room.send({event: 'playerCtrl', action: 'changeRate', datas: {rate:rate}})
+                })
+                console.log('rateChange')
+            } else {
+                console.log('take rateChange')
+                this.is_send = true;
+            }
         },
 
         playerCtrl: function(action, data){
@@ -151,7 +148,7 @@ export default {
                     break;
                 case 'seekTo':
                     this.player.seekTo(data.currentTime)
-                    console.log('seek')
+                    console.log('take seek')
                     break;
                 case 'changeRate':
                     this.player.setPlaybackRate(data.rate)
