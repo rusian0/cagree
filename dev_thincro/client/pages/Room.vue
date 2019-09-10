@@ -96,6 +96,10 @@ export default {
     },
     mounted: async function (){
         this.peer = new Peer({key: process.env.SKYWAY_APIKEY,debug: 3});
+        this.peer.on('open', ()=>{
+            this.join('1');
+            console.log(this.peer.id)
+        })
     },
 
     state: {
