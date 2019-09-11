@@ -126,11 +126,17 @@ export default {
                 this.player.seekTo(this.currentTime)
 
                 this.firstLoad = 'done';
+                return;
             }
 
             console.log('playing')
 
-            if(this.is_send && this.firstLoad == 'not'){
+            if(!this.firstLoad == 'not'){
+                console.log('not')
+                return
+            }
+
+            if(this.is_send){
 
                 this.player.getCurrentTime()
                     .then((currentTime) => {
@@ -176,9 +182,11 @@ export default {
 
         requestPlayingData: function(){
             this.room.send({event: 'playerCtrl', action: 'requestPlayingData'})
+            console.log('request')
         },
 
         responsePlayingData: function(){
+
             var _this = this;
 
             _this.player.getPlaybackRate()
@@ -201,7 +209,7 @@ export default {
                             }
                         }
                     )
-
+                    console.log('response')
                 })
         },
 
