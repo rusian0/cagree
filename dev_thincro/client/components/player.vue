@@ -40,9 +40,14 @@ button {
 </style>
 <template>
     <div class="video">
-        {{ videoId }}
+        {{ videoId }} <br>
+        <br>
         <input type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="YouTube動画URL">
         <button @click="url_play">送信</button>
+        <br>
+        <p style="margin-left: 50px">{{ state }}</h2>
+        <p style="margin-left: 50px">{{ currentTime }}</h2>
+        <p style="margin-left: 50px">{{ currentRate }}</h2>
         <br>
     <div class="youtube-movie">
         <youtube
@@ -52,6 +57,7 @@ button {
             @ready="ready"
             @paused="paused"
             @playing="playing"
+            @buffering="buffering"
         />
     </div>
     <br>
@@ -70,13 +76,21 @@ export default {
     data: function(){
         return {
             is_send: true,
-            videoId: 'QkPAQfTwnL0',
+            firstLoad: 'before',
+            videoId: '',
+            state: '',
             video_url: '',
             playerVars: {
                 autoplay: 1,
                 playsinline: 1
-            }
+            },
+            currentTime:'',
+            currentRate:''
         }
+    },
+    mounted: function (){
+        this.room.on('peerJoin', (data) => {
+        })
     },
     computed: {
         player() {
@@ -94,11 +108,30 @@ export default {
         },
         ready() {
             console.log('ready')
+            this.state = 'ready';
+            if(this.firstLoad == 'before'){
+                this.requestPlayingData()
+            }
             this.player.on('playbackRateChange', this.playbackRateChange)
         },
         playing() {
-            if(this.is_send){
-                console.log('playing')
+            this.state = 'playing';
+
+            if(this.firstLoad == 'done'){
+                this.firstLoad == 'not'
+            }
+
+            if(this.firstLoad == 'before'){
+                this.player.setPlaybackRate(this.currentRate)
+                this.player.seekTo(this.currentTime)
+
+                this.firstLoad = 'done';
+            }
+
+            console.log('playing')
+
+            if(this.is_send && this.firstLoad == 'not'){
+
                 this.player.getCurrentTime()
                     .then((currentTime) => {
                         this.room.send({event: 'playerCtrl', action: 'seekTo', datas:{currentTime: currentTime}})
@@ -107,12 +140,17 @@ export default {
 
             } else {
                 console.log('take playing')
-                this.is_send = true;
+                this.is_send = true
             }
+
+    
         },
         paused(){
+            console.log('pause')
+            this.state = 'pause'
+
             if(this.is_send){
-                console.log('pause')
+
                 this.room.send({event: 'playerCtrl', action: 'paused'})
                 
             } else {
@@ -131,6 +169,46 @@ export default {
                 console.log('take rateChange')
                 this.is_send = true;
             }
+        },
+        buffering: function(){
+            this.state = 'buffering'
+        },
+
+        requestPlayingData: function(){
+            this.room.send({event: 'playerCtrl', action: 'requestPlayingData'})
+        },
+
+        responsePlayingData: function(){
+            var _this = this;
+
+            _this.player.getPlaybackRate()
+                .then(function(rate){
+                    _this.currentRate = rate
+
+                    return _this.player.getCurrentTime()
+                })
+                .then((time) => {
+                    _this.currentTime = time
+
+                    this.room.send(
+                        {
+                            event: 'playerCtrl',
+                            action: 'responsePlayingData',
+                            datas:{
+                                videoId: _this.videoId,
+                                currentTime: _this.currentTime,
+                                currentRate: _this.currentRate,
+                            }
+                        }
+                    )
+
+                })
+        },
+
+        catchPlayingData: function(id, rate, time){
+            this.videoId = id;
+            this.currentRate = rate
+            this.currentTime = time
         },
 
         playerCtrl: function(action, data){
@@ -152,9 +230,14 @@ export default {
                     break;
                 case 'changeRate':
                     this.player.setPlaybackRate(data.rate)
-                    // console.log('catch change rate')
+                    console.log('take changeRate')
                     break;
-            
+                case 'requestPlayingData':
+                    this.responsePlayingData()
+                    break;
+                case 'responsePlayingData':
+                    this.catchPlayingData(data.videoId, data.currentRate, data.currentTime)
+                    break;
                 default:
                     break;
             }

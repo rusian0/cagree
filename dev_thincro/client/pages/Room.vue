@@ -98,7 +98,6 @@ export default {
         this.peer = new Peer({key: process.env.SKYWAY_APIKEY,debug: 3});
         this.peer.on('open', ()=>{
             this.join('1');
-            console.log(this.peer.id)
         })
     },
 
@@ -127,24 +126,22 @@ export default {
             this.chats.length = 0;
             this.chats.push(this.roomName + 'に入室しました')
 
-            let _this;
-            _this = this
-
             //dataイベント受信
             this.room.on('data', ({data}) => {
                 switch (data.event) {
                     case 'chat':
-                        _this.chats.push(data.msg);
+                        this.chats.push(data.msg);
                         break;
 
                     case 'playerCtrl':
-                        _this.$refs.youtubeplayer.playerCtrl(data.action, data.datas)
+                        this.$refs.youtubeplayer.playerCtrl(data.action, data.datas)
                 
                     default:
                         break;
                 }
 
             });
+
 
         },
 
