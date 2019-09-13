@@ -65,7 +65,8 @@
     
         <div v-if="room != ''">
             <br>
-            <youtubeplayer :room="room" ref="youtubeplayer"/>
+            <youtubesearch :room="room" ref="youtubesearch"/>
+            <youtubeplayer :room="room" :yt_key="yt_key" ref="youtubeplayer"/>
             <br>
 
             <!-- <div class="chatbox">
@@ -89,10 +90,12 @@
 </template>
 <script>
 import youtubeplayer from '~/components/player.vue'
+import youtubesearch from '~/components/youtubesearch.vue'
 
 export default {
     components: {
-        youtubeplayer
+        youtubeplayer,
+        youtubesearch
     },
     mounted: async function (){
         this.peer = new Peer({key: process.env.SKYWAY_APIKEY,debug: 3});
@@ -112,6 +115,7 @@ export default {
             send_msg: '',
             chats: [],
             room: '',
+            yt_key: process.env.YOUTUBEDATA_APIKEY,
         }
     },
 
