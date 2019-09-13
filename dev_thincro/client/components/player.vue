@@ -19,6 +19,11 @@
     left: 0;
 }
 
+p {
+    font-size: 12px;
+    margin: 0;
+}
+
 
 input[type=text] {
     border: 2px solid black;
@@ -40,15 +45,20 @@ button {
 </style>
 <template>
     <div class="video">
-        {{ videoId }} <br>
+        <!-- {{ videoId }} <br> -->
         <br>
         <input type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="YouTube動画URL">
         <button @click="url_play">送信</button>
+        <button @click="url_play('force')">割り込み</button>
         <br>
         <p style="margin-left: 50px">{{ state }}</h2>
         <p style="margin-left: 50px">{{ currentTime }}</h2>
         <p style="margin-left: 50px">{{ currentRate }}</h2>
+        <p style="margin-left: 50px">{{ cue_ids }}</h2>
+        
         <br>
+        <button @click="skip">スキップ</button>
+
     <div class="youtube-movie">
         <youtube
             ref="youtube"
@@ -58,6 +68,7 @@ button {
             @paused="paused"
             @playing="playing"
             @buffering="buffering"
+            @ended="ended"
         />
     </div>
     <br>
@@ -76,10 +87,12 @@ export default {
     data: function(){
         return {
             is_send: true,
-            firstLoad: 'before',
+            firstPlay: 'before',
+            firstLoad: true,
             videoId: '',
             state: '',
             video_url: '',
+            cue_ids:[],
             playerVars: {
                 autoplay: 1,
                 playsinline: 1
@@ -98,10 +111,29 @@ export default {
         }
     },
     methods: {
-        url_play(){
-            this.videoId = this.$youtube.getIdFromUrl(this.video_url)
-            this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: this.videoId}})
+        url_play(priority=''){
+            var new_videoId = this.$youtube.getIdFromUrl(this.video_url)
+
             this.video_url = ''
+
+            if(this.cue_ids[0] == new_videoId && !this.firstLoad) return
+
+            this.firstLoad = false;
+
+            this.room.send({event:'playerCtrl', action: 'addVideoId', datas:{videoId: new_videoId}})
+
+
+            if(priority == 'force' || this.videoId == ''){
+                this.cue_ids.unshift(new_videoId)
+                this.videoId = new_videoId
+                this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: this.videoId}})
+            }
+            else
+            {
+                this.cue_ids.push(new_videoId)
+            }
+
+
         },
         id_play(video_id){
             this.videoId = video_id;
@@ -109,7 +141,7 @@ export default {
         ready() {
             console.log('ready')
             this.state = 'ready';
-            if(this.firstLoad == 'before'){
+            if(this.firstPlay == 'before'){
                 this.requestPlayingData()
             }
             this.player.on('playbackRateChange', this.playbackRateChange)
@@ -117,21 +149,21 @@ export default {
         playing() {
             this.state = 'playing';
 
-            if(this.firstLoad == 'done'){
-                this.firstLoad == 'not'
+            if(this.firstPlay == 'done'){
+                this.firstPlay == 'not'
             }
 
-            if(this.firstLoad == 'before'){
+            if(this.firstPlay == 'before'){
                 this.player.setPlaybackRate(this.currentRate)
                 this.player.seekTo(this.currentTime)
 
-                this.firstLoad = 'done';
+                this.firstPlay = 'done';
                 return;
             }
 
             console.log('playing')
 
-            if(!this.firstLoad == 'not'){
+            if(!this.firstPlay == 'not'){
                 console.log('not')
                 return
             }
@@ -180,6 +212,19 @@ export default {
             this.state = 'buffering'
         },
 
+        ended: function(){
+            console.log('ended')
+            this.state = 'ended'
+
+            if(this.cue_ids[1]){
+                var new_videoId = this.cue_ids[1]
+                this.cue_ids.splice(0, 1);
+                this.videoId = new_videoId
+                this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: new_videoId}})
+                this.room.send({event:'playerCtrl', action: 'rmVideoId'})
+            }
+
+        },
         requestPlayingData: function(){
             this.room.send({event: 'playerCtrl', action: 'requestPlayingData'})
             console.log('request')
@@ -206,6 +251,7 @@ export default {
                                 videoId: _this.videoId,
                                 currentTime: _this.currentTime,
                                 currentRate: _this.currentRate,
+                                cue_ids: _this.cue_ids
                             }
                         }
                     )
@@ -213,12 +259,21 @@ export default {
                 })
         },
 
-        catchPlayingData: function(id, rate, time){
-            this.videoId = id;
+        catchPlayingData: function(id, rate, time, cue_ids){
+            this.videoId = id
+            this.cue_ids = cue_ids
             this.currentRate = rate
             this.currentTime = time
         },
 
+        skip: function(){
+            var new_videoId = this.cue_ids[1]
+            this.cue_ids.splice(0, 1);
+            this.videoId = new_videoId
+            this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: new_videoId}})
+            this.room.send({event:'playerCtrl', action: 'rmVideoId'})
+
+        },
         playerCtrl: function(action, data){
             this.is_send = false;
             
@@ -228,7 +283,15 @@ export default {
                     break;
                 case 'playById':
                     this.player.loadVideoById(data.videoId)
+                    // this.videoId = data.videoId
                     break;
+                case 'addVideoId':
+                    // this.player.loadVideoById(data.videoId)
+                    console.log('taketuika')
+                    this.cue_ids.push(data.videoId)
+                    break;
+                case 'rmVideoId':
+                    this.cue_ids.splice(0, 1)
                 case 'paused':
                     this.player.pauseVideo()
                     break;
@@ -244,7 +307,7 @@ export default {
                     this.responsePlayingData()
                     break;
                 case 'responsePlayingData':
-                    this.catchPlayingData(data.videoId, data.currentRate, data.currentTime)
+                    this.catchPlayingData(data.videoId, data.currentRate, data.currentTime, data.cue_ids)
                     break;
                 default:
                     break;
