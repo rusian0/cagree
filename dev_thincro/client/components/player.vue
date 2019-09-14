@@ -120,17 +120,20 @@ export default {
 
             this.firstLoad = false;
 
-            this.room.send({event:'playerCtrl', action: 'addVideoId', datas:{videoId: new_videoId}})
 
 
             if(priority == 'force' || this.videoId == ''){
                 this.cue_ids.unshift(new_videoId)
                 this.videoId = new_videoId
                 this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: this.videoId}})
+                this.room.send({event:'playerCtrl', action: 'unshiftVideoId', datas:{videoId: new_videoId}})
+
             }
             else
             {
                 this.cue_ids.push(new_videoId)
+                this.room.send({event:'playerCtrl', action: 'addVideoId', datas:{videoId: new_videoId}})
+
             }
 
 
@@ -289,6 +292,9 @@ export default {
                     // this.player.loadVideoById(data.videoId)
                     console.log('taketuika')
                     this.cue_ids.push(data.videoId)
+                    break;
+                case 'unshiftVideoId':
+                    this.cueids.unshift(data.videoId)
                     break;
                 case 'rmVideoId':
                     this.cue_ids.splice(0, 1)
