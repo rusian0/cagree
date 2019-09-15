@@ -4,12 +4,11 @@
 }
 .youtube-movie {
     position: relative;
-    max-width: 640px;
-    max-height: 360px;
+    max-width: 1920px;
+    max-height: 1080px;
     height: 0;
     padding-bottom: 56.25%;
     overflow: hidden;
-    margin: 0 auto;
 }
 .youtube-movie iframe {
     max-width: 100%;
@@ -28,18 +27,37 @@ p {
 input[type=text] {
     border: 2px solid black;
     padding: 5px 10px;
-    width: 200px;
-    margin-left: 10px;
+    width: 65%;
     font-size: 13px;
 }
 
 button {
+    border: 1px solid #797979;
+    background: rgb(87, 87, 87);
+    color: #ffffff;
+    font-size: 12px;
+    padding: 4px 8px;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.state { 
+    float: right;
+}
+
+.state ul {
+    margin: 0;
+}
+
+.state ul li {
         border: 1px solid #797979;
-        background: rgb(87, 87, 87);
-        color: #ffffff;
+        background: rgb(209, 209, 209);
+        color: #181818;
         font-size: 12px;
         padding: 4px 8px;
-        margin-bottom: 30px;
+        display: inline;
+        list-style: none;
+        float: left;
 
 }
 </style>
@@ -51,13 +69,6 @@ button {
         <button @click="url_play">送信</button>
         <button @click="url_play('force')">割り込み</button>
         <br>
-        <p style="margin-left: 50px">{{ state }}</h2>
-        <p style="margin-left: 50px">{{ currentTime }}</h2>
-        <p style="margin-left: 50px">{{ currentRate }}</h2>
-        <p style="margin-left: 50px">{{ cue_ids }}</h2>
-        
-        <br>
-        <button @click="skip">スキップ</button>
 
     <div class="youtube-movie">
         <youtube
@@ -69,8 +80,23 @@ button {
             @playing="playing"
             @buffering="buffering"
             @ended="ended"
+            width="1920"
+            height="1080"
         />
     </div>
+    <button @click="skip">スキップ</button>
+
+    <div class="state">
+        <ul>
+            <li>{{ state }}</li>
+            <li>{{ currentTime }}</li>
+            <li>{{ currentRate }}</li>
+        </ul>
+    </div>
+            <p>{{ cue_ids }}</p>
+
+    
+
     <br>
 
     </div>
@@ -120,8 +146,6 @@ export default {
 
             this.firstLoad = false;
 
-
-
             if(priority == 'force' || this.videoId == ''){
                 this.cue_ids.unshift(new_videoId)
                 this.videoId = new_videoId
@@ -164,7 +188,6 @@ export default {
                 return;
             }
 
-            console.log('playing')
 
             if(!this.firstPlay == 'not'){
                 console.log('not')
@@ -172,6 +195,7 @@ export default {
             }
 
             if(this.is_send){
+            console.log('playing')
 
                 this.player.getCurrentTime()
                     .then((currentTime) => {
@@ -187,12 +211,17 @@ export default {
     
         },
         paused(){
-            console.log('pause')
             this.state = 'pause'
 
             if(this.is_send){
+                console.log('pause')
 
-                this.room.send({event: 'playerCtrl', action: 'paused'})
+                this.player.getCurrentTime()
+                    .then((currentTime) => {
+                        this.room.send({event: 'playerCtrl', action: 'paused'})
+                        this.room.send({event: 'playerCtrl', action: 'seekTo', datas:{currentTime: currentTime}})
+                    })
+
                 
             } else {
                 console.log('take pause')
@@ -290,11 +319,11 @@ export default {
                     break;
                 case 'addVideoId':
                     // this.player.loadVideoById(data.videoId)
-                    console.log('taketuika')
                     this.cue_ids.push(data.videoId)
                     break;
                 case 'unshiftVideoId':
-                    this.cueids.unshift(data.videoId)
+                    this.cue_ids.unshift(data.videoId)
+                    this.videoId = data.videoId
                     break;
                 case 'rmVideoId':
                     this.cue_ids.splice(0, 1)

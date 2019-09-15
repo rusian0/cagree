@@ -1,7 +1,7 @@
 <template>
 <div>
    <header>
-      <nuxt-link tag="h2" to=/room><a>PlaybackLink</a></nuxt-link>
+      <nuxt-link tag="h2" to=/room><a>PulScreen</a></nuxt-link>
 
       <!-- <nav>
 

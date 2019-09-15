@@ -36,6 +36,18 @@
         bottom: 0;
     } */
 
+    .main {
+        float: left;
+        width: 50%;
+        padding: 20px;
+    }
+
+    .side {
+        float: right;
+        width: 40%;
+        padding: 20px;
+    }
+
     input {
         margin: 10px;
         padding: 5px 10px;
@@ -51,6 +63,10 @@
         padding: 5px 50px;
         margin: 20px;
     }
+
+    .room {
+        padding: 3%;
+    }
 </style>
 
 
@@ -63,11 +79,14 @@
         <button @click="join('3')">ルーム3</button> -->
         <!-- <button @click="$test()">plugin</button> -->
     
-        <div v-if="room != ''">
-            <br>
-            <youtubesearch :room="room" ref="youtubesearch"/>
-            <youtubeplayer :room="room" :yt_key="yt_key" ref="youtubeplayer"/>
-            <br>
+        <div v-if="room != ''" class="room">
+            <div class="main">
+                <youtubeplayer :room="room" :yt_key="yt_key" ref="youtubeplayer"/>
+            </div>
+
+            <div class="side">
+                <youtubesearch :room="room" ref="youtubesearch"/>
+            </div>
 
             <!-- <div class="chatbox">
                 <div class="chat">

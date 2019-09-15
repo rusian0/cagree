@@ -7,18 +7,27 @@ p {
     font-size: 20px;
     width: 300px;
 }
+
+.search_result {
+    height: 300px;
+    overflow-y: scroll;
+    border: 1px solid rgb(10, 10, 10);
+}
 </style>
 <template>
     <div>
-        <input type="text" v-model="keyword" v-on:keydown.enter="search_video">
-        <button @click="search_video">検索</button>
-        <ul>
-            <li v-for="item in result" style="list-style:none">
-
-                <img :src="item.snippet.thumbnails.medium.url">
-                <p>{{ item.snippet.title }}</p>
-            </li>
-        </ul>
+        <div class="search">
+            <input type="text" v-model="keyword" v-on:keydown.enter="search_video" placeholder="動画検索キーワード">
+            <button @click="search_video">検索</button>
+            <div class="search_result" @scroll="onScroll">
+                <ul>
+                    <li v-for="item in items" style="list-style:none">
+                        <img :src="item.snippet.thumbnails.medium.url">
+                        <p>{{ item.snippet.title }}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -32,10 +41,15 @@ export default {
     },
     data: function(){
         return {
-            result:[],
             keyword:'',
-            apiKey: process.env.YOUTUBEDATA_APIKEY
-
+            items:[],
+            searchParam: {
+                key: process.env.YOUTUBEDATA_APIKEY,
+                part:'snippet',
+                q: '',
+                type:'video',
+                maxResults: 10,
+            }
         }
     },
     mounted: function (){
@@ -45,22 +59,32 @@ export default {
     computed: {
     },
     methods: {
-        search_video: function(query){
+        search_video: function(event){
 
-            var params = {
-                part: 'snippet',
-                key: this.apiKey,
-                q: this.keyword,
-                type: 'video',
-                maxResults: 3
+            if(event !== 'next'){
+                this.searchParam.q = this.keyword
+                delete this.searchParam.nextPageToken
             }
 
-            this.$axios.get('https://www.googleapis.com/youtube/v3/search', {params})
+            this.$axios.get('https://www.googleapis.com/youtube/v3/search', {params:this.searchParam})
             .then(result => {
-                this.result = result.data.items
+                this.searchParam.nextPageToken = result.data.nextPageToken
+
+                if(event == 'next'){
+                    this.items = this.items.concat(result.data.items)
+                }
+                else {
+                    this.items = result.data.items
+                }
             })
 
-            this.keyword = ''
+            // this.keyword = ''
+        },
+
+        onScroll: function(e){
+            if ((e.target.scrollTop + e.target.offsetHeight) >= e.target.scrollHeight) {
+                this.search_video('next')
+            }
         }
     },
 
