@@ -60,14 +60,36 @@ button {
         float: left;
 
 }
+
+ul.cue-list {
+    padding: 15px 0;
+    /* text-align: center; */
+
+}
+
+ul.cue-list li{
+    list-style: none;
+    display: inline;
+}
+
+ul.cue-list li img {
+    width: 31%;
+    border: 2px solid #ffffff;
+
+}
+
+ul.cue-list li:first-child img {
+    width: 70%;
+    border: 3px solid yellow;
+}
 </style>
 <template>
     <div class="video">
         <!-- {{ videoId }} <br> -->
         <br>
-        <input type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="YouTube動画URL">
-        <button @click="url_play">送信</button>
-        <button @click="url_play('force')">割り込み</button>
+        <input type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="YouTube Video URL">
+        <button @click="url_play">Send</button>
+        <button @click="url_play('force')">Interrupt</button>
         <br>
 
     <div class="youtube-movie">
@@ -84,7 +106,7 @@ button {
             height="1080"
         />
     </div>
-    <button @click="skip">スキップ</button>
+    <button @click="skip">Next</button>
 
     <div class="state">
         <ul>
@@ -93,8 +115,14 @@ button {
             <li>{{ currentRate }}</li>
         </ul>
     </div>
-            <p>{{ cue_ids }}</p>
-
+    <div style="background-color:black;padding:20px;">
+        <h3 style="color:white">Video Cue</h3>
+        <ul class="cue-list">
+            <li v-for="(cue_id, index) in cue_ids">
+                <img :src="imgUrl + cue_id + '/mqdefault.jpg'" alt="">
+            </li>
+        </ul>
+    </div>
     
 
     <br>
@@ -118,27 +146,50 @@ export default {
             videoId: '',
             state: '',
             video_url: '',
-            cue_ids:[],
+            cue_ids:[
+                'WJzSBLCaKc8',
+                'hfWa5dnHuEY',
+                'Nh9VKYk_TlI',
+                '07Qtivl6jII',
+                'rJ_EuCXKx6U',
+                'LrxsE-tbR48',
+
+            ],
             playerVars: {
                 autoplay: 1,
                 playsinline: 1
             },
             currentTime:'',
-            currentRate:''
+            currentRate:'',
+            imgUrl: 'http://img.youtube.com/vi/',
         }
     },
     mounted: function (){
         this.room.on('peerJoin', (data) => {
         })
+
+        this.$nuxt.$on('id_play', videoId => {
+            this.url_play('', videoId)
+        })
+        this.$nuxt.$on('unshift_id_play', videoId => {
+            this.url_play('force', videoId)
+        })
     },
     computed: {
         player() {
             return this.$refs.youtube.player
-        }
+        },
     },
     methods: {
-        url_play(priority=''){
-            var new_videoId = this.$youtube.getIdFromUrl(this.video_url)
+        url_play(priority='', videoId=''){
+            var new_videoId = ''
+
+            if(videoId !== ''){
+                new_videoId = videoId
+            }
+            else {
+                new_videoId = this.$youtube.getIdFromUrl(this.video_url)
+            }
 
             this.video_url = ''
 
@@ -168,6 +219,8 @@ export default {
         ready() {
             console.log('ready')
             this.state = 'ready';
+                        this.videoId = this.cue_ids[0]
+
             if(this.firstPlay == 'before'){
                 this.requestPlayingData()
             }
@@ -252,6 +305,9 @@ export default {
                 var new_videoId = this.cue_ids[1]
                 this.cue_ids.splice(0, 1);
                 this.videoId = new_videoId
+
+                this.$nuxt.$emit('getRelatedVideo', new_videoId)
+
                 this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: new_videoId}})
                 this.room.send({event:'playerCtrl', action: 'rmVideoId'})
             }
@@ -302,9 +358,16 @@ export default {
             var new_videoId = this.cue_ids[1]
             this.cue_ids.splice(0, 1);
             this.videoId = new_videoId
+
+            this.$nuxt.$emit('getRelatedVideo', new_videoId)
+
             this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: new_videoId}})
             this.room.send({event:'playerCtrl', action: 'rmVideoId'})
 
+        },
+
+        updateRelated: function(items){
+            this.$nuxt.$emit('updateRelated', items)
         },
         playerCtrl: function(action, data){
             this.is_send = false;
@@ -344,6 +407,8 @@ export default {
                 case 'responsePlayingData':
                     this.catchPlayingData(data.videoId, data.currentRate, data.currentTime, data.cue_ids)
                     break;
+                case 'addRelated':
+                    this.updateRelated(data.relatedItems)
                 default:
                     break;
             }
