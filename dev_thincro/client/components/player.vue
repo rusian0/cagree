@@ -161,7 +161,7 @@ export default {
             },
             currentTime:'',
             currentRate:'',
-            imgUrl: 'http://img.youtube.com/vi/',
+            imgUrl: 'https://img.youtube.com/vi/',
         }
     },
     mounted: function (){
