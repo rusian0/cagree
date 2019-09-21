@@ -38,9 +38,9 @@
 
     .main {
         float: left;
-        width: 95%;
+        width: 101%;
         /* width: 50%; */
-        padding: 20px;
+        /* padding: 20px; */
     }
 
     .side {
