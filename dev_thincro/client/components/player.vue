@@ -4,10 +4,12 @@
 }
 .youtube-movie {
     position: relative;
-    max-width: 1920px;
-    max-height: 1080px;
-    height: 0;
-    padding-bottom: 56.25%;
+    max-width: 1624px;
+    max-height: 1026px;
+    /* max-height: 1080px; */
+    height: 100%;
+    width: auto;
+    /* padding-bottom: 56.25%; */
     overflow: hidden;
 }
 .youtube-movie iframe {

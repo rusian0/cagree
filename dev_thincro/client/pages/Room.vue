@@ -1,5 +1,9 @@
 <style scoped>
 
+html,body {
+    height: 100%;
+}
+
     li {
         list-style: none;
     }
