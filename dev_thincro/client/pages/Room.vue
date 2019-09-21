@@ -38,7 +38,8 @@
 
     .main {
         float: left;
-        width: 50%;
+        width: 95%;
+        /* width: 50%; */
         padding: 20px;
     }
 
@@ -85,7 +86,7 @@
             </div>
 
             <div class="side">
-                <youtubesearch :room="room" ref="youtubesearch"/>
+                <!-- <youtubesearch :room="room" ref="youtubesearch"/> -->
             </div>
 
             <!-- <div class="chatbox">

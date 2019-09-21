@@ -93,18 +93,29 @@ ul.cue-list li:first-child img {
         <br>
 
     <div class="youtube-movie">
-        <youtube
-            ref="youtube"
-            :video-id="videoId"
-            :player-vars="playerVars"
-            @ready="ready"
-            @paused="paused"
-            @playing="playing"
-            @buffering="buffering"
-            @ended="ended"
-            width="1920"
-            height="1080"
-        />
+        <vue-plyr>
+            <div class="plyr__video-embed">
+                <youtube
+                    ref="youtube"
+                    :video-id="videoId"
+                    :player-vars="playerVars"
+                    @ready="ready"
+                    @paused="paused"
+                    @playing="playing"
+                    @buffering="buffering"
+                    @ended="ended"
+                    width="1920"
+                    height="1080"
+                />
+            </div>
+        </vue-plyr>
+
+        <!-- <vue-plyr>
+            <div class="plyr__video-embed">
+                <iframe width="690" data-plyr-config='{ "ads": true}' height="388" src="https://www.youtube.com/embed/hfWa5dnHuEY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </vue-plyr> -->
+        
     </div>
     <button @click="skip">Next</button>
 
@@ -131,6 +142,8 @@ ul.cue-list li:first-child img {
 </template>
 
 <script>
+
+
 export default {
     props: {
         'room': {
@@ -147,8 +160,8 @@ export default {
             state: '',
             video_url: '',
             cue_ids:[
-                'WJzSBLCaKc8',
                 'hfWa5dnHuEY',
+                'WJzSBLCaKc8',
                 'Nh9VKYk_TlI',
                 '07Qtivl6jII',
                 'rJ_EuCXKx6U',

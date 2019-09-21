@@ -35,6 +35,7 @@ export default {
     {src: 'plugins/amplify.js',ssr: false},
     {src: 'plugins/skyway-latest.js',ssr: false},
     {src: 'plugins/vue-youtube.js',ssr: false},
+    {src: 'plugins/vue-plyr.js',ssr: false},
   ],
   /*
   ** Nuxt.js dev-modules

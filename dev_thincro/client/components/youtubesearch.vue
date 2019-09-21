@@ -107,7 +107,7 @@ export default {
         })
 
         this.$nuxt.$on('getRelatedVideo', videoId => {
-            this.getRelatedVideo(videoId)
+            // this.getRelatedVideo(videoId)
         })
         this.$nuxt.$on('updateRelated', items => {
             this.related_items = items
@@ -157,13 +157,15 @@ export default {
 
             params.relatedToVideoId = videoId
 
-            this.$axios.get('https://www.googleapis.com/youtube/v3/search', {params:params})
-            .then(result => {
-                // this.searchParam.nextPageToken = result.data.nextPageToken
-                this.related_items = result.data.items
-                this.room.send({event:'playerCtrl', action: 'addRelated', datas:{relatedItems:this.related_items}})
+            // this.$axios.get('https://www.googleapis.com/youtube/v3/search', {params:params})
+            // .then(result => {
+            //     // this.searchParam.nextPageToken = result.data.nextPageToken
+            //     this.related_items = result.data.items
+            //     this.room.send({event:'playerCtrl', action: 'addRelated', datas:{relatedItems:this.related_items}})
+            //     delete params.relatedToVideoId
 
-            })
+
+            // })
 
         },
 
