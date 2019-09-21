@@ -27,7 +27,7 @@ p {
 input[type=text] {
     border: 2px solid black;
     padding: 5px 10px;
-    width: 65%;
+    width: 50%;
     font-size: 13px;
 }
 
@@ -36,9 +36,11 @@ button {
     background: rgb(87, 87, 87);
     color: #ffffff;
     font-size: 12px;
-    padding: 4px 8px;
+    padding: 4px;
     margin-bottom: 30px;
     cursor: pointer;
+    width: 18%;
+    height: 100%;
 }
 
 .state { 

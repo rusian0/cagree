@@ -38,7 +38,7 @@
 
     .main {
         float: left;
-        width: 101%;
+        width: 100%;
         /* width: 50%; */
         /* padding: 20px; */
     }
@@ -66,7 +66,7 @@
     }
 
     .room {
-        padding: 3%;
+        /* padding: 3%; */
     }
 </style>
 
