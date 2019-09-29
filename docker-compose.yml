@@ -15,8 +15,8 @@ services:
     # restart: always
     # networks:
     #   - default
-    # links:
-    #   - dynamo-admin
+    links:
+      - dynamo-admin
 
 
 
@@ -31,29 +31,29 @@ services:
     #   - dynamo-admin
 
 
-  # dynamo-admin:
-  #   image: instructure/dynamo-local-admin
-  #   ports:
-  #     - "127.0.0.1:9092:8001"
-  #   volumes:
-  #     - ./db_data:/var/lib/dynamodb
-  #   networks:
-  #     - default
+  dynamo-admin:
+    image: instructure/dynamo-local-admin
+    ports:
+      - "127.0.0.1:9092:8001"
+    volumes:
+      - ./db_data:/var/lib/dynamodb
+    # networks:
+    #   - default
 
-  # aws-cli:
-  #   container_name: 'aws-cli'
-  #   image: aws-s3/aws-cli
-  #   build:
-  #     context: ./
-  #     dockerfile: ./docker/aws-cli/Dockerfile
-  #   tty: true
-  #   environment:
-  #     AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-  #     AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-  #     AWS_DEFAULT_REGION: ap-northeast-1
-  #     AWS_DEFAULT_OUTPUT: json
-  #   networks:
-  #     - default
-  #   links:
-  #     - dynamo-admin
+  aws-cli:
+    container_name: 'aws-cli'
+    image: aws-s3/aws-cli
+    build:
+      context: ./
+      dockerfile: ./docker/aws-cli/Dockerfile
+    tty: true
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: ap-northeast-1
+      AWS_DEFAULT_OUTPUT: json
+    networks:
+      - default
+    links:
+      - dynamo-admin
 

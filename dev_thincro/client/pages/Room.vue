@@ -43,6 +43,7 @@ html,body {
     .main {
         float: left;
         width: 100%;
+        max-width: 800px;
         /* width: 50%; */
         /* padding: 20px; */
     }

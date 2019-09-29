@@ -119,6 +119,15 @@ ul.cue-list li:first-child img {
                 <iframe width="690" data-plyr-config='{ "ads": true}' height="388" src="https://www.youtube.com/embed/hfWa5dnHuEY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </vue-plyr> -->
+    <!-- <div class="youtube_area">
+    <iframe id="ytPlayer" allowfullscreen="1" allow="autoplay; encrypted-media" title="YouTube video player" src="https://youtu.be/ZCQ3IIFSn1s" width="640" height="390" frameborder="0"></iframe>
+    <ul class="poster_list">
+        <li class="current">
+        <img src="[キャプチャ]" class="transition_scale" oncontextmenu="return false">
+        <div class="playicon"></div>
+        </li>
+    </ul>
+    </div> -->
         
     </div>
     <button @click="skip">Next</button>
