@@ -87,7 +87,6 @@ ul.cue-list li:first-child img {
             <div class="input-group-append">
                 <button class="btn btn-primary" @click="url_play('force')">Interrupt</button>
             </div>
-            <button @click="getCue">testget</button>
         </div>
 
     <div class="youtube-movie">
