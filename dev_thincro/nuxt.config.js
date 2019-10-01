@@ -1,3 +1,4 @@
+// require('dotenv').config();
 export default {
   mode: 'spa',
   /*
@@ -47,11 +48,13 @@ export default {
   */
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    'bootstrap-vue/nuxt'
   ],
-  axios: [
 
-  ],
+  axios: {
+    baseURL: process.env.API_URL,
+  },
 
   router:{
     middleware: ['init_auth']

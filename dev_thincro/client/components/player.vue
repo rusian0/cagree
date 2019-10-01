@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 .video {
     width: 100%;
 }
@@ -26,24 +26,13 @@ p {
 }
 
 
-input[type=text] {
+/* input[type=text] {
     border: 2px solid black;
     padding: 5px 10px;
     width: 50%;
     font-size: 13px;
-}
+} */
 
-button {
-    border: 1px solid #797979;
-    background: rgb(87, 87, 87);
-    color: #ffffff;
-    font-size: 12px;
-    padding: 4px;
-    margin-bottom: 30px;
-    cursor: pointer;
-    width: 18%;
-    height: 100%;
-}
 
 .state { 
     float: right;
@@ -78,23 +67,28 @@ ul.cue-list li{
 
 ul.cue-list li img {
     width: 31%;
-    border: 2px solid #ffffff;
+    border: 10px solid #ffffff;
 
 }
 
 ul.cue-list li:first-child img {
-    width: 70%;
-    border: 3px solid yellow;
+    /* width: 70%; */
+    border-color:#ff0000;
 }
 </style>
 <template>
     <div class="video">
         <!-- {{ videoId }} <br> -->
-        <br>
-        <input type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="YouTube Video URL">
-        <button @click="url_play">Send</button>
-        <button @click="url_play('force')">Interrupt</button>
-        <br>
+        <div class="input-group">
+            <input class="form-control" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="YouTube Video URL">
+            <div class="input-group-append">
+                <button class="btn btn-success" @click="url_play">Send</button>
+            </div>
+            <div class="input-group-append">
+                <button class="btn btn-primary" @click="url_play('force')">Interrupt</button>
+            </div>
+            <button @click="getCue">testget</button>
+        </div>
 
     <div class="youtube-movie">
         <vue-plyr>
@@ -130,7 +124,7 @@ ul.cue-list li:first-child img {
     </div> -->
         
     </div>
-    <button @click="skip">Next</button>
+    <button class="btn btn-info" @click="skip">Next</button>
 
     <div class="state">
         <ul>
@@ -139,7 +133,7 @@ ul.cue-list li:first-child img {
             <li>{{ currentRate }}</li>
         </ul>
     </div>
-    <div style="background-color:black;padding:20px;">
+    <div style="background-color:black;padding:20px;margin:30px">
         <h3 style="color:white">Video Cue</h3>
         <ul class="cue-list">
             <li v-for="(cue_id, index) in cue_ids">
@@ -158,12 +152,9 @@ ul.cue-list li:first-child img {
 
 
 export default {
-    props: {
-        'room': {
-            type: Object,
-            default: ''
-        },
-    },
+    props: [
+        'room'
+    ],
     data: function(){
         return {
             is_send: true,
@@ -172,15 +163,7 @@ export default {
             videoId: '',
             state: '',
             video_url: '',
-            cue_ids:[
-                'hfWa5dnHuEY',
-                'WJzSBLCaKc8',
-                'Nh9VKYk_TlI',
-                '07Qtivl6jII',
-                'rJ_EuCXKx6U',
-                'LrxsE-tbR48',
-
-            ],
+            cue_ids:[],
             playerVars: {
                 autoplay: 1,
                 playsinline: 1
@@ -191,8 +174,8 @@ export default {
         }
     },
     mounted: function (){
-        this.room.on('peerJoin', (data) => {
-        })
+        // this.room.on('peerJoin', (data) => {
+        // })
 
         this.$nuxt.$on('id_play', videoId => {
             this.url_play('', videoId)
@@ -200,6 +183,8 @@ export default {
         this.$nuxt.$on('unshift_id_play', videoId => {
             this.url_play('force', videoId)
         })
+
+        this.getCue()
     },
     computed: {
         player() {
@@ -395,6 +380,11 @@ export default {
         updateRelated: function(items){
             this.$nuxt.$emit('updateRelated', items)
         },
+
+        async getCue() {
+            this.cue_ids = await this.$store.dispatch('room/getCue', this.room.name)
+        },
+
         playerCtrl: function(action, data){
             this.is_send = false;
             

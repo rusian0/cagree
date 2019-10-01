@@ -6,9 +6,9 @@ AWS.config.update({
     credentials: new AWS.Credentials(
         "acesskey",
         "secretkey"
-      ),
-      region: "dynamo-admin:8002"
-  })
+    ),
+    region: "dynamo-admin:8002"
+})
 
 const db = new AWS.DynamoDB.DocumentClient({ endpoint: new AWS.Endpoint('http://dynamo-admin:8002') });
 
@@ -29,6 +29,24 @@ app.get("/get_table", function(req, res) {
     })
 
 });
+
+app.get("/getCue", function(req, res) {
+    var params = {
+        TableName: 'room',
+        Key: {
+            'id': req.query.roomId
+        }
+    }
+
+    db.get(params, function(err, data){
+        if(err){
+            res.send(err.message);
+        }
+        else{
+            res.send(data.Item)
+        }
+    })
+})
 
 module.exports = {
     path: "/api/",

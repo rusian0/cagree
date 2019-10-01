@@ -1,7 +1,7 @@
 <template>
 <div>
-   <header>
-      <nuxt-link tag="h2" to=/room><a>PulScreen</a></nuxt-link>
+   <header class="header">
+      <nuxt-link tag="h2" to=/><a>PulScreen</a></nuxt-link>
 
       <!-- <nav>
 
@@ -74,9 +74,9 @@ data () {
 
 
 
-   header {
+   header.header{
       background-color: #920000;
-      padding: 5px 30px;
+      padding: 30px;
    }
 
    ul {

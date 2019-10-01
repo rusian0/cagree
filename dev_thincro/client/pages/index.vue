@@ -1,47 +1,31 @@
 <template>
   <div class="container">
     <div>
-      <!-- <logo /> -->
-      <!-- <dynamo /> -->
-      <h1 class="title">
-        PulScreen
-      </h1>
-      <!-- <h2 class="subtitle">
-        My slick Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a> -->
-      <!-- </div> -->
+      <h1 class="title">PulScreen</h1>
+      <nuxt-link tag="button" class="btn btn-success" :to="{path: '/room/'+roomId}">Let's Join Room!</nuxt-link>
+
     </div>
   </div>
 </template>
 
 <script>
 import Logo from '~/components/Logo.vue'
-import Dynamo from '~/components/Dynamo.vue'
 
 export default {
-  components: {
-    Logo,
-    Dynamo
+
+  computed: {
+    roomId: function(){
+      return new Date().getTime().toString(16)  + Math.floor(1000*Math.random())
+    }
   }
 }
 </script>
 
 <style>
+html {
+  font-size: 100%;
+}
+
 .container {
   margin: 0 auto;
   min-height: 100vh;
@@ -72,4 +56,8 @@ export default {
 .links {
   padding-top: 15px;
 }
+</style>
+
+<style scoped>
+
 </style>

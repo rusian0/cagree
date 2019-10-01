@@ -1,29 +1,37 @@
-// // import axios from 'axios';
+var params = {
+    TableName: 'room',
+}
 
-// // const peear = new Peer({key: 'acb9a4f1-4053-4fac-967e-82d3d77f1b30',debug: 3});
+export const state = () => ({
+    username: null,
+})
 
+export const getters = {
+    check: state => !! state.username,
+    username: state => state.username ? state.username : ''
+}
 
-// const state = {
-//     roomName: '',
-//     chatLog: [],
-//     room: '',
+export const mutations = {
+    setUser (state, username){
+        state.username = username;
+    }
+}
 
-// }
+export const actions = {
 
-// const getters = {
-// }
+    async getCue({commit}, roomId) {
 
-// const mutations = {
+        const response = await this.$axios.get('api/getCue', {params: {"roomId": roomId}})
 
-// }
+        return response.data.videoCue
+    },
 
-// const actions = {
-//     }
+}
 
 // export default {
 //     namespaced: true,
 //     state,
 //     getters,
 //     mutations,
-//     actions,
+//     actions
 // }
