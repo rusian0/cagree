@@ -19,11 +19,18 @@ export const mutations = {
 
 export const actions = {
 
-    async getCue({commit}, roomId) {
+    async getCue({commit}, roomId, newVideoId) {
 
-        const response = await this.$axios.get('api/getCue', {params: {"roomId": roomId}})
+        const response = await this.$axios.get('/api/getCue', {params: {"roomId": roomId, "newVideoId": newVideoId}})
 
         return response.data.videoCue
+    },
+
+    updateCue({commit}, roomId) {
+
+        this.$axios.post('/api/updateCue', {"roomId": roomId})
+
+        // return response.data.videoCue
     },
 
 }

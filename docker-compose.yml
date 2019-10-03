@@ -6,15 +6,15 @@ services:
     tty: true
     working_dir: /var/www
     volumes:
-      # - ./dev_thincro:/var/www
-      - ./dev_thincro:/var/www:cached
+      - ./nuxt:/var/www:cached
       # - ./docker/workspace/yarn_cache:/usr/local/share/.cache/yarn/v4
     environment:
       PORT: 9090
       HOST: 0.0.0.0
     # restart: always
-    # networks:
-    #   - default
+    networks:
+      app_net:
+        ipv4_address: 172.40.3.7
     links:
       - dynamo-admin
 
@@ -25,10 +25,11 @@ services:
     ports:
       - "127.0.0.1:${HTTP_PORT}:9090"
     command: yarn dev
-    # networks:
-    #   - default
-    # links:
-    #   - dynamo-admin
+    networks:
+      app_net:
+        ipv4_address: 172.40.3.8
+    links:
+      - dynamo-admin
 
 
   dynamo-admin:
@@ -37,23 +38,41 @@ services:
       - "127.0.0.1:9092:8001"
     volumes:
       - ./db_data:/var/lib/dynamodb
+    networks:
+      app_net:
+        ipv4_address: 172.40.3.9
     # networks:
     #   - default
 
-  # aws-cli:
-  #   container_name: 'aws-cli'
-  #   image: aws-s3/aws-cli
-  #   build:
-  #     context: ./
-  #     dockerfile: ./docker/aws-cli/Dockerfile
-  #   tty: true
-  #   environment:
-  #     AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-  #     AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-  #     AWS_DEFAULT_REGION: ap-northeast-1
-  #     AWS_DEFAULT_OUTPUT: json
-  #   networks:
-  #     - default
-  #   links:
-  #     - dynamo-admin
+  aws-cli:
+    container_name: 'aws-cli'
+    # image: guss77/dind-awscli
+    build:
+      context: ./
+      dockerfile: ./docker/aws-cli/Dockerfile
+    tty: true
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: ap-northeast-1
+      AWS_DEFAULT_OUTPUT: json
+    networks:
+      app_net:
+        ipv4_address: 172.40.3.10
+    volumes:
+      - ./lambda:/root/api
+    privileged: true
+    links:
+      - dynamo-admin:dynamo-admin
+    ports:
+      - "127.0.0.1:3000:3000"
 
+
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.40.3.0/24

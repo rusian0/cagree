@@ -5,7 +5,7 @@
     "javascript": {
         "framework": "vue",
         "config": {
-            "SourceDir": "dev_thincro",
+            "SourceDir": "src",
             "DistributionDir": "dist",
             "BuildCommand": "npm run-script build",
             "StartCommand": "npm run-script serve"

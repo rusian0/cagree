@@ -2,6 +2,12 @@ const express = require("express")
 const app = express()
 const AWS = require('aws-sdk')
 
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
+
+const table = 'room'
+
 AWS.config.update({
     credentials: new AWS.Credentials(
         "acesskey",
@@ -32,7 +38,7 @@ app.get("/get_table", function(req, res) {
 
 app.get("/getCue", function(req, res) {
     var params = {
-        TableName: 'room',
+        TableName: table,
         Key: {
             'id': req.query.roomId
         }
@@ -45,6 +51,35 @@ app.get("/getCue", function(req, res) {
         else{
             res.send(data.Item)
         }
+    })
+})
+
+app.post("/updateCue", function(req, res) {
+    var input = req.body
+
+    console.log(req.body)
+    return
+    var params = {
+        TableName: table,
+        Key: {
+            'id': input.roomId
+        },
+        ExpressionAttributeNames: {
+            '#vc': 'videoCue'
+        },
+        ExpressionAttributeValues:{
+            ':addCueId': [input.newVideoId]
+        },
+        UpdateExpression: 'SET #vc = list_append(#vc, :addCueId)'
+    }
+    db.update(params, function(err, data){
+        if(err){
+            res.send(err.message);
+        }
+        else{
+            res.send(data.Item)
+        }
+
     })
 })
 

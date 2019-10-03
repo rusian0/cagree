@@ -1,16 +1,21 @@
-FROM python:3.6
+FROM docker:stable-dind
 
-ARG pip_installer="https://bootstrap.pypa.io/get-pip.py"
-ARG awscli_version="1.16.168"
+# install command.
+RUN apk update
+RUN \
+	apk -Uuv add make gcc groff less \
+		musl-dev libffi-dev openssl-dev \
+		python2-dev py-pip curl && \
+	rm /var/cache/apk/*
 
 # install aws-cli
+ARG awscli_version="1.16.168"
 RUN pip install awscli==${awscli_version}
 
 # install sam
-RUN pip install --user --upgrade aws-sam-cli
-ENV PATH $PATH:/root/.local/bin
+RUN pip install --upgrade aws-sam-cli
 
-# install command.
-RUN apt-get update && apt-get install -y less vim
+# set workspace
+RUN mkdir /root/api
 
-WORKDIR /root
+WORKDIR /root/api

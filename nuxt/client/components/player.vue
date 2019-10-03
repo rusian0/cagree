@@ -87,6 +87,7 @@ ul.cue-list li:first-child img {
             <div class="input-group-append">
                 <button class="btn btn-primary" @click="url_play('force')">Interrupt</button>
             </div>
+            <button @click="updateCue">updatecue</button>
         </div>
 
     <div class="youtube-movie">
@@ -152,7 +153,8 @@ ul.cue-list li:first-child img {
 
 export default {
     props: [
-        'room'
+        'room',
+        'roomId'
     ],
     data: function(){
         return {
@@ -162,7 +164,13 @@ export default {
             videoId: '',
             state: '',
             video_url: '',
+            sample_ids:[
+                'WJzSBLCaKc8',
+                '8rRhLmhIFDI',
+                's9JnNUFqXJA'
+            ],
             cue_ids:[],
+            sampleRoomId: 'testroomid',
             playerVars: {
                 autoplay: 1,
                 playsinline: 1
@@ -182,8 +190,8 @@ export default {
         this.$nuxt.$on('unshift_id_play', videoId => {
             this.url_play('force', videoId)
         })
-
         this.getCue()
+
     },
     computed: {
         player() {
@@ -191,6 +199,11 @@ export default {
         },
     },
     methods: {
+        updateCue: function(){
+            console.log(this.roomId)
+            this.$store.dispatch('room/updateCue', this.roomId)
+
+        },
         url_play(priority='', videoId=''){
             var new_videoId = ''
 
@@ -217,6 +230,7 @@ export default {
             else
             {
                 this.cue_ids.push(new_videoId)
+                this.updateCue(new_videoId)
                 this.room.send({event:'playerCtrl', action: 'addVideoId', datas:{videoId: new_videoId}})
 
             }
@@ -235,6 +249,7 @@ export default {
                 this.requestPlayingData()
             }
             this.player.on('playbackRateChange', this.playbackRateChange)
+
         },
         playing() {
             this.state = 'playing';
@@ -380,8 +395,18 @@ export default {
             this.$nuxt.$emit('updateRelated', items)
         },
 
-        async getCue() {
-            this.cue_ids = await this.$store.dispatch('room/getCue', this.room.name)
+        async getCue(newVideoId) {
+
+            if(!this.roomId) this.roomId = this.sampleRoomId
+
+            var videoCue = await this.$store.dispatch('room/getCue', this.roomId, newVideoId)
+
+            if(videoCue) {
+                this.cue_ids = videoCue
+            }
+            else {
+                this.cue_ids = this.sample_ids
+            }
         },
 
         playerCtrl: function(action, data){

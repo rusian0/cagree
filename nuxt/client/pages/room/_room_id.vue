@@ -86,7 +86,7 @@ html,body {
         <!-- <button @click="$test()">plugin</button> -->
     
             <div class="main">
-                <youtubeplayer :room="room" :yt_key="yt_key" ref="youtubeplayer"/>
+                <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/>
             </div>
 
             <div class="side">
@@ -120,6 +120,8 @@ export default {
         this.peer.on('open', ()=>{
             this.join();
         })
+
+        if(!this.roomId) this.roomId = 'testroomid'
     },
 
     state: {
@@ -128,7 +130,7 @@ export default {
 
     data: function(){
         return {
-            roomName: this.$nuxt.$route.params.room_id,
+            roomId: this.$nuxt.$route.params.room_id,
             msg: '',
             send_msg: '',
             chats: [],
@@ -142,15 +144,13 @@ export default {
         join: function(){
 
             //仮想ルームへの入室処理
-            // this.roomName = "ルーム";
-            if(!this.roomName) this.roomName = 'testroomid'
+            // this.roomId = "ルーム";
+            if(!this.roomId) this.roomId = 'testroomid'
             
-            this.room = this.peer.joinRoom(this.roomName, {mode: 'sfu'});
+            this.room = this.peer.joinRoom(this.roomId, {mode: 'sfu'});
             //チャットログの初期化
             this.chats.length = 0;
-            this.chats.push(this.roomName + 'に入室しました')
-
-            console.log(this.roomName)
+            this.chats.push(this.roomId + 'に入室しました')
 
             //dataイベント受信
             this.room.on('data', ({data}) => {
