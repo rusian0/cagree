@@ -21,14 +21,15 @@ export const actions = {
 
     async getCue({commit}, roomId, newVideoId) {
 
-        const response = await this.$axios.get('/api/getCue', {params: {"roomId": roomId, "newVideoId": newVideoId}})
+        const response = await this.$axios.get('/room', {params: {"roomId": roomId, "newVideoId": newVideoId}})
 
         return response.data.videoCue
     },
 
     updateCue({commit}, roomId) {
 
-        this.$axios.post('/api/updateCue', {"roomId": roomId})
+        this.$axios.get('/room')
+        // this.$axios.post('/api/updateCue', {"roomId": roomId})
 
         // return response.data.videoCue
     },

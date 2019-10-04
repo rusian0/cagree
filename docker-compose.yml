@@ -11,68 +11,18 @@ services:
     environment:
       PORT: 9090
       HOST: 0.0.0.0
-    # restart: always
-    networks:
-      app_net:
-        ipv4_address: 172.40.3.7
-    links:
-      - dynamo-admin
-
-
 
   workspace:
     <<: *app_base
     ports:
       - "127.0.0.1:${HTTP_PORT}:9090"
     command: yarn dev
-    networks:
-      app_net:
-        ipv4_address: 172.40.3.8
-    links:
-      - dynamo-admin
 
 
   dynamo-admin:
     image: instructure/dynamo-local-admin
     ports:
       - "127.0.0.1:9092:8001"
+      - "127.0.0.1:8002:8002"
     volumes:
-      - ./db_data:/var/lib/dynamodb
-    networks:
-      app_net:
-        ipv4_address: 172.40.3.9
-    # networks:
-    #   - default
-
-  aws-cli:
-    container_name: 'aws-cli'
-    # image: guss77/dind-awscli
-    build:
-      context: ./
-      dockerfile: ./docker/aws-cli/Dockerfile
-    tty: true
-    environment:
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      AWS_DEFAULT_REGION: ap-northeast-1
-      AWS_DEFAULT_OUTPUT: json
-    networks:
-      app_net:
-        ipv4_address: 172.40.3.10
-    volumes:
-      - ./lambda:/root/api
-    privileged: true
-    links:
-      - dynamo-admin:dynamo-admin
-    ports:
-      - "127.0.0.1:3000:3000"
-
-
-
-networks:
-  app_net:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.40.3.0/24
+      - ./docker/dynamodb/db_data:/var/lib/dynamodb

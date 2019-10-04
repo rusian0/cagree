@@ -20,8 +20,8 @@ Resources:
       Policies: AmazonDynamoDBFullAccess
       Environment:
         Variables:
-          DYNAMODB_ENDPOINT: http://172.40.3.9:8002
-          DYNAMODB_REGION: 172.40.3.9:8002
+          DYNAMODB_ENDPOINT: http://127.0.0.1:8002
+          DYNAMODB_REGION: 127.0.0.1:8002
       Events:
         RoomList:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api

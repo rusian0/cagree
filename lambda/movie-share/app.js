@@ -5,22 +5,25 @@ exports.lambdaHandler = async (event, context) => {
     try {
     switch (event.httpMethod) {
         case "GET": {
-            const dbOutput = await dbClient.scan();
+            const dbOutput = await dbClient.getCue();
 
             return {
                 "statusCode": 200,
-                "body": JSON.stringify(dbOutput)
+                "body": JSON.stringify(dbOutput),
+                "headers": {"Access-Control-Allow-Origin": "*"}
             }
         }
         case "PUT": {
         return {
             "statusCode": 200,
-            "body": JSON.stringify({})
+            "body": JSON.stringify({}),
+            "headers": {"Access-Control-Allow-Origin": "*"}
         };
         }
         default:
         return {
-            "statusCode": 501
+            "statusCode": 501,
+            "headers": {"Access-Control-Allow-Origin": "*"}
         };
     }
     } catch (err) {

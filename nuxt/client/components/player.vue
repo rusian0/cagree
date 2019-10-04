@@ -169,7 +169,11 @@ export default {
                 '8rRhLmhIFDI',
                 's9JnNUFqXJA'
             ],
-            cue_ids:[],
+            cue_ids:[
+                'WJzSBLCaKc8',
+                '8rRhLmhIFDI',
+                's9JnNUFqXJA'
+            ],
             sampleRoomId: 'testroomid',
             playerVars: {
                 autoplay: 1,

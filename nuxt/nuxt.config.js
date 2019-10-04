@@ -53,7 +53,8 @@ export default {
   ],
 
   axios: {
-    baseURL: process.env.API_URL,
+    baseURL: 'http://localhost:3000',
+    // baseURL: process.env.API_URL,
   },
 
   router:{
