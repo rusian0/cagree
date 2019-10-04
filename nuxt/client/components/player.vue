@@ -87,7 +87,7 @@ ul.cue-list li:first-child img {
             <div class="input-group-append">
                 <button class="btn btn-primary" @click="url_play('force')">Interrupt</button>
             </div>
-            <button @click="updateCue">updatecue</button>
+            <!-- <button @click="updateCue">updatecue</button> -->
         </div>
 
     <div class="youtube-movie">
@@ -194,7 +194,7 @@ export default {
         this.$nuxt.$on('unshift_id_play', videoId => {
             this.url_play('force', videoId)
         })
-        this.getCue()
+        // this.getCue()
 
     },
     computed: {
@@ -203,11 +203,11 @@ export default {
         },
     },
     methods: {
-        updateCue: function(){
-            console.log(this.roomId)
-            this.$store.dispatch('room/updateCue', this.roomId)
+        // updateCue: function(){
+        //     console.log(this.roomId)
+        //     this.$store.dispatch('room/updateCue', this.roomId)
 
-        },
+        // },
         url_play(priority='', videoId=''){
             var new_videoId = ''
 
@@ -234,7 +234,7 @@ export default {
             else
             {
                 this.cue_ids.push(new_videoId)
-                this.updateCue(new_videoId)
+                // this.updateCue(new_videoId)
                 this.room.send({event:'playerCtrl', action: 'addVideoId', datas:{videoId: new_videoId}})
 
             }
@@ -399,19 +399,19 @@ export default {
             this.$nuxt.$emit('updateRelated', items)
         },
 
-        async getCue(newVideoId) {
+        // async getCue(newVideoId) {
 
-            if(!this.roomId) this.roomId = this.sampleRoomId
+        //     if(!this.roomId) this.roomId = this.sampleRoomId
 
-            var videoCue = await this.$store.dispatch('room/getCue', this.roomId, newVideoId)
+        //     var videoCue = await this.$store.dispatch('room/getCue', this.roomId, newVideoId)
 
-            if(videoCue) {
-                this.cue_ids = videoCue
-            }
-            else {
-                this.cue_ids = this.sample_ids
-            }
-        },
+        //     if(videoCue) {
+        //         this.cue_ids = videoCue
+        //     }
+        //     else {
+        //         this.cue_ids = this.sample_ids
+        //     }
+        // },
 
         playerCtrl: function(action, data){
             this.is_send = false;
