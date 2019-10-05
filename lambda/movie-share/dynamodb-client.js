@@ -12,11 +12,12 @@ class DynamoDBClient {
     }
     
     // scan() {
-    //     return this.documentClient.scan({ TableName: this.tableName }).promise();
+    //     return this.documentClient.sccdan({ TableName: this.tableName }).promise();
     // }
 
     getCue(){
-        return this.documentClient.get({ TableName: this.tableName, Key:{'id':'testroomid'} }).promise()
+        // return this.documentClient.get({ TableName: this.tableName, Key:{'id':'testroomid'} }).promise()
+        return 'test'
     }
 }
 

@@ -2,7 +2,7 @@
   <div class="container">
     <div>
       <h1 class="title">PulScreen</h1>
-      <nuxt-link tag="button" class="btn btn-success" :to="{path: '/room/'+roomId}">Let's Join Room!</nuxt-link>
+      <nuxt-link tag="button" class="btn btn-success" :to="{path: '/room?id='+roomId}">Let's Join Room!</nuxt-link>
 
     </div>
   </div>

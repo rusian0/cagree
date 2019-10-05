@@ -130,7 +130,7 @@ export default {
 
     data: function(){
         return {
-            roomId: this.$nuxt.$route.params.room_id,
+            roomId: this.$nuxt.$route.query.id,
             msg: '',
             send_msg: '',
             chats: [],
@@ -148,6 +148,8 @@ export default {
             if(!this.roomId) this.roomId = 'testroomid'
             
             this.room = this.peer.joinRoom(this.roomId, {mode: 'sfu'});
+
+            console.info(this.room.name)
             //チャットログの初期化
             this.chats.length = 0;
             this.chats.push(this.roomId + 'に入室しました')
