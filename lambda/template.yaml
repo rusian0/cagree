@@ -18,6 +18,7 @@ Resources:
       Handler: app.lambdaHandler
       Runtime: nodejs10.x
       Policies: AmazonDynamoDBFullAccess
+      MemorySize: 256
       Environment:
         Variables:
           DYNAMODB_ENDPOINT: http://127.0.0.1:8002
