@@ -1,4 +1,4 @@
-// require('dotenv').config();
+require('dotenv').config();
 export default {
   mode: 'spa',
   /*
@@ -36,7 +36,6 @@ export default {
     {src: 'plugins/amplify.js',ssr: false},
     {src: 'plugins/vue-youtube.js',ssr: false},
     {src: 'plugins/vue-plyr.js',ssr: false},
-    {src: 'plugins/ga.js',ssr: false},
   ],
   /*
   ** Nuxt.js dev-modules
@@ -49,7 +48,14 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
-    'bootstrap-vue/nuxt'
+    'bootstrap-vue/nuxt',
+    [
+      '@nuxtjs/google-gtag',
+      {
+        id: process.env.GA_ID, //あなたのGoogleアナリティクスのプロパティID
+        debug: true //本番環境以外でもGAを有効にしたい場合はtrueに。
+      }
+    ]
   ],
 
   axios: {
