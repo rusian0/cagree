@@ -1,9 +1,0 @@
-{
-	"auth": {
-		"moviesharespa690a8744": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": []
-		}
-	}
-}

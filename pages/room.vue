@@ -107,6 +107,8 @@ html,body {
     
 </template>
 <script>
+import Peer from 'skyway-js';
+
 import youtubeplayer from '~/components/player.vue'
 import youtubesearch from '~/components/youtubesearch.vue'
 

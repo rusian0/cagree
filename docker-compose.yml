@@ -6,8 +6,7 @@ services:
     tty: true
     working_dir: /var/www
     volumes:
-      - ./nuxt:/var/www:cached
-      # - ./docker/workspace/yarn_cache:/usr/local/share/.cache/yarn/v4
+      - ./:/var/www:cached
     environment:
       PORT: 9090
       HOST: 0.0.0.0
@@ -18,11 +17,3 @@ services:
       - "127.0.0.1:${HTTP_PORT}:9090"
     command: yarn dev
 
-
-  dynamo-admin:
-    image: instructure/dynamo-local-admin
-    ports:
-      - "127.0.0.1:9092:8001"
-      - "127.0.0.1:8002:8002"
-    volumes:
-      - ./docker/dynamodb/db_data:/var/lib/dynamodb

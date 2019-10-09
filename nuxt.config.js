@@ -34,7 +34,6 @@ export default {
   */
   plugins: [
     {src: 'plugins/amplify.js',ssr: false},
-    {src: 'plugins/skyway-latest.js',ssr: false},
     {src: 'plugins/vue-youtube.js',ssr: false},
     {src: 'plugins/vue-plyr.js',ssr: false},
   ],
@@ -53,8 +52,7 @@ export default {
   ],
 
   axios: {
-    baseURL: 'http://localhost:3000',
-    // baseURL: process.env.API_URL,
+    baseURL: process.env.API_URL,
   },
 
   router:{
@@ -69,14 +67,5 @@ export default {
     */
     extend(config, ctx) {
     }
-    // extend(config, ctx) {
-    //   const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
-    //   config.plugins.push(new HardSourceWebpackPlugin())
-      
-    // }
   },
-
-  srcDir: 'client/',
-
-  serverMiddleware: ["../api/"],
 }
