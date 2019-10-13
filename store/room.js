@@ -1,40 +1,55 @@
-var params = {
-    TableName: 'room',
-}
+
+var tableName = 'room'
+
+const config = {headers: {
+    'x-api-key': process.env.GATEWAY_API_KEY
+}}
 
 export const state = () => ({
-    username: null,
+    room: null,
+    roomId: null
 })
 
 export const getters = {
     check: state => !! state.username,
-    username: state => state.username ? state.username : ''
+    username: state => state.username ? state.username : '',
+    roomInfo: state => state.room
 }
 
 export const mutations = {
     setUser (state, username){
         state.username = username;
+    },
+    setRoomInfo (state, roomInfo){
+        state.room = roomInfo
+    },
+    setRoomId (state, roomId){
+        state.roomId = roomId
     }
 }
 
 export const actions = {
 
-    async getCue({commit}, roomId, newVideoId) {
+    async getQueue(context) {
 
-        const response = await this.$axios.get('/room', {params: {"roomId": roomId, "newVideoId": newVideoId}})
+        var params = {
+            select: "videoQueue"
+        }
 
-        return response.data.videoCue
+        const response = await this.$axios.get(`/model/${tableName}/${context.state.roomId}`, {params})
+
+        return response.data.videoQueue
     },
 
-    updateCue({commit}, roomId) {
+    async modifyQueue(context, params) {
 
-        this.$axios.get('/room')
-        // this.$axios.post('/api/updateCue', {"roomId": roomId})
+        const response = await this.$axios.put(`/model/${tableName}/${context.state.roomId}`, params, config)
 
-        // return response.data.videoCue
+        return response.data
     },
 
 }
+
 
 // export default {
 //     namespaced: true,

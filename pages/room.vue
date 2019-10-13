@@ -87,6 +87,7 @@ html,body {
     
             <div class="main">
                 <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/>
+                <!-- <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/> -->
             </div>
 
             <div class="side">
@@ -103,6 +104,7 @@ html,body {
                 チャット：<input v-model="send_msg" @keydown.enter="msg_send">
                 <button @click="msg_send">送信</button>
             </div> -->
+
     </div>
     
 </template>
@@ -117,13 +119,18 @@ export default {
         youtubeplayer,
         youtubesearch
     },
-    mounted: async function (){
+    
+    mounted: function (){
         this.peer = new Peer({key: process.env.SKYWAY_APIKEY,debug: 3});
+
+        this.$store.commit('room/setRoomId', this.roomId)
+
+        this.$refs.youtubeplayer.getQueue()
+
         this.peer.on('open', ()=>{
             this.join();
         })
 
-        if(!this.roomId) this.roomId = 'testroomid'
     },
 
     state: {
@@ -132,7 +139,6 @@ export default {
 
     data: function(){
         return {
-            roomId: this.$nuxt.$route.query.id,
             msg: '',
             send_msg: '',
             chats: [],
@@ -141,17 +147,29 @@ export default {
         }
     },
 
+    computed: {
+        roomId: function(){
+            if(this.$nuxt.$route.query.id){
+                return this.$nuxt.$route.query.id
+            }
+            else {
+                return 'testroomid'
+            }
+
+        }
+    },
+
     methods: {
 
-        join: function(){
+        join: async function(){
 
             //仮想ルームへの入室処理
             // this.roomId = "ルーム";
-            if(!this.roomId) this.roomId = 'testroomid'
             
             this.room = this.peer.joinRoom(this.roomId, {mode: 'sfu'});
+            this.$store.commit('room/setRoomInfo', this.room)
 
-            console.info(this.room.name)
+            console.info(this.room.name +" に入室完了")
             //チャットログの初期化
             this.chats.length = 0;
             this.chats.push(this.roomId + 'に入室しました')
@@ -171,6 +189,11 @@ export default {
                 }
 
             });
+
+            this.room.on('peerJoin', (data) => {
+                this.$refs.youtubeplayer.tellPlayerStatus()
+            })
+
 
 
         },

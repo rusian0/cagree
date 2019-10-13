@@ -1,11 +1,11 @@
 {
   "name": "PulScreen",
   "version": "1.0.0",
-  "description": "My slick Nuxt.js project",
+  "description": "動画の非同期再生サービス",
   "author": "",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "sudo nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"

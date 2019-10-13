@@ -54,24 +54,24 @@ p {
 
 }
 
-ul.cue-list {
+ul.queue-list {
     padding: 15px 0;
     /* text-align: center; */
 
 }
 
-ul.cue-list li{
+ul.queue-list li{
     list-style: none;
     display: inline;
 }
 
-ul.cue-list li img {
+ul.queue-list li img {
     width: 31%;
     border: 10px solid #ffffff;
 
 }
 
-ul.cue-list li:first-child img {
+ul.queue-list li:first-child img {
     /* width: 70%; */
     border-color:#ff0000;
 }
@@ -87,7 +87,7 @@ ul.cue-list li:first-child img {
             <div class="input-group-append">
                 <button class="btn btn-primary" @click="url_play('force')">Interrupt</button>
             </div>
-            <!-- <button @click="updateCue">updatecue</button> -->
+            <!-- <button @click="addQueue">addQueue</button> -->
         </div>
 
     <div class="youtube-movie">
@@ -108,6 +108,7 @@ ul.cue-list li:first-child img {
             </div>
         </vue-plyr>
 
+
         <!-- <vue-plyr>
             <div class="plyr__video-embed">
                 <iframe width="690" data-plyr-config='{ "ads": true}' height="388" src="https://www.youtube.com/embed/hfWa5dnHuEY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -124,7 +125,10 @@ ul.cue-list li:first-child img {
     </div> -->
         
     </div>
-    <button class="btn btn-info" @click="skip">Next</button>
+    <button class="btn btn-info" @click="testplay">Play</button>
+    <button class="btn btn-info" @click="nextQueue">Next</button>
+    <button class="btn btn-info" @click="getQueue">getQueue</button>
+
 
     <div class="state">
         <ul>
@@ -134,10 +138,10 @@ ul.cue-list li:first-child img {
         </ul>
     </div>
     <div style="background-color:black;padding:20px;margin:30px">
-        <h3 style="color:white">Video Cue</h3>
-        <ul class="cue-list">
-            <li v-for="(cue_id, index) in cue_ids">
-                <img :src="imgUrl + cue_id + '/mqdefault.jpg'" alt="">
+        <h3 style="color:white">Video queue</h3>
+        <ul class="queue-list">
+            <li v-for="(queue_id, index) in queue_ids">
+                <img :src="imgUrl + queue_id + '/mqdefault.jpg'" alt="">
             </li>
         </ul>
     </div>
@@ -153,8 +157,8 @@ ul.cue-list li:first-child img {
 
 export default {
     props: [
-        'room',
-        'roomId'
+        'roomId',
+        'room'
     ],
     data: function(){
         return {
@@ -166,13 +170,11 @@ export default {
             video_url: '',
             sample_ids:[
                 'WJzSBLCaKc8',
-                '8rRhLmhIFDI',
-                's9JnNUFqXJA'
             ],
-            cue_ids:[
-                'WJzSBLCaKc8',
-                '8rRhLmhIFDI',
-                's9JnNUFqXJA'
+            queue_ids:[
+                // 'WJzSBLCaKc8',
+                // '8rRhLmhIFDI',
+                // 's9JnNUFqXJA'
             ],
             sampleRoomId: 'testroomid',
             playerVars: {
@@ -185,8 +187,6 @@ export default {
         }
     },
     mounted: function (){
-        // this.room.on('peerJoin', (data) => {
-        // })
 
         this.$nuxt.$on('id_play', videoId => {
             this.url_play('', videoId)
@@ -194,7 +194,6 @@ export default {
         this.$nuxt.$on('unshift_id_play', videoId => {
             this.url_play('force', videoId)
         })
-        // this.getCue()
 
     },
     computed: {
@@ -203,39 +202,46 @@ export default {
         },
     },
     methods: {
-        // updateCue: function(){
+        testplay: function(){
+            this.player.playVideo()
+        },
+        // addQueue: function(){
         //     console.log(this.roomId)
-        //     this.$store.dispatch('room/updateCue', this.roomId)
+        //     this.$store.dispatch('room/addQueue', this.roomId)
 
         // },
         url_play(priority='', videoId=''){
-            var new_videoId = ''
+            var newVideoId = ''
 
             if(videoId !== ''){
-                new_videoId = videoId
+                newVideoId = videoId
             }
             else {
-                new_videoId = this.$youtube.getIdFromUrl(this.video_url)
+                newVideoId = this.$youtube.getIdFromUrl(this.video_url)
             }
 
             this.video_url = ''
 
-            if(this.cue_ids[0] == new_videoId && !this.firstLoad) return
+            if(this.queue_ids[0] == newVideoId && !this.firstLoad) return
 
             this.firstLoad = false;
 
             if(priority == 'force' || this.videoId == ''){
-                this.cue_ids.unshift(new_videoId)
-                this.videoId = new_videoId
+                this.queue_ids.unshift(newVideoId)
+                this.videoId = newVideoId
+                
+                this.$store.dispatch('room/modifyQueue', {newVideoId, position: 'first', action:'add'})
+
                 this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: this.videoId}})
-                this.room.send({event:'playerCtrl', action: 'unshiftVideoId', datas:{videoId: new_videoId}})
+                this.room.send({event:'playerCtrl', action: 'unshiftQueue', datas:{videoId: newVideoId}})
 
             }
             else
             {
-                this.cue_ids.push(new_videoId)
-                // this.updateCue(new_videoId)
-                this.room.send({event:'playerCtrl', action: 'addVideoId', datas:{videoId: new_videoId}})
+                this.queue_ids.push(newVideoId)
+                // this.addQueue(newVideoId)
+                this.$store.dispatch('room/modifyQueue', {newVideoId, position: 'last', action:'add'})
+                this.room.send({event:'playerCtrl', action: 'addQueue', datas:{videoId: newVideoId}})
 
             }
 
@@ -247,11 +253,11 @@ export default {
         ready() {
             console.log('ready')
             this.state = 'ready';
-                        this.videoId = this.cue_ids[0]
+                        this.videoId = this.queue_ids[0]
 
-            if(this.firstPlay == 'before'){
-                this.requestPlayingData()
-            }
+            // if(this.firstPlay == 'before'){
+            //     this.requestPlayingData()
+            // }
             this.player.on('playbackRateChange', this.playbackRateChange)
 
         },
@@ -330,24 +336,40 @@ export default {
             console.log('ended')
             this.state = 'ended'
 
-            if(this.cue_ids[1]){
-                var new_videoId = this.cue_ids[1]
-                this.cue_ids.splice(0, 1);
-                this.videoId = new_videoId
+            if(this.queue_ids[1]){
+                var newVideoId = this.queue_ids[1]
+                this.queue_ids.splice(0, 1);
+                this.videoId = newVideoId
 
-                this.$nuxt.$emit('getRelatedVideo', new_videoId)
+                this.$nuxt.$emit('getRelatedVideo', newVideoId)
 
-                this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: new_videoId}})
-                this.room.send({event:'playerCtrl', action: 'rmVideoId'})
+                this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: newVideoId}})
+                this.room.send({event:'playerCtrl', action: 'rmQueue'})
             }
 
         },
-        requestPlayingData: function(){
-            this.room.send({event: 'playerCtrl', action: 'requestPlayingData'})
-            console.log('request')
+        catchPlayingData: function(id, rate, time, queue_ids){
+            this.videoId = id
+            this.queue_ids = queue_ids
+            this.currentRate = rate
+            this.currentTime = time
         },
 
-        responsePlayingData: function(){
+        nextQueue: function(){
+            var newVideoId = this.queue_ids[1]
+            this.queue_ids.splice(0, 1);
+            this.videoId = newVideoId
+
+            this.$store.dispatch('room/modifyQueue', {newVideoId, position: 0, action:'rm'})
+
+            this.$nuxt.$emit('getRelatedVideo', newVideoId)
+
+            this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: newVideoId}})
+            this.room.send({event:'playerCtrl', action: 'rmQueue'})
+
+        },
+
+        tellPlayerStatus: function(){
 
             var _this = this;
 
@@ -363,12 +385,12 @@ export default {
                     this.room.send(
                         {
                             event: 'playerCtrl',
-                            action: 'responsePlayingData',
+                            action: 'tellPlayerStatus',
                             datas:{
                                 videoId: _this.videoId,
                                 currentTime: _this.currentTime,
                                 currentRate: _this.currentRate,
-                                cue_ids: _this.cue_ids
+                                queue_ids: _this.queue_ids
                             }
                         }
                     )
@@ -376,42 +398,22 @@ export default {
                 })
         },
 
-        catchPlayingData: function(id, rate, time, cue_ids){
-            this.videoId = id
-            this.cue_ids = cue_ids
-            this.currentRate = rate
-            this.currentTime = time
-        },
-
-        skip: function(){
-            var new_videoId = this.cue_ids[1]
-            this.cue_ids.splice(0, 1);
-            this.videoId = new_videoId
-
-            this.$nuxt.$emit('getRelatedVideo', new_videoId)
-
-            this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: new_videoId}})
-            this.room.send({event:'playerCtrl', action: 'rmVideoId'})
-
-        },
-
         updateRelated: function(items){
             this.$nuxt.$emit('updateRelated', items)
         },
 
-        // async getCue(newVideoId) {
+        async getQueue() {
 
-        //     if(!this.roomId) this.roomId = this.sampleRoomId
+            var videoQueue = await this.$store.dispatch('room/getQueue')
 
-        //     var videoCue = await this.$store.dispatch('room/getCue', this.roomId, newVideoId)
-
-        //     if(videoCue) {
-        //         this.cue_ids = videoCue
-        //     }
-        //     else {
-        //         this.cue_ids = this.sample_ids
-        //     }
-        // },
+            if(videoQueue) {
+                this.queue_ids = videoQueue
+                this.videoId = videoQueue[0]
+            }
+            else {
+                this.queue_ids = this.sample_ids
+            }
+        },
 
         playerCtrl: function(action, data){
             this.is_send = false;
@@ -424,16 +426,16 @@ export default {
                     this.player.loadVideoById(data.videoId)
                     // this.videoId = data.videoId
                     break;
-                case 'addVideoId':
+                case 'addQueue':
                     // this.player.loadVideoById(data.videoId)
-                    this.cue_ids.push(data.videoId)
+                    this.queue_ids.push(data.videoId)
                     break;
-                case 'unshiftVideoId':
-                    this.cue_ids.unshift(data.videoId)
+                case 'unshiftQueue':
+                    this.queue_ids.unshift(data.videoId)
                     this.videoId = data.videoId
                     break;
-                case 'rmVideoId':
-                    this.cue_ids.splice(0, 1)
+                case 'rmQueue':
+                    this.queue_ids.splice(0, 1)
                 case 'paused':
                     this.player.pauseVideo()
                     break;
@@ -445,11 +447,8 @@ export default {
                     this.player.setPlaybackRate(data.rate)
                     console.log('take changeRate')
                     break;
-                case 'requestPlayingData':
-                    this.responsePlayingData()
-                    break;
-                case 'responsePlayingData':
-                    this.catchPlayingData(data.videoId, data.currentRate, data.currentTime, data.cue_ids)
+                case 'tellPlayerStatus':
+                    this.catchPlayingData(data.videoId, data.currentRate, data.currentTime, data.queue_ids)
                     break;
                 case 'addRelated':
                     this.updateRelated(data.relatedItems)

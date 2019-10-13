@@ -20,10 +20,16 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+
+  server: {
+    port: 80
+  },
   /*
   ** Customize the progress-bar color
   */
   loading: { color: '#fff' },
+
+  
   /*
   ** Global CSS
   */

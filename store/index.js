@@ -1,4 +1,4 @@
-
+export const strict = false
 // import auth from './auth'
 // import room from './room'
 
