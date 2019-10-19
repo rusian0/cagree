@@ -79,6 +79,7 @@ ul.queue-list li:first-child img {
 <template>
     <div class="video">
         <!-- {{ videoId }} <br> -->
+        
         <div class="input-group">
             <input class="form-control" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="YouTube Video URL">
             <div class="input-group-append">
@@ -184,6 +185,8 @@ export default {
             currentTime:'',
             currentRate:'',
             imgUrl: 'https://img.youtube.com/vi/',
+            previousAction: null,
+            previousTime: null
         }
     },
     mounted: function (){
@@ -202,8 +205,38 @@ export default {
         },
     },
     methods: {
+        onPlayerStateChange({target, data}){
+            
+            // const currentTime = target.getCurrentTime();
+
+            // // console.info(this.previousTime)
+            // // console.info(currentTime)
+            // if(Math.abs(this.previousTime - currentTime) > 1) {
+            //     // this.room.send({event: 'playerCtrl', action: 'seekTo', datas:{currentTime: currentTime}})
+            // }
+
+            // this.previousTime = currentTime;
+            // this.previousAction = data
+        },
+        syncSeconds(target){
+
+            const currentTime = target.getCurrentTime();
+
+            // console.info(this.previousTime)
+            // console.info(currentTime)
+            const diffSeconds = Math.abs(this.previousTime - currentTime)
+            // console.info(diffSeconds)
+            if( diffSeconds > 1) {
+                this.room.send({event: 'playerCtrl', action: 'seekTo', datas:{currentTime}})
+            }
+
+            this.previousTime = currentTime;
+            // this.previousAction = data
+        },
         testplay: function(){
             this.player.playVideo()
+
+            console.info(this.$el.div)
         },
         // addQueue: function(){
         //     console.log(this.roomId)
@@ -251,6 +284,7 @@ export default {
             this.videoId = video_id;
         },
         ready() {
+            this.getQueue();
             console.log('ready')
             this.state = 'ready';
                         this.videoId = this.queue_ids[0]
@@ -259,9 +293,10 @@ export default {
             //     this.requestPlayingData()
             // }
             this.player.on('playbackRateChange', this.playbackRateChange)
+            this.player.on('stateChange', this.onPlayerStateChange)
 
         },
-        playing() {
+        playing(target) {
             this.state = 'playing';
 
             if(this.firstPlay == 'done'){
@@ -283,13 +318,10 @@ export default {
             }
 
             if(this.is_send){
-            console.log('playing')
+                console.log('playing')
 
-                this.player.getCurrentTime()
-                    .then((currentTime) => {
-                        this.room.send({event: 'playerCtrl', action: 'seekTo', datas:{currentTime: currentTime}})
-                        this.room.send({event: 'playerCtrl', action: 'playing'})
-                    })
+                this.syncSeconds(target)
+                this.room.send({event: 'playerCtrl', action: 'playing'})
 
             } else {
                 console.log('take playing')
@@ -298,17 +330,14 @@ export default {
 
     
         },
-        paused(){
+        paused(target){
             this.state = 'pause'
 
             if(this.is_send){
                 console.log('pause')
 
-                this.player.getCurrentTime()
-                    .then((currentTime) => {
-                        this.room.send({event: 'playerCtrl', action: 'paused'})
-                        this.room.send({event: 'playerCtrl', action: 'seekTo', datas:{currentTime: currentTime}})
-                    })
+                this.room.send({event: 'playerCtrl', action: 'paused'})
+                this.syncSeconds(target)
 
                 
             } else {
@@ -337,14 +366,7 @@ export default {
             this.state = 'ended'
 
             if(this.queue_ids[1]){
-                var newVideoId = this.queue_ids[1]
-                this.queue_ids.splice(0, 1);
-                this.videoId = newVideoId
-
-                this.$nuxt.$emit('getRelatedVideo', newVideoId)
-
-                this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: newVideoId}})
-                this.room.send({event:'playerCtrl', action: 'rmQueue'})
+                this.nextQueue()
             }
 
         },
@@ -441,7 +463,7 @@ export default {
                     break;
                 case 'seekTo':
                     this.player.seekTo(data.currentTime)
-                    console.log('take seek')
+                    console.info('take seek')
                     break;
                 case 'changeRate':
                     this.player.setPlaybackRate(data.rate)

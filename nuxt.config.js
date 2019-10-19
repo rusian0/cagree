@@ -22,7 +22,8 @@ export default {
   },
 
   server: {
-    port: 80
+    port: 80,
+    host: '0.0.0.0',
   },
   /*
   ** Customize the progress-bar color
@@ -39,7 +40,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    {src: 'plugins/amplify.js',ssr: false},
+    // {src: 'plugins/amplify.js',ssr: false},
     {src: 'plugins/vue-youtube.js',ssr: false},
     {src: 'plugins/vue-plyr.js',ssr: false},
   ],
@@ -58,8 +59,8 @@ export default {
     [
       '@nuxtjs/google-gtag',
       {
-        id: process.env.GA_ID, //あなたのGoogleアナリティクスのプロパティID
-        debug: true //本番環境以外でもGAを有効にしたい場合はtrueに。
+        id: process.env.GA_ID, 
+        debug: true 
       }
     ]
   ],
