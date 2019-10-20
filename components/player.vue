@@ -64,6 +64,11 @@ ul.queue-list li{
     list-style: none;
     display: inline-block;
     width: 30%;
+    position: relative;
+}
+
+ul.queue-list li:hover .queue_delete {
+    display: block;
 }
 
 ul.queue-list li img {
@@ -76,6 +81,16 @@ ul.queue-list li:first-child img {
     /* width: 70%; */
     border-color:#ff0000;
 }
+
+.queue_delete {
+    border-radius: 50%;
+    position: absolute;
+    top: 10%;
+    left: 7%;   
+    display: none;
+}
+
+
 </style>
 <template>
     <div class="video">
@@ -145,6 +160,7 @@ ul.queue-list li:first-child img {
         <ul class="queue-list">
             <draggable :options="options" v-model="queue_ids" @end="queueDragEnd">
                 <li v-for="(queue_id, index) in queue_ids">
+                    <button @click="deleteQueue(index)" class="btn btn-danger queue_delete">✗</button>
                     <img :src="imgUrl + queue_id + '/mqdefault.jpg'" alt="">
                 </li>    
             </draggable> 
@@ -215,6 +231,10 @@ export default {
         },
     },
     methods: {
+        deleteQueue(queueIndex){
+            this.queue_ids.splice(queueIndex, 1);
+            this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, position: queueIndex, action:'rm'})
+        },
         queueDragEnd(event){
             this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, position: 'first', action:'allUpdate'})
         },
