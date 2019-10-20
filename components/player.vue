@@ -97,7 +97,7 @@ ul.queue-list li:first-child img {
         <!-- {{ videoId }} <br> -->
         
         <div class="input-group">
-            <input class="form-control" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="YouTube Video URL">
+            <input class="form-control" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Video or Playlist URL">
             <div class="input-group-append">
                 <button class="btn btn-success" @click="url_play">Send</button>
             </div>
