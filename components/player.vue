@@ -62,11 +62,12 @@ ul.queue-list {
 
 ul.queue-list li{
     list-style: none;
-    display: inline;
+    display: inline-block;
+    width: 30%;
 }
 
 ul.queue-list li img {
-    width: 31%;
+    width: 100%;
     border: 10px solid #ffffff;
 
 }
@@ -96,7 +97,7 @@ ul.queue-list li:first-child img {
             <div class="plyr__video-embed">
                 <youtube
                     ref="youtube"
-                    :video-id="videoId"
+                    :video-id="queue_ids[0]"
                     :player-vars="playerVars"
                     @ready="ready"
                     @paused="paused"
@@ -129,6 +130,7 @@ ul.queue-list li:first-child img {
     <button class="btn btn-info" @click="testplay">Play</button>
     <button class="btn btn-info" @click="nextQueue">Next</button>
     <button class="btn btn-info" @click="getQueue">getQueue</button>
+    <button class="btn btn-info" @click="getSampleQueue">getSampleQueue</button>
 
 
     <div class="state">
@@ -141,9 +143,11 @@ ul.queue-list li:first-child img {
     <div style="background-color:black;padding:20px;margin:30px">
         <h3 style="color:white">Video queue</h3>
         <ul class="queue-list">
-            <li v-for="(queue_id, index) in queue_ids">
-                <img :src="imgUrl + queue_id + '/mqdefault.jpg'" alt="">
-            </li>
+            <draggable :options="options" v-model="queue_ids" @end="queueDragEnd">
+                <li v-for="(queue_id, index) in queue_ids">
+                    <img :src="imgUrl + queue_id + '/mqdefault.jpg'" alt="">
+                </li>    
+            </draggable> 
         </ul>
     </div>
     
@@ -154,9 +158,10 @@ ul.queue-list li:first-child img {
 </template>
 
 <script>
-
+import draggable from 'vuedraggable'
 
 export default {
+    components: { draggable },
     props: [
         'roomId',
         'room'
@@ -171,12 +176,14 @@ export default {
             video_url: '',
             sample_ids:[
                 'WJzSBLCaKc8',
+                '8rRhLmhIFDI',
+                's9JnNUFqXJA',
+                'kX5FkzCjNrk',
+                'FTrSmDKT0sM',
+                'e9mKp1npBhY',
+                '1E2y6834kYM'
             ],
-            queue_ids:[
-                // 'WJzSBLCaKc8',
-                // '8rRhLmhIFDI',
-                // 's9JnNUFqXJA'
-            ],
+            queue_ids:[],
             sampleRoomId: 'testroomid',
             playerVars: {
                 autoplay: 1,
@@ -186,7 +193,10 @@ export default {
             currentRate:'',
             imgUrl: 'https://img.youtube.com/vi/',
             previousAction: null,
-            previousTime: null
+            previousTime: null,
+            options: {
+                animation: 300,
+            }
         }
     },
     mounted: function (){
@@ -205,6 +215,13 @@ export default {
         },
     },
     methods: {
+        queueDragEnd(event){
+            this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, position: 'first', action:'allUpdate'})
+        },
+        getSampleQueue(){
+            this.queue_ids = this.sample_ids
+            this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, position: 'first', action:'allUpdate'})
+        },
         onPlayerStateChange({target, data}){
             
             // const currentTime = target.getCurrentTime();
