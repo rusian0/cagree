@@ -389,12 +389,10 @@ export default {
                 this.is_send = true;
             }
         },
-        playbackRateChange: function(){
+        playbackRateChange: function(event){
+            console.info(event)
             if(this.is_send){
-                this.player.getPlaybackRate()
-                .then((rate) => {
-                    this.room.send({event: 'playerCtrl', action: 'changeRate', datas: {rate:rate}})
-                })
+                this.room.send({event: 'playerCtrl', action: 'changeRate', datas: {rate: event.target.getPlaybackRate()}})
                 console.log('rateChange')
             } else {
                 console.log('take rateChange')
