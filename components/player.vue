@@ -99,10 +99,10 @@ ul.queue-list li:first-child img {
         <div class="input-group">
             <input class="form-control" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Video or Playlist URL">
             <div class="input-group-append">
-                <button class="btn btn-success" @click="url_play">Send</button>
+                <button class="btn btn-success" @click="url_play">Add</button>
             </div>
             <div class="input-group-append">
-                <button class="btn btn-primary" @click="url_play('force')">Interrupt</button>
+                <button class="btn btn-primary" @click="url_play('force')">Play</button>
             </div>
             <!-- <button @click="addQueue">addQueue</button> -->
         </div>
@@ -142,7 +142,7 @@ ul.queue-list li:first-child img {
     </div> -->
         
     </div>
-    <button class="btn btn-info" @click="testplay">Play</button>
+    <!-- <button class="btn btn-info" @click="testplay">Play</button> -->
     <button class="btn btn-info" @click="nextQueue">Next</button>
     <button class="btn btn-info" @click="getQueue">getQueue</button>
     <button class="btn btn-info" @click="getSampleQueue">getSampleQueue</button>
@@ -233,14 +233,21 @@ export default {
     methods: {
         deleteQueue(queueIndex){
             this.queue_ids.splice(queueIndex, 1);
+            this.room.send({event:'playerCtrl', action: 'rmQueue', datas:{position: queueIndex}})
             this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, position: queueIndex, action:'rm'})
         },
         queueDragEnd(event){
-            this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, position: 'first', action:'allUpdate'})
+            this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, action:'allUpdate'})
+            this.allUpdateQueue()
         },
         getSampleQueue(){
             this.queue_ids = this.sample_ids
-            this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, position: 'first', action:'allUpdate'})
+            this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, action:'allUpdate'})
+            this.allUpdateQueue()
+
+        },
+        allUpdateQueue(){
+            this.room.send({event:'playerCtrl', action: 'allUpdateQueue', datas:{newIds: this.queue_ids}})
         },
         onPlayerStateChange({target, data}){
             
@@ -424,7 +431,7 @@ export default {
             this.$nuxt.$emit('getRelatedVideo', newVideoId)
 
             this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: newVideoId}})
-            this.room.send({event:'playerCtrl', action: 'rmQueue'})
+            this.room.send({event:'playerCtrl', action: 'rmQueue', datas:{position: 0}})
 
         },
 
@@ -494,7 +501,11 @@ export default {
                     this.videoId = data.videoId
                     break;
                 case 'rmQueue':
-                    this.queue_ids.splice(0, 1)
+                    this.queue_ids.splice(data.position, 1)
+                    break
+                case 'allUpdateQueue':
+                    this.queue_ids = data.newIds
+                    break;
                 case 'paused':
                     this.player.pauseVideo()
                     break;
