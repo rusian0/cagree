@@ -15,8 +15,8 @@ export default {
 
   computed: {
     roomId: function(){
-      // return new Date().getTime().toString(16)  + Math.floor(1000*Math.random())
-      return 'testroomid'
+      return new Date().getTime().toString(16)  + Math.floor(1000*Math.random())
+      // return 'testroomid'
     }
   }
 }
