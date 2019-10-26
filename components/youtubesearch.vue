@@ -1,18 +1,12 @@
 <style scoped>
-img {
-}
-p {
-    display: inline-block;
-    vertical-align: top;
-    font-size: 20px;
-    width: 300px;
-}
 
 .search {
     border: 1px solid #000000;
+    margin: 30px 0;
 }
+
 .search_result {
-    height: 300px;
+    height: 400px;
     overflow-y: scroll;
     border-top: 1px solid rgb(10, 10, 10);
 }
@@ -21,40 +15,75 @@ p {
     padding: 10px 0;
 }
 
-.search_result li {
-    margin: 10px 0;
-    border-bottom: 1px solid #636363;
+.search_result .result_contents {
+    margin: 30px 0;
+    position: relative;
+    display: flex;
+    padding: 3px 5px;
 }
 
-.search_result img{
-    width: 40%;
+.search_result .video_title {
+    padding: 2px 5px;
+    flex: 1;
 }
 
-.search_result li p{
-    font-size: 14px;
-    width: 50%;
+.search_result .video_title p{ 
+    font-size: 16px;
+    margin: 0;
+    /* padding: 5px; */
 }
 
-.search_result button {
-    display: inline-block;
-    width: 19.5%;
-    margin: 0 0 10px;
+.search_result .result_thumb {
+    flex: 1.5;
 }
+
+.search_result .result_thumb img{
+    width: 100%;
+}
+
+.search_result .btn-group {
+}
+
+@media screen and (max-width: 1100px) {
+    .search_result .result_contents { 
+        flex-wrap: wrap;
+    }
+
+    .search_result .result_thumb {
+        flex: initial;
+    }
+
+    .search_result .video_title {
+        flex: initial;
+    }
+}
+
 
 </style>
 <template>
-    <div>
+    <div>                  
         <div class="search">
-            <input type="text" v-model="keyword" v-on:keydown.enter="search_video" placeholder="Video Search Keyword">
-            <button @click="search_video">Search</button>
-            Search Result
+            <div class="input-group">
+                <input class="form-control" type="text" v-model="keyword" v-on:keydown.enter="search_video" placeholder="Video Search Keyword">
+                <div class="input-group-append">
+                    <button class="btn btn-info" @click="search_video"><font-awesome-icon icon="search" /></button>
+                </div>
+            </div>
+
+            Search Result         
             <div class="search_result" @scroll="onScroll">
                 <ul>
                     <li v-for="search_item in search_items" style="list-style:none">
-                        <img :src="search_item.snippet.thumbnails.medium.url">
-                        <p>{{ search_item.snippet.title }}</p>
-                        <button @click="addId(search_item.id.videoId)">Send</button>
-                        <button @click="unshiftId(search_item.id.videoId)">Interrupt</button>
+                        <div class="result_contents">
+                            <div class="result_thumb">
+                                <img :src="search_item.snippet.thumbnails.medium.url">
+                            </div>
+                            <div class="video_title">
+                                <p>{{ search_item.snippet.title }}</p>
+                                <button class="btn btn-outline-success btn-sm" @click="addId(search_item.id.videoId)"><font-awesome-icon icon="plus" /></button>
+                                <button class="btn btn-outline-primary btn-sm" @click="unshiftId(search_item.id.videoId)"><font-awesome-icon icon="play" /></button>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -64,11 +93,16 @@ p {
             <div class="search_result" @scroll="onScroll">
                 <ul>
                     <li v-for="related_item in related_items" style="list-style:none">
-                        <img :src="related_item.snippet.thumbnails.medium.url">
-                        <p>{{ related_item.snippet.title }}</p>
-                        <button @click="addId(related_item.id.videoId)">Send</button>
-                        <button @click="unshiftId(related_item.id.videoId)">Interrupt</button>
-
+                        <div class="result_contents">
+                            <div class="result_thumb">
+                                <img :src="related_item.snippet.thumbnails.medium.url">
+                            </div>
+                            <div class="video_title">
+                                <p>{{ related_item.snippet.title }}</p>
+                                <button class="btn btn-outline-success btn-sm" @click="addId(related_item.id.videoId)"><font-awesome-icon icon="plus" /></button>
+                                <button class="btn btn-outline-primary btn-sm" @click="unshiftId(related_item.id.videoId)"><font-awesome-icon icon="play" /></button>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -89,10 +123,10 @@ export default {
     data: function(){
         return {
             keyword:'',
-            // search_items:[],
-            // related_items:[],
-            search_items:searchresult.items,
-            related_items:searchresult.items,
+            search_items:[],
+            related_items:[],
+            // search_items:searchresult.items,
+            // related_items:searchresult.items,
             searchParam: {
                 key: process.env.YOUTUBEDATA_APIKEY,
                 part:'snippet',
@@ -103,11 +137,10 @@ export default {
         }
     },
     mounted: function (){
-        this.room.on('peerJoin', (data) => {
-        })
+
 
         this.$nuxt.$on('getRelatedVideo', videoId => {
-            // this.getRelatedVideo(videoId)
+            this.getRelatedVideo(videoId)
         })
         this.$nuxt.$on('updateRelated', items => {
             this.related_items = items
@@ -139,9 +172,9 @@ export default {
         },
 
         onScroll: function(e){
-            // if ((e.target.scrollTop + e.target.offsetHeight) >= e.target.scrollHeight) {
-            //     this.search_video('next')
-            // }
+            if ((e.target.scrollTop + e.target.offsetHeight) >= e.target.scrollHeight) {
+                this.search_video('next')
+            }
         },
 
         addId: function(videoId){
@@ -149,6 +182,7 @@ export default {
         },
         unshiftId: function(videoId){
             this.$nuxt.$emit('unshift_id_play', videoId)
+            this.getRelatedVideo(videoId)
         },
         getRelatedVideo: function(videoId){
             var params = this.searchParam;
@@ -157,15 +191,15 @@ export default {
 
             params.relatedToVideoId = videoId
 
-            // this.$axios.get('https://www.googleapis.com/youtube/v3/search', {params:params})
-            // .then(result => {
-            //     // this.searchParam.nextPageToken = result.data.nextPageToken
-            //     this.related_items = result.data.items
-            //     this.room.send({event:'playerCtrl', action: 'addRelated', datas:{relatedItems:this.related_items}})
-            //     delete params.relatedToVideoId
+            this.$axios.get('https://www.googleapis.com/youtube/v3/search', {params:params})
+            .then(result => {
+                // this.searchParam.nextPageToken = result.data.nextPageToken
+                this.related_items = result.data.items
+                this.room.send({event:'playerCtrl', action: 'addRelated', datas:{relatedItems:this.related_items}})
+                delete params.relatedToVideoId
 
 
-            // })
+            })
 
         },
 

@@ -54,6 +54,10 @@ p {
 
 }
 
+.input-group.url_play {
+    margin: 20px 0;
+}
+
 ul.queue-list {
     padding: 15px 0;
     /* text-align: center; */
@@ -63,6 +67,7 @@ ul.queue-list {
 ul.queue-list li{
     list-style: none;
     display: inline-block;
+    margin: 1%;
     width: 30%;
     position: relative;
 }
@@ -73,7 +78,8 @@ ul.queue-list li:hover .queue_delete {
 
 ul.queue-list li img {
     width: 100%;
-    border: 10px solid #ffffff;
+    border: 5px solid #ffffff;
+    /* border-radius: 5%; */
 
 }
 
@@ -96,13 +102,13 @@ ul.queue-list li:first-child img {
     <div class="video">
         <!-- {{ videoId }} <br> -->
         
-        <div class="input-group">
-            <input class="form-control" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Video or Playlist URL">
+        <div class="input-group url_play">
+            <input class="form-control" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Video URL">
             <div class="input-group-append">
-                <button class="btn btn-success" @click="url_play">Add</button>
+                <button class="btn btn-success" @click="url_play"><font-awesome-icon icon="plus" /></button>
             </div>
             <div class="input-group-append">
-                <button class="btn btn-primary" @click="url_play('force')">Play</button>
+                <button class="btn btn-primary" @click="url_play('force')"><font-awesome-icon icon="play" /></button>
             </div>
             <!-- <button @click="addQueue">addQueue</button> -->
         </div>
@@ -143,9 +149,9 @@ ul.queue-list li:first-child img {
         
     </div>
     <!-- <button class="btn btn-info" @click="testplay">Play</button> -->
-    <button class="btn btn-info" @click="nextQueue">Next</button>
-    <button class="btn btn-info" @click="getQueue">getQueue</button>
-    <button class="btn btn-info" @click="getSampleQueue">getSampleQueue</button>
+    <button class="btn btn-info" @click="nextQueue"><font-awesome-icon icon="step-forward" /></button>
+    <button class="btn btn-outline-info" @click="getQueue">getQueue</button>
+    <button class="btn btn-outline-info" @click="getSampleQueue">getSampleQueue</button>
 
 
     <div class="state">
@@ -155,7 +161,7 @@ ul.queue-list li:first-child img {
             <li>{{ currentRate }}</li>
         </ul>
     </div>
-    <div style="background-color:black;padding:20px;margin:30px">
+    <div style="background-color:black;padding:20px;margin:30px 0">
         <h3 style="color:white">Video queue</h3>
         <ul class="queue-list">
             <draggable :options="options" v-model="queue_ids" @end="queueDragEnd">
@@ -331,7 +337,9 @@ export default {
             this.getQueue();
             console.log('ready')
             this.state = 'ready';
-                        this.videoId = this.queue_ids[0]
+            this.videoId = this.queue_ids[0]
+            this.$nuxt.$emit('getRelatedVideo', this.videoId)
+
 
             // if(this.firstPlay == 'before'){
             //     this.requestPlayingData()

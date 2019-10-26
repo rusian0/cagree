@@ -56,6 +56,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
     'bootstrap-vue/nuxt',
+    'nuxt-fontawesome',
     [
       '@nuxtjs/google-gtag',
       {
@@ -64,6 +65,16 @@ export default {
       }
     ]
   ],
+
+  //この部分を追記
+  fontawesome: {
+    imports: [
+      {
+        set: '@fortawesome/free-solid-svg-icons',
+        icons: ['fas']
+      }
+    ]
+  },
 
   axios: {
     baseURL: process.env.API_URL,
