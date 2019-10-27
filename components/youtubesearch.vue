@@ -61,7 +61,8 @@
 
 </style>
 <template>
-    <div>                  
+    <div>
+        <img src="/images/youtube-logo.png" style="width:70%;margin: -5%" alt="">         
         <div class="search">
             <div class="input-group">
                 <input class="form-control" type="text" v-model="keyword" v-on:keydown.enter="search_video" placeholder="Video Search Keyword">
@@ -71,7 +72,8 @@
             </div>
 
             Search Result         
-            <div class="search_result" @scroll="onScroll">
+            <!-- <div class="search_result" @scroll="onScroll"> -->
+            <div class="search_result">
                 <ul>
                     <li v-for="search_item in search_items" style="list-style:none">
                         <div class="result_contents">
@@ -90,7 +92,8 @@
         </div>
         <div class="search">
             <h2>Related Video</h2>
-            <div class="search_result" @scroll="onScroll">
+            <div class="search_result">
+            <!-- <div class="search_result" @scroll="onScroll"> -->
                 <ul>
                     <li v-for="related_item in related_items" style="list-style:none">
                         <div class="result_contents">
@@ -132,7 +135,7 @@ export default {
                 part:'snippet',
                 q: '',
                 type:'video',
-                maxResults: 10,
+                maxResults: 50,
             }
         }
     },
@@ -192,14 +195,13 @@ export default {
             params.relatedToVideoId = videoId
 
             this.$axios.get('https://www.googleapis.com/youtube/v3/search', {params:params})
-            .then(result => {
-                // this.searchParam.nextPageToken = result.data.nextPageToken
-                this.related_items = result.data.items
-                this.room.send({event:'playerCtrl', action: 'addRelated', datas:{relatedItems:this.related_items}})
-                delete params.relatedToVideoId
-
-
-            })
+                .then(result => {
+                    this.searchParam.nextPageToken = result.data.nextPageToken
+                    this.related_items = result.data.items
+                    this.room.send({event:'playerCtrl', action: 'addRelated', datas:{relatedItems:this.related_items}})
+                    delete params.relatedToVideoId
+                }
+            )
 
         },
 
