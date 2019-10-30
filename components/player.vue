@@ -209,7 +209,7 @@ export default {
             sampleRoomId: 'testroomid',
             playerVars: {
                 autoplay: 1,
-                playsinline: 1
+                playsinline: 1,
             },
             currentTime:'',
             currentRate:'',
@@ -294,7 +294,7 @@ export default {
 
         // },
         url_play(priority='', videoId=''){
-            var newVideoId = ''
+            let newVideoId = ''
 
             if(videoId !== ''){
                 newVideoId = videoId
@@ -333,7 +333,7 @@ export default {
         id_play(video_id){
             this.videoId = video_id;
         },
-        ready() {
+        ready(target) {
             this.getQueue();
             console.log('ready')
             this.state = 'ready';
@@ -349,6 +349,7 @@ export default {
 
         },
         playing(target) {
+            console.info(target.getVideoLoadedFraction());
             this.state = 'playing';
 
             if(this.firstPlay == 'done'){
@@ -428,7 +429,7 @@ export default {
         },
 
         nextQueue: function(){
-            var newVideoId = this.queue_ids[1]
+            let newVideoId = this.queue_ids[1]
             this.queue_ids.splice(0, 1);
             this.videoId = newVideoId
 
@@ -443,10 +444,10 @@ export default {
 
         tellPlayerStatus: function(){
 
-            var _this = this;
+            let _this = this;
 
             _this.player.getPlaybackRate()
-                .then(function(rate){
+                .then((rate) => {
                     _this.currentRate = rate
 
                     return _this.player.getCurrentTime()
@@ -476,7 +477,7 @@ export default {
 
         async getQueue() {
 
-            var videoQueue = await this.$store.dispatch('room/getQueue')
+            let videoQueue = await this.$store.dispatch('room/getQueue')
 
             if(videoQueue) {
                 this.queue_ids = videoQueue

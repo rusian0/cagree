@@ -1,5 +1,5 @@
 
-var tableName = 'room'
+let tableName = 'room'
 
 const config = {headers: {
     'x-api-key': process.env.GATEWAY_API_KEY
@@ -32,7 +32,7 @@ export const actions = {
 
     async getQueue(context) {
 
-        var params = {
+        let params = {
             select: "videoQueue"
         }
 

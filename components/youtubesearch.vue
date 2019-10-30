@@ -188,7 +188,7 @@ export default {
             this.getRelatedVideo(videoId)
         },
         getRelatedVideo: function(videoId){
-            var params = this.searchParam;
+            let params = this.searchParam;
 
             delete params.q
 
