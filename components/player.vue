@@ -100,7 +100,6 @@ ul.queue-list li:first-child img {
 </style>
 <template>
     <div class="video">
-        <!-- {{ videoId }} <br> -->
         
         <div class="input-group url_play">
             <input class="form-control" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Video URL">
@@ -112,8 +111,8 @@ ul.queue-list li:first-child img {
             </div>
             <!-- <button @click="addQueue">addQueue</button> -->
         </div>
-
     <div class="youtube-movie">
+        <div style="width: 100%;height:100%;"></div>
         <vue-plyr>
             <div class="plyr__video-embed">
                 <youtube
@@ -125,6 +124,8 @@ ul.queue-list li:first-child img {
                     @playing="playing"
                     @buffering="buffering"
                     @ended="ended"
+                    @cued="cued"
+                    @error="error"
                     width="1920"
                     height="1080"
                 />
@@ -181,6 +182,9 @@ ul.queue-list li:first-child img {
 
 <script>
 import draggable from 'vuedraggable'
+import firebase from "~/plugins/firebase.js"
+
+const db = firebase.firestore();
 
 export default {
     components: { draggable },
@@ -188,39 +192,35 @@ export default {
         'roomId',
         'room'
     ],
-    data: function(){
-        return {
-            is_send: true,
-            firstPlay: 'before',
-            firstLoad: true,
-            videoId: '',
-            state: '',
-            video_url: '',
-            sample_ids:[
-                'WJzSBLCaKc8',
-                '8rRhLmhIFDI',
-                's9JnNUFqXJA',
-                'kX5FkzCjNrk',
-                'FTrSmDKT0sM',
-                'e9mKp1npBhY',
-                '1E2y6834kYM'
-            ],
-            queue_ids:[],
-            sampleRoomId: 'testroomid',
-            playerVars: {
-                autoplay: 1,
-                playsinline: 1,
-            },
-            currentTime:'',
-            currentRate:'',
-            imgUrl: 'https://img.youtube.com/vi/',
-            previousAction: null,
-            previousTime: null,
-            options: {
-                animation: 300,
-            }
+    data: () => ({
+        is_send: true,
+        firstPlay: 'before',
+        firstLoad: true,
+        videoId: '',
+        state: '',
+        video_url: '',
+        sample_ids:[
+            'WJzSBLCaKc8',
+            '8rRhLmhIFDI',
+            's9JnNUFqXJA',
+            'kX5FkzCjNrk',
+            'FTrSmDKT0sM',
+            'e9mKp1npBhY',
+            '1E2y6834kYM'
+        ],
+        queue_ids:[],
+        sampleRoomId: 'testroomid',
+        playerVars: {
+            autoplay: 1,
+            playsinline: 1,
+        },
+        currentTime:'',
+        currentRate:'',
+        imgUrl: 'https://img.youtube.com/vi/',
+        options: {
+            animation: 300,
         }
-    },
+    }),
     mounted: function (){
 
         this.$nuxt.$on('id_play', videoId => {
@@ -232,9 +232,7 @@ export default {
 
     },
     computed: {
-        player() {
-            return this.$refs.youtube.player
-        },
+        player() { return this.$refs.youtube.player },
     },
     methods: {
         deleteQueue(queueIndex){
@@ -286,7 +284,7 @@ export default {
         testplay: function(){
             this.player.playVideo()
 
-            console.info(this.$el.div)
+            // console.info(this.$el.div)
         },
         // addQueue: function(){
         //     console.log(this.roomId)
@@ -294,13 +292,22 @@ export default {
 
         // },
         url_play(priority='', videoId=''){
+            
             let newVideoId = ''
+
+            if(!this.video_url) return
 
             if(videoId !== ''){
                 newVideoId = videoId
             }
             else {
-                newVideoId = this.$youtube.getIdFromUrl(this.video_url)
+                newVideoId = this.video_url
+            }
+
+            if(!(newVideoId = this.$youtube.getIdFromUrl(newVideoId))){
+                alert('無効なURLが入力されました。')
+                this.video_url = ''
+                return
             }
 
             this.video_url = ''
@@ -349,7 +356,6 @@ export default {
 
         },
         playing(target) {
-            console.info(target.getVideoLoadedFraction());
             this.state = 'playing';
 
             if(this.firstPlay == 'done'){
@@ -381,11 +387,9 @@ export default {
                 this.is_send = true
             }
 
-    
         },
         paused(target){
             this.state = 'pause'
-
             if(this.is_send){
                 console.log('pause')
 
@@ -398,8 +402,9 @@ export default {
                 this.is_send = true;
             }
         },
+        error: function(){this.state = 'error' },
+        cued: function(){this.state = 'cued' },
         playbackRateChange: function(event){
-            console.info(event)
             if(this.is_send){
                 this.room.send({event: 'playerCtrl', action: 'changeRate', datas: {rate: event.target.getPlaybackRate()}})
                 console.log('rateChange')

@@ -13,7 +13,7 @@ import Logo from '~/components/Logo.vue'
 import { uuid } from 'vue-uuid';
 
 export default {
-  data: () => ({ roomId: uuid.v1(), }),
+  data: () => ({ roomId: uuid.v1().split('-').join(''), }),
 }
 </script>
 
