@@ -3,22 +3,17 @@
     <div>
       <h1 class="title">PulScreen</h1>
       <nuxt-link tag="button" class="btn btn-success" :to="{path: '/room?id='+roomId}">Let's Join Room!</nuxt-link>
-
+  
     </div>
   </div>
 </template>
 
 <script>
 import Logo from '~/components/Logo.vue'
+import { uuid } from 'vue-uuid';
 
 export default {
-
-  computed: {
-    roomId: function(){
-      return new Date().getTime().toString(16)  + Math.floor(1000*Math.random())
-      // return 'testroomid'
-    }
-  }
+  data: () => ({ roomId: uuid.v1(), }),
 }
 </script>
 
