@@ -182,9 +182,6 @@ ul.queue-list li:first-child img {
 
 <script>
 import draggable from 'vuedraggable'
-import firebase from "~/plugins/firebase.js"
-
-const db = firebase.firestore();
 
 export default {
     components: { draggable },
@@ -238,17 +235,19 @@ export default {
         deleteQueue(queueIndex){
             this.queue_ids.splice(queueIndex, 1);
             this.room.send({event:'playerCtrl', action: 'rmQueue', datas:{position: queueIndex}})
-            this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, position: queueIndex, action:'rm'})
+            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
+            // this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, position: queueIndex, action:'rm'})
         },
         queueDragEnd(event){
-            this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, action:'allUpdate'})
+            // this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, action:'allUpdate'})
+            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
             this.allUpdateQueue()
         },
         getSampleQueue(){
             this.queue_ids = this.sample_ids
-            this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, action:'allUpdate'})
+            // this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, action:'allUpdate'})
+            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
             this.allUpdateQueue()
-
         },
         allUpdateQueue(){
             this.room.send({event:'playerCtrl', action: 'allUpdateQueue', datas:{newIds: this.queue_ids}})
@@ -320,7 +319,8 @@ export default {
                 this.queue_ids.unshift(newVideoId)
                 this.videoId = newVideoId
                 
-                this.$store.dispatch('room/modifyQueue', {newVideoId, position: 'first', action:'add'})
+                // this.$store.dispatch('room/modifyQueue', {newVideoId, position: 'first', action:'add'})
+                this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
 
                 this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: this.videoId}})
                 this.room.send({event:'playerCtrl', action: 'unshiftQueue', datas:{videoId: newVideoId}})
@@ -330,7 +330,8 @@ export default {
             {
                 this.queue_ids.push(newVideoId)
                 // this.addQueue(newVideoId)
-                this.$store.dispatch('room/modifyQueue', {newVideoId, position: 'last', action:'add'})
+                // this.$store.dispatch('room/modifyQueue', {newVideoId, position: 'last', action:'add'})
+                this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
                 this.room.send({event:'playerCtrl', action: 'addQueue', datas:{videoId: newVideoId}})
 
             }
@@ -438,7 +439,9 @@ export default {
             this.queue_ids.splice(0, 1);
             this.videoId = newVideoId
 
-            this.$store.dispatch('room/modifyQueue', {newVideoId, position: 0, action:'rm'})
+            // this.$store.dispatch('room/modifyQueue', {newVideoId, position: 0, action:'rm'})
+            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
+
 
             this.$nuxt.$emit('getRelatedVideo', newVideoId)
 

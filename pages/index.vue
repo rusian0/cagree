@@ -2,7 +2,8 @@
   <div class="container">
     <div>
       <h1 class="title">PulScreen</h1>
-      <nuxt-link tag="button" class="btn btn-success" :to="{path: '/room?id='+roomId}">Let's Join Room!</nuxt-link>
+      <!-- <nuxt-link tag="button" @click="createRoom" class="btn btn-success" :to="{path: '/room?id='+roomId}">Let's Join Room!</nuxt-link> -->
+      <button @click="createRoom" class="btn btn-success">Let's Join Room!</button>
   
     </div>
   </div>
@@ -13,7 +14,14 @@ import Logo from '~/components/Logo.vue'
 import { uuid } from 'vue-uuid';
 
 export default {
-  data: () => ({ roomId: uuid.v1().split('-').join(''), }),
+  // data: () => ({ roomId: uuid.v1().split('-').join(''), }),
+
+  methods: {
+    async createRoom(){
+      const roomId = await this.$store.dispatch('room/createRoom')
+      this.$router.push({ path: `room?id=${roomId}`})
+    }
+  }
 }
 </script>
 

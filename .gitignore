@@ -113,3 +113,6 @@ dist/
 node_modules/
 aws-exports.js
 awsconfiguration.json
+
+#firebase
+.firebase/hosting.*.cache

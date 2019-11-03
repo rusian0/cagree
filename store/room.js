@@ -1,5 +1,9 @@
+import firebase from "~/plugins/firebase.js"
+import { createBrotliCompress } from "zlib";
+const db = firebase.firestore();
+const itemRef = db.collection('room')
 
-let tableName = 'room'
+const tableName = 'room'
 
 const config = {headers: {
     'x-api-key': process.env.GATEWAY_API_KEY
@@ -30,23 +34,24 @@ export const mutations = {
 
 export const actions = {
 
-    async getQueue(context) {
+    async getQueue({ dispatch, commit, state }) {
 
-        let params = {
-            select: "videoQueue"
-        }
+        const response = await itemRef.doc(state.roomId).get()
 
-        const response = await this.$axios.get(`/model/${tableName}/${context.state.roomId}`, {params})
-
-        return response.data.videoQueue
+        return response.data().video_queue
     },
 
-    async modifyQueue(context, params) {
+    async modifyQueue({ dispatch, commit, state }, {newVideoIds}) {
 
-        const response = await this.$axios.put(`/model/${tableName}/${context.state.roomId}`, params, config)
+        const response = await itemRef.doc(state.roomId).update({video_queue: newVideoIds})
 
-        return response.data
+        return response
     },
+
+    async createRoom({dispatch, commit, state }, roomId){
+        const response = await itemRef.add({video_queue: []})
+        return response.id
+    }
 
 }
 
