@@ -18,7 +18,30 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: -1;
 }
+
+.loading-wrapper {
+    background: #92000086;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    text-align: center;
+    display: table;
+}
+
+.loading-txt {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    color: #ffff;
+}
+
+.loading-enter-active, .loading-leave-active { transition: opacity .5s; }
+.loading-enter, .loading-leave-to { opacity: 0; }
 
 p {
     font-size: 12px;
@@ -100,7 +123,6 @@ ul.queue-list li:first-child img {
 </style>
 <template>
     <div class="video">
-        
         <div class="input-group url_play">
             <input class="form-control" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Video URL">
             <div class="input-group-append">
@@ -111,71 +133,56 @@ ul.queue-list li:first-child img {
             </div>
             <!-- <button @click="addQueue">addQueue</button> -->
         </div>
-    <div class="youtube-movie">
-        <div style="width: 100%;height:100%;"></div>
-        <vue-plyr>
-            <div class="plyr__video-embed">
-                <youtube
-                    ref="youtube"
-                    :video-id="queue_ids[0]"
-                    :player-vars="playerVars"
-                    @ready="ready"
-                    @paused="paused"
-                    @playing="playing"
-                    @buffering="buffering"
-                    @ended="ended"
-                    @cued="cued"
-                    @error="error"
-                    width="1920"
-                    height="1080"
-                />
-            </div>
-        </vue-plyr>
+        <div class="youtube-movie">
+            <vue-plyr>
+                <div class="plyr__video-embed">
+                    <transition name="loading">
+                        <div v-if="state == 'buffering' || loading" class="loading-wrapper">
+                            <div class="loading-txt">読込中....</div>
+                        </div>
+                    </transition>
+                    <youtube
+                        ref="youtube"
+                        :video-id="queue_ids[0]"
+                        :player-vars="playerVars"
+                        @ready="ready"
+                        @paused="paused"
+                        @playing="playing"
+                        @buffering="buffering"
+                        @ended="ended"
+                        @cued="cued"
+                        @error="error"
+                        width="1920"
+                        height="1080"
+                    />
+                </div>
+            </vue-plyr>
+            
+        </div>
+        <!-- <button class="btn btn-info" @click="testplay">Play</button> -->
+        <button class="btn btn-info" @click="nextQueue"><font-awesome-icon icon="step-forward" /></button>
+        <button class="btn btn-outline-info" @click="getQueue">getQueue</button>
+        <button class="btn btn-outline-info" @click="getSampleQueue">getSampleQueue</button>
 
 
-        <!-- <vue-plyr>
-            <div class="plyr__video-embed">
-                <iframe width="690" data-plyr-config='{ "ads": true}' height="388" src="https://www.youtube.com/embed/hfWa5dnHuEY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        </vue-plyr> -->
-    <!-- <div class="youtube_area">
-    <iframe id="ytPlayer" allowfullscreen="1" allow="autoplay; encrypted-media" title="YouTube video player" src="https://youtu.be/ZCQ3IIFSn1s" width="640" height="390" frameborder="0"></iframe>
-    <ul class="poster_list">
-        <li class="current">
-        <img src="[キャプチャ]" class="transition_scale" oncontextmenu="return false">
-        <div class="playicon"></div>
-        </li>
-    </ul>
-    </div> -->
-        
-    </div>
-    <!-- <button class="btn btn-info" @click="testplay">Play</button> -->
-    <button class="btn btn-info" @click="nextQueue"><font-awesome-icon icon="step-forward" /></button>
-    <button class="btn btn-outline-info" @click="getQueue">getQueue</button>
-    <button class="btn btn-outline-info" @click="getSampleQueue">getSampleQueue</button>
-
-
-    <div class="state">
-        <ul>
-            <li>{{ state }}</li>
-            <li>{{ currentTime }}</li>
-            <li>{{ currentRate }}</li>
-        </ul>
-    </div>
-    <div style="background-color:black;padding:20px;margin:30px 0">
-        <h3 style="color:white">Video queue</h3>
-        <ul class="queue-list">
-            <draggable :options="options" v-model="queue_ids" @end="queueDragEnd">
-                <li v-for="(queue_id, index) in queue_ids">
-                    <button @click="deleteQueue(index)" class="btn btn-danger queue_delete">✗</button>
-                    <img :src="imgUrl + queue_id + '/mqdefault.jpg'" alt="">
-                </li>    
-            </draggable> 
-        </ul>
-    </div>
-    
-
-    <br>
+        <div class="state">
+            <ul>
+                <li>{{ state }}</li>
+                <li>{{ currentTime }}</li>
+                <li>{{ currentRate }}</li>
+            </ul>
+        </div>
+        <div style="background-color:black;padding:20px;margin:30px 0">
+            <h3 style="color:white">Video queue</h3>
+            <ul class="queue-list">
+                <draggable :options="options" v-model="queue_ids" @end="queueDragEnd">
+                    <li v-for="(queue_id, index) in queue_ids">
+                        <button @click="deleteQueue(index)" class="btn btn-danger queue_delete">✗</button>
+                        <img :src="imgUrl + queue_id + '/mqdefault.jpg'" alt="">
+                    </li>    
+                </draggable> 
+            </ul>
+        </div>
 
     </div>
 </template>
@@ -210,13 +217,15 @@ export default {
         playerVars: {
             autoplay: 1,
             playsinline: 1,
+            wmode: 'transparent'
         },
         currentTime:'',
         currentRate:'',
         imgUrl: 'https://img.youtube.com/vi/',
         options: {
             animation: 300,
-        }
+        },
+        loading: false
     }),
     mounted: function (){
 
@@ -427,7 +436,8 @@ export default {
             }
 
         },
-        catchPlayingData: function(id, rate, time, queue_ids){
+        catchPlayingData: function(id, rate, time, queue_ids, members){
+            console.log('take response')
             this.videoId = id
             this.queue_ids = queue_ids
             this.currentRate = rate
@@ -471,7 +481,7 @@ export default {
                                 videoId: _this.videoId,
                                 currentTime: _this.currentTime,
                                 currentRate: _this.currentRate,
-                                queue_ids: _this.queue_ids
+                                queue_ids: _this.queue_ids,
                             }
                         }
                     )

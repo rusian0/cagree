@@ -1,13 +1,6 @@
 import firebase from "~/plugins/firebase.js"
-import { createBrotliCompress } from "zlib";
 const db = firebase.firestore();
 const itemRef = db.collection('room')
-
-const tableName = 'room'
-
-const config = {headers: {
-    'x-api-key': process.env.GATEWAY_API_KEY
-}}
 
 export const state = () => ({
     room: null,
@@ -48,18 +41,37 @@ export const actions = {
         return response
     },
 
+    async modifyMember({ dispatch, commit, state }, {memberId, action}) {
+
+        const docRef = itemRef.doc(state.roomId)
+
+        let response;
+
+        if(action == 'join'){
+            response = await docRef.update({room_member: firebase.firestore.FieldValue.arrayUnion(memberId)},)
+        }
+        else if (action == 'leave'){
+            response = await docRef.update({room_member: firebase.firestore.FieldValue.arrayRemove(memberId)},)
+        }
+
+        return response
+    },
+    async clearMember({ dispatch, commit, state }) {
+
+        let response;
+
+        response = await itemRef.doc(state.roomId).update({room_member: []},)
+
+        return response
+    },
+
     async createRoom({dispatch, commit, state }, roomId){
-        const response = await itemRef.add({video_queue: []})
+        const docs = {
+            video_queue: [],
+            room_member: []
+        }
+        const response = await itemRef.add(docs)
         return response.id
     }
 
 }
-
-
-// export default {
-//     namespaced: true,
-//     state,
-//     getters,
-//     mutations,
-//     actions
-// }
