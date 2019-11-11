@@ -136,11 +136,11 @@ ul.queue-list li:first-child img {
         <div class="youtube-movie">
             <vue-plyr>
                 <div class="plyr__video-embed">
-                    <transition name="loading">
+                    <!-- <transition name="loading">
                         <div v-if="state == 'buffering' || loading" class="loading-wrapper">
                             <div class="loading-txt">読込中....</div>
                         </div>
-                    </transition>
+                    </transition> -->
                     <youtube
                         ref="youtube"
                         :video-id="queue_ids[0]"
