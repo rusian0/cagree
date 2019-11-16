@@ -1,193 +1,3 @@
-<style scoped>
-.video {
-    width: 100%;
-}
-.youtube-movie {
-    position: relative;
-    max-width: 1624px;
-    max-height: 1026px;
-    /* max-height: 1080px; */
-    height: 100%;
-    width: auto;
-    /* padding-bottom: 56.25%; */
-    overflow: hidden;
-}
-.youtube-movie iframe {
-    max-width: 100%;
-    max-height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-}
-
-.loading-wrapper {
-    background: #92000086;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    text-align: center;
-    display: table;
-}
-
-.loading-txt {
-    position: relative;
-    display: table-cell;
-    vertical-align: middle;
-    color: #ffff;
-}
-
-.loading-enter-active, .loading-leave-active { transition: opacity .5s; }
-.loading-enter, .loading-leave-to { opacity: 0; }
-
-p {
-    font-size: 12px;
-    margin: 0;
-}
-
-
-/* input[type=text] {
-    border: 2px solid black;
-    padding: 5px 10px;
-    width: 50%;
-    font-size: 13px;
-} */
-
-
-.state { 
-    float: right;
-}
-
-.state ul {
-    margin: 0;
-}
-
-.state ul li {
-        border: 1px solid #797979;
-        background: rgb(209, 209, 209);
-        color: #181818;
-        font-size: 12px;
-        padding: 4px 8px;
-        display: inline;
-        list-style: none;
-        float: left;
-
-}
-
-.input-group.url_play {
-    margin: 20px 0;
-}
-
-ul.queue-list {
-    padding: 15px 0;
-    /* text-align: center; */
-
-}
-
-ul.queue-list li{
-    list-style: none;
-    display: inline-block;
-    margin: 1%;
-    width: 30%;
-    position: relative;
-}
-
-ul.queue-list li:hover .queue_delete {
-    display: block;
-}
-
-ul.queue-list li img {
-    width: 100%;
-    border: 5px solid #ffffff;
-    /* border-radius: 5%; */
-
-}
-
-ul.queue-list li:first-child img {
-    /* width: 70%; */
-    border-color:#ff0000;
-}
-
-.queue_delete {
-    border-radius: 50%;
-    position: absolute;
-    top: 10%;
-    left: 7%;   
-    display: none;
-}
-
-
-</style>
-<template>
-    <div class="video">
-        <div class="input-group url_play">
-            <input class="form-control" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Video URL">
-            <div class="input-group-append">
-                <button class="btn btn-success" @click="url_play"><font-awesome-icon icon="plus" /></button>
-            </div>
-            <div class="input-group-append">
-                <button class="btn btn-primary" @click="url_play('force')"><font-awesome-icon icon="play" /></button>
-            </div>
-            <!-- <button @click="addQueue">addQueue</button> -->
-        </div>
-        <div class="youtube-movie">
-            <vue-plyr>
-                <div class="plyr__video-embed">
-                    <!-- <transition name="loading">
-                        <div v-if="state == 'buffering' || loading" class="loading-wrapper">
-                            <div class="loading-txt">読込中....</div>
-                        </div>
-                    </transition> -->
-                    <youtube
-                        ref="youtube"
-                        :video-id="queue_ids[0]"
-                        :player-vars="playerVars"
-                        @ready="ready"
-                        @paused="paused"
-                        @playing="playing"
-                        @buffering="buffering"
-                        @ended="ended"
-                        @cued="cued"
-                        @error="error"
-                        width="1920"
-                        height="1080"
-                    />
-                </div>
-            </vue-plyr>
-            
-        </div>
-        <!-- <button class="btn btn-info" @click="testplay">Play</button> -->
-        <button class="btn btn-info" @click="nextQueue"><font-awesome-icon icon="step-forward" /></button>
-        <button class="btn btn-outline-info" @click="getQueue">getQueue</button>
-        <button class="btn btn-outline-info" @click="getSampleQueue">getSampleQueue</button>
-
-
-        <div class="state">
-            <ul>
-                <li>{{ state }}</li>
-                <li>{{ currentTime }}</li>
-                <li>{{ currentRate }}</li>
-            </ul>
-        </div>
-        <div style="background-color:black;padding:20px;margin:30px 0">
-            <h3 style="color:white">Video queue</h3>
-            <ul class="queue-list">
-                <draggable :options="options" v-model="queue_ids" @end="queueDragEnd">
-                    <li v-for="(queue_id, index) in queue_ids">
-                        <button @click="deleteQueue(index)" class="btn btn-danger queue_delete">✗</button>
-                        <img :src="imgUrl + queue_id + '/mqdefault.jpg'" alt="">
-                    </li>    
-                </draggable> 
-            </ul>
-        </div>
-
-    </div>
-</template>
-
-<script>
 import draggable from 'vuedraggable'
 
 export default {
@@ -299,20 +109,21 @@ export default {
         //     this.$store.dispatch('room/addQueue', this.roomId)
 
         // },
-        url_play(priority='', videoId=''){
+        url_play(priority, videoId){
             
-            let newVideoId = ''
+            let newVideoId
 
-            if(!this.video_url) return
-
-            if(videoId !== ''){
+            if(videoId){
                 newVideoId = videoId
             }
+            else if(this.video_url) {
+                newVideoId = this.$youtube.getIdFromUrl(this.video_url)
+            }
             else {
-                newVideoId = this.video_url
+                return
             }
 
-            if(!(newVideoId = this.$youtube.getIdFromUrl(newVideoId))){
+            if(!newVideoId){
                 alert('無効なURLが入力されました。')
                 this.video_url = ''
                 return
@@ -554,4 +365,3 @@ export default {
     },
 
 }
-</script>

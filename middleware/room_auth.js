@@ -5,9 +5,9 @@ const itemRef = db.collection('room')
 export default  async function ({ store, redirect, query }) {
   const roomId = query.id || 'testroomid'
 
-  const response = await itemRef.doc(roomId).get()
+  const room = await itemRef.doc(roomId).get()
 
-  if (!response.data()) {
+  if (!room.exists) {
     return redirect('/')
   }
 

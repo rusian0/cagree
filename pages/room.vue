@@ -143,7 +143,7 @@ import firebase from "~/plugins/firebase.js"
 const db = firebase.firestore();
 const itemRef = db.collection('room')
 
-import youtubeplayer from '~/components/player.vue'
+import youtubeplayer from '~/components/player/player-comp.vue'
 import youtubesearch from '~/components/youtubesearch.vue'
 
 export default {

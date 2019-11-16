@@ -133,23 +133,28 @@ html,body {
 <script>
 import Peer from 'skyway-js';
 
-import youtubeplayer from '~/components/player.vue'
+import firebase from "~/plugins/firebase.js"
+const db = firebase.firestore();
+const itemRef = db.collection('room')
+
+import youtubeplayer from '~/components/player/player-comp.vue'
 import youtubesearch from '~/components/youtubesearch.vue'
 
 export default {
+    middleware: 'room_auth',
     components: {
         youtubeplayer,
         youtubesearch
     },
-    
     mounted: function (){
         this.peer = new Peer({key: process.env.SKYWAY_APIKEY,debug: 3});
 
         this.$store.commit('room/setRoomId', this.roomId)
+        // this.$store.dispatch('room/clearMember')
 
         this.$refs.youtubeplayer.getQueue()
 
-        this.peer.on('open', ()=>{
+        this.peer.on('open', peerId => {
             this.join();
         })
 
@@ -166,6 +171,7 @@ export default {
             chats: [],
             room: '',
             yt_key: process.env.YOUTUBEDATA_APIKEY,
+            room_member: []
         }
     },
 
@@ -212,12 +218,39 @@ export default {
 
             });
 
-            this.room.on('peerJoin', (data) => {
-                this.$refs.youtubeplayer.tellPlayerStatus()
+            this.room.on('log', (room_log) => {
+                this.initMember(room_log)
             })
 
+            this.room.on('peerJoin', (data) => {
+                this.$refs.youtubeplayer.tellPlayerStatus()
+                // this.$store.dispatch('room/modifyMember', {memberId: this.peer.id, action: 'join'})
+            })
 
+            this.room.on('peerLeave', (peer_id) => {
+                this.$store.dispatch('room/modifyMember', {memberId: peer_id, action: 'leave'})
+            })
 
+            this.room.on('open', ()=>{
+                this.room.getLog()
+
+                this.$store.dispatch('room/modifyMember', {memberId: this.peer.id, action: 'join'})
+
+                 itemRef.doc(this.roomId)
+                    .onSnapshot((doc) => {
+                        this.room_member = doc.data().room_member
+                    })
+            })
+
+        },
+
+        initMember: async function (room_log){
+            const first_log = JSON.parse(room_log[0])
+
+            if(this.peer.id == first_log.message.src){
+                await this.$store.dispatch('room/clearMember')
+                this.$store.dispatch('room/modifyMember', {memberId: this.peer.id, action: 'join'})
+            }
         },
 
         //チャット送信処理
@@ -234,4 +267,5 @@ export default {
         },
     }
 }
+
 </script>
