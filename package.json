@@ -1,7 +1,7 @@
 {
   "name": "PulScreen",
   "version": "1.0.0",
-  "description": "動画の非同期再生サービス",
+  "description": "動画の同期再生サービス",
   "author": "",
   "private": true,
   "scripts": {
