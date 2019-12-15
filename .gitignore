@@ -116,3 +116,4 @@ awsconfiguration.json
 
 #firebase
 .firebase/hosting.*.cache
+.config/*
