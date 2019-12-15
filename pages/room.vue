@@ -110,7 +110,7 @@ html,body {
         <!-- <button @click="join('2')">ルーム2</button>
         <button @click="join('3')">ルーム3</button> -->
         <!-- <button @click="$test()">plugin</button> -->
-        
+            test
             <div class="main">
                 <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/>
                 <!-- <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/> -->
