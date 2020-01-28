@@ -1,5 +1,8 @@
 import draggable from 'vuedraggable'
 
+import firebase from "~/plugins/firebase.js"
+const db = firebase.firestore();
+
 export default {
     components: { draggable },
     props: [
@@ -46,9 +49,17 @@ export default {
             this.url_play('force', videoId)
         })
 
+        this.roomRef.onSnapshot(doc => {
+            this.getQueue()
+        })
+
+
     },
     computed: {
         player() { return this.$refs.youtube.player },
+        roomRef (){ 
+            return db.collection('room').doc(this.$nuxt.$route.query.id)
+        }
     },
     methods: {
         deleteQueue(queueIndex){
