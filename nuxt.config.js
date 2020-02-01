@@ -58,13 +58,6 @@ export default {
     '@nuxtjs/dotenv',
     'bootstrap-vue/nuxt',
     'nuxt-fontawesome',
-    [
-      '@nuxtjs/google-gtag',
-      {
-        id: process.env.GA_ID, 
-        debug: true 
-      }
-    ]
   ],
 
   //この部分を追記

@@ -1,7 +1,7 @@
 {
   "name": "PulScreen",
   "version": "1.0.0",
-  "description": "動画の同期再生サービス",
+  "description": "YouTube動画のリアルタイム共有サービス",
   "author": "",
   "private": true,
   "scripts": {
@@ -17,11 +17,11 @@
     "@fortawesome/vue-fontawesome": "^0.1.7",
     "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/dotenv": "^1.4.0",
-    "@nuxtjs/google-gtag": "^1.0.4",
     "aws-amplify": "^1.1.36",
     "aws-amplify-vue": "^0.2.14",
     "aws-sdk": "^2.506.0",
     "bootstrap-vue": "^2.0.2",
+    "core-js": "2.6.9",
     "firebase": "^7.2.3",
     "firebase-tools": "^7.6.2",
     "nuxt": "^2.0.0",

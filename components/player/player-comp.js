@@ -58,6 +58,9 @@ export default {
     computed: {
         player() { return this.$refs.youtube.player },
         roomRef (){ 
+            if(!this.$nuxt.$route.query.id){
+                return db.collection('room').doc('testroomid')
+            }
             return db.collection('room').doc(this.$nuxt.$route.query.id)
         }
     },
