@@ -46,7 +46,7 @@
             <ul>
                 <li>{{ state }}</li>
                 <li>{{ currentTime }}</li>
-                <li>{{ currentRate }}</li>
+                <li>{{ currentRate }}</li>t
             </ul>
         </div>
         <div style="background-color:black;padding:20px;margin:30px 0">
