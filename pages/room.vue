@@ -99,7 +99,7 @@ html,body {
 
 <template>
     <div class="row px-3">
-        <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8">
             <!-- <h1>room_component</h1> -->
             <br>
             <div class="member_count">

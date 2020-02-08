@@ -37,17 +37,23 @@
             
         </div>
         <!-- <button class="btn btn-info" @click="testplay">Play</button> -->
-        <button class="btn btn-info" @click="nextQueue"><font-awesome-icon icon="step-forward" /></button>
-        <button class="btn btn-outline-info" @click="getQueue">getQueue</button>
-        <button class="btn btn-outline-info" @click="getSampleQueue">getSampleQueue</button>
-
-
-        <div class="state">
-            <ul>
-                <li>{{ state }}</li>
-                <li>{{ currentTime }}</li>
-                <li>{{ currentRate }}</li>
-            </ul>
+        <div class="row pt-2">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="btn-group">
+                    <button class="btn btn-info" @click="nextQueue"><font-awesome-icon icon="step-forward" /></button>
+                    <button class="btn btn-outline-info" @click="getQueue">getQueue</button>
+                    <button class="btn btn-outline-info" @click="getSampleQueue">getSampleQueue</button>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="state">
+                    <ul>
+                        <li :class="{'display-solo': !currentTime && !currentRate}">{{ state }}</li>
+                        <li v-if="currentTime">{{ currentTime }}</li>
+                        <li v-if="currentRate">{{ currentRate }}</li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <div style="background-color:black;padding:20px;margin:30px 0">
             <h3 style="color:white">Video queue</h3>
