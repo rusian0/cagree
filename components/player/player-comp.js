@@ -71,6 +71,12 @@ export default {
             this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
             // this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, position: queueIndex, action:'rm'})
         },
+        selectQueue(queue_index){
+            const limited_queue_id = this.queue_ids[queue_index];
+            this.queue_ids.splice(queue_index, 1);
+            this.queue_ids.unshift(limited_queue_id);
+            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids});
+        },
         queueDragEnd(event){
             // this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, action:'allUpdate'})
             this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})

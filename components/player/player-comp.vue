@@ -55,7 +55,7 @@
                 <draggable :options="options" v-model="queue_ids" @end="queueDragEnd">
                     <li v-for="(queue_id, index) in queue_ids">
                         <button @click="deleteQueue(index)" class="btn btn-danger queue_delete">✗</button>
-                        <img :src="imgUrl + queue_id + '/mqdefault.jpg'" alt="">
+                        <img :src="imgUrl + queue_id + '/mqdefault.jpg'" @click="selectQueue(index)" alt="">
                     </li>    
                 </draggable> 
             </ul>

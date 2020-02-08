@@ -110,6 +110,12 @@ ul.queue-list li:first-child img {
     border-color:#ff0000;
 }
 
+ul.queue-list li:not(:first-child) img:hover {
+    /* width: 70%; */
+    transition: all 0.2s linear;
+    border-color:#ff0000;
+}
+
 .queue_delete {
     border-radius: 50%;
     position: absolute;
