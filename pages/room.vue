@@ -98,18 +98,17 @@ html,body {
 
 
 <template>
-    <div>
-        <!-- <h1>room_component</h1> -->
-
-    <br>
-        <div class="member_count">
-            <div class="count" v-if="room_member.length">{{ room_member.length }}</div>
-            <font-awesome-icon class="icon" icon="user" />
-        </div>
-        
-        <!-- <button @click="join('2')">ルーム2</button>
-        <button @click="join('3')">ルーム3</button> -->
-        <!-- <button @click="$test()">plugin</button> -->
+    <div class="row px-3">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+            <!-- <h1>room_component</h1> -->
+            <br>
+            <div class="member_count">
+                <div class="count" v-if="room_member.length">{{ room_member.length }}</div>
+                <font-awesome-icon class="icon" icon="user" />
+            </div>
+            <!-- <button @click="join('2')">ルーム2</button>
+            <button @click="join('3')">ルーム3</button> -->
+            <!-- <button @click="$test()">plugin</button> -->
             <div class="main">
                 <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/>
                 <!-- <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/> -->
@@ -118,7 +117,6 @@ html,body {
             <div class="side">
                 <!-- <youtubesearch :room="room" ref="youtubesearch"/> -->
             </div>
-
             <!-- <div class="chatbox">
                 <div class="chat">
                     <h3>チャットログ</h3>
@@ -131,9 +129,8 @@ html,body {
             </div> -->
             <!-- <div v-if="room">{{ room }}</div> -->
             <!-- <div v-if="roomLeader">ルームリーダーです</div> -->
-
+        </div>
     </div>
-    
 </template>
 <script>
 import Peer from 'skyway-js';
