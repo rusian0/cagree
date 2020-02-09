@@ -52,22 +52,9 @@ p {
     font-size: 13px;
 } */
 
-@media screen and (min-width: 574px) {
-    .state { 
-        float: right;
-    }
-}
-
 .state ul {
     margin: 0;
     padding: 10px 0px 0px 0px;
-}
-
-@media screen and (min-width: 574px) {
-    .state ul {
-        margin: 0;
-        padding: 0;
-    }
 }
 
 .state ul li {
@@ -146,37 +133,10 @@ ul.queue-list li:not(:first-child) img:hover {
     display: none;
 }
 
-@media screen and (min-width: 767px) {
-    .video-body {
-        padding-left: 40px;
-    }
-}
-
-@media screen and (min-width: 767px) {
-    div.player-body {
-        background-color: #f8f8f8;
-        padding-left: 50px;
-        padding-right: 50px;
-    }
-}
-
-@media screen and (min-width: 767px) {
-    div.player-body {
-        padding-right: 80px;
-    }
-}
-
 div.comment-body {
     background-color: #ffffff;
     border: 1px solid #c0c0c0;
     padding-bottom: 5px;
-}
-
-@media screen and (max-width: 767px) {
-    div.comment-body {
-        margin-right: 14px;
-        margin-left: 14px;
-    }
 }
 
 div.comment-title {
@@ -212,9 +172,37 @@ div.queue-body {
     padding-bottom: 20px;
 }
 
+@media screen and (min-width: 574px) {
+    .state { 
+        float: right;
+    }
+    .state ul {
+        margin: 0;
+        padding: 0;
+    }
+}
+
 @media screen and (min-width: 767px) {
+    .video-body {
+        padding-left: 40px;
+    }
+    div.player-body {
+        background-color: #f8f8f8;
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+    div.player-body {
+        padding-right: 80px;
+    }
     div.queue-body {
         padding-left: 50px;
         padding-right: 50px;
+    }  
+}
+
+@media screen and (max-width: 767px) {
+    div.comment-body {
+        margin-right: 14px;
+        margin-left: 14px;
     }
 }
