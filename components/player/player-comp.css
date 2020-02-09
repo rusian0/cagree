@@ -1,16 +1,14 @@
-.video {
-    width: 100%;
-}
 .youtube-movie {
     position: relative;
-    max-width: 1624px;
-    max-height: 1026px;
+    max-width: 896px;
+    max-height: 522px;
     /* max-height: 1080px; */
     height: 100%;
     width: auto;
     /* padding-bottom: 56.25%; */
     overflow: hidden;
 }
+
 .youtube-movie iframe {
     max-width: 100%;
     max-height: 100%;
@@ -47,14 +45,12 @@ p {
     margin: 0;
 }
 
-
 /* input[type=text] {
     border: 2px solid black;
     padding: 5px 10px;
     width: 50%;
     font-size: 13px;
 } */
-
 
 @media screen and (min-width: 574px) {
     .state { 
@@ -102,7 +98,8 @@ p {
 }
 
 .input-group.url_play {
-    margin: 20px 0;
+    width: 100%;
+    margin: 7px 0;
 }
 
 ul.queue-list {
@@ -147,4 +144,77 @@ ul.queue-list li:not(:first-child) img:hover {
     top: 10%;
     left: 7%;   
     display: none;
+}
+
+@media screen and (min-width: 767px) {
+    .video-body {
+        padding-left: 40px;
+    }
+}
+
+@media screen and (min-width: 767px) {
+    div.player-body {
+        background-color: #f8f8f8;
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+}
+
+@media screen and (min-width: 767px) {
+    div.player-body {
+        padding-right: 80px;
+    }
+}
+
+div.comment-body {
+    background-color: #ffffff;
+    border: 1px solid #c0c0c0;
+    padding-bottom: 5px;
+}
+
+@media screen and (max-width: 767px) {
+    div.comment-body {
+        margin-right: 14px;
+        margin-left: 14px;
+    }
+}
+
+div.comment-title {
+    background-color: #920000;
+    opacity: 0.80;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border: 1px solid #c0c0c0;
+}
+
+div.comment-text {
+    width: 100%;
+    height: 450px;
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow: auto;
+    background-color: #f8f8f8;
+}
+
+div.comment-body div.comment-input{
+    margin-top: 3px;
+    padding: 0 3px;
+    bottom: 0;
+}
+
+div.comment-body div.comment-input input {
+    border: 0;
+}
+
+div.queue-body {
+    background-color: #f8f8f8;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+@media screen and (min-width: 767px) {
+    div.queue-body {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
 }

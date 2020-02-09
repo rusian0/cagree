@@ -76,7 +76,12 @@ data () {
 
    header.header{
       background-color: #920000;
-      padding: 30px;
+      opacity: 0.80;
+      padding: 10px 30px;
+      top: 0;
+      /* position: fixed;
+      z-index: 9999;
+      width: 100%; */
    }
 
    ul {
