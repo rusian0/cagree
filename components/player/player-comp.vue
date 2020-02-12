@@ -53,8 +53,8 @@
             </div>
             <div class="comment-body col-0 col-sm-0 col-md-3 col-lg-3">
                 <div class="row">
-                    <div class="comment-titile col-12 text-center" style="background-color: #920000; opacity: 0.80; color: #FFFFFF;">
-                        <h2>chat</h2>
+                    <div class="comment-titile col-12 text-center pt-1" style="background-color: #920000; opacity: 0.80; color: #FFFFFF;">
+                        <h5>chat</h5>
                     </div>
                     <div class="comment-text col-12">
                         <div v-for="(n, i) in 100">

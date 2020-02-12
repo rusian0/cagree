@@ -1,10 +1,7 @@
 .youtube-movie {
     position: relative;
-    max-width: 896px;
-    max-height: 522px;
-    /* max-height: 1080px; */
     height: 100%;
-    width: auto;
+    width: 100%;
     /* padding-bottom: 56.25%; */
     overflow: hidden;
 }
