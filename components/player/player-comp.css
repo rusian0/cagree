@@ -1,9 +1,13 @@
+/* * * * * * * * * * * * *
+ *    youtube styles     *
+ * * * * * * * * * * * * */
+
 .youtube-movie {
     position: relative;
     height: 100%;
     width: 100%;
-    /* padding-bottom: 56.25%; */
     overflow: hidden;
+    /* padding-bottom: 56.25%; */
 }
 
 .youtube-movie iframe {
@@ -15,81 +19,61 @@
     z-index: -1;
 }
 
-.loading-wrapper {
-    background: #92000086;
+/* * * * * * * * * * * * *
+ *      URL styles       *
+ * * * * * * * * * * * * */
+
+/* url body */
+.url-body {
+    padding-top: 15px;
+    padding-bottom: 17px;
+}
+
+/* url input */
+.input-group.url-play {
     width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    text-align: center;
-    display: table;
 }
 
-.loading-txt {
-    position: relative;
-    display: table-cell;
-    vertical-align: middle;
-    color: #ffff;
+.url-input:focus, .url-input:active {
+    border-color: #920000;
+    opacity: 0.70;
+    outline: none;
+    box-shadow: none;
 }
 
-.loading-enter-active, .loading-leave-active { transition: opacity .5s; }
-.loading-enter, .loading-leave-to { opacity: 0; }
-
-p {
-    font-size: 12px;
-    margin: 0;
+/* url button */
+.btn-url-primary {
+    color: #FFFFFF;
+    background-color: #920000;
+    opacity: 0.70;
 }
 
-/* input[type=text] {
-    border: 2px solid black;
-    padding: 5px 10px;
-    width: 50%;
-    font-size: 13px;
-} */
-
-.state ul {
-    margin: 0;
-    padding: 10px 0px 0px 0px;
+.btn-url-primary:hover{
+    color: #FFFFFF;
+    background-color: #920000;
+    opacity: 1;
+    transition: all 0.2s linear;
 }
 
-.state ul li {
-    border: 1px solid #797979;
-    background: rgb(209, 209, 209);
-    color: #181818;
-    font-size: 12px;
-    padding: 4px 8px;
-    display: inline;
-    list-style: none;
-    float: left;
+.btn-url-primary:focus, .btn-url-primary:active {
+    outline: none;
+    box-shadow: none;
 }
 
-.state ul li:first-child:not(.display-solo) {
-    border-right: none;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
+/* * * * * * * * * * * * *
+ *  video queue styles   *
+ * * * * * * * * * * * * */
+
+/* queue body */
+div.queue-body {
+    background-color: #f8f8f8;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
-.state ul li:last-child:not(.display-solo) {
-    border-left: none;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-}
-
-.state ul li.display-solo {
-    border-radius: 3px;
-}
-
-.input-group.url_play {
-    width: 100%;
-    margin: 7px 0;
-}
-
+/* queue list */
 ul.queue-list {
     padding: 15px 0;
-    /* text-align: center; */
-
 }
 
 ul.queue-list li{
@@ -107,21 +91,18 @@ ul.queue-list li:hover .queue_delete {
 ul.queue-list li img {
     width: 100%;
     border: 5px solid #ffffff;
-    /* border-radius: 5%; */
-
 }
 
 ul.queue-list li:first-child img {
-    /* width: 70%; */
     border-color:#ff0000;
 }
 
 ul.queue-list li:not(:first-child) img:hover {
-    /* width: 70%; */
     transition: all 0.2s linear;
     border-color:#ff0000;
 }
 
+/* queue delete button */
 .queue_delete {
     border-radius: 50%;
     position: absolute;
@@ -130,12 +111,18 @@ ul.queue-list li:not(:first-child) img:hover {
     display: none;
 }
 
+/* * * * * * * * * * * * *
+ *    comment styles     *
+ * * * * * * * * * * * * */
+
+/* comment body */
 div.comment-body {
     background-color: #ffffff;
     border: 1px solid #c0c0c0;
     padding-bottom: 5px;
 }
 
+/* comment title */
 div.comment-title {
     background-color: #920000;
     opacity: 0.80;
@@ -144,52 +131,55 @@ div.comment-title {
     border: 1px solid #c0c0c0;
 }
 
+/* comment text */
 div.comment-text {
     width: 100%;
-    height: 450px;
-    padding-left: 10px;
-    padding-right: 10px;
+    max-height: 700px;
     overflow: auto;
     background-color: #f8f8f8;
 }
 
+/* comment input */
 div.comment-body div.comment-input{
     margin-top: 3px;
-    padding: 0 3px;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 3px;
     bottom: 0;
+}
+
+div.comment-input > input:focus, .div.comment-input > input:active,
+div.comment-input span > button:focus, .div.comment-input span > button:active {
+    outline: none;
+    box-shadow: none;
 }
 
 div.comment-body div.comment-input input {
     border: 0;
 }
 
-div.queue-body {
-    background-color: #f8f8f8;
-    padding-top: 20px;
-    padding-bottom: 20px;
+/* * * * * * * * * * * * *
+ *  video player styles  *
+ * * * * * * * * * * * * */
+
+div.player-body {
+    padding-top: 25px;
 }
 
-@media screen and (min-width: 574px) {
-    .state { 
-        float: right;
-    }
-    .state ul {
-        margin: 0;
-        padding: 0;
-    }
+.video-body {
+    padding-right: 25px;
 }
+
+/* * * * * * * * * * * * *
+ *   responsive styles   *
+ * * * * * * * * * * * * */
 
 @media screen and (min-width: 767px) {
-    .video-body {
-        padding-left: 40px;
-    }
     div.player-body {
         background-color: #f8f8f8;
+        padding-top: 25px;
         padding-left: 50px;
-        padding-right: 50px;
-    }
-    div.player-body {
-        padding-right: 80px;
+        padding-right: 65px; /* bootstrapの auto padding 差分で右に+15pxが必要 */
     }
     div.queue-body {
         padding-left: 50px;
@@ -202,4 +192,21 @@ div.queue-body {
         margin-right: 14px;
         margin-left: 14px;
     }
+}
+
+@media screen and (max-width: 1400px) {
+    div.comment-text {
+        max-height: 450px;
+        overflow: auto;
+    }
+}
+
+
+/* * * * * * * * * * * * *
+ *      tag styles       *
+ * * * * * * * * * * * * */
+
+p {
+    font-size: 12px;
+    margin: 0;
 }

@@ -76,8 +76,7 @@ data () {
 
    header.header{
       background-color: #920000;
-      opacity: 0.80;
-      padding: 10px 30px;
+      padding: 30px 50px;
       top: 0;
       /* position: fixed;
       z-index: 9999;

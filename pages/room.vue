@@ -5,8 +5,8 @@ html,body {
 }
 .main {
     width: 100%;
-    padding-right: 10px;
-    padding-left: 10px;
+    /* padding-right: 10px;
+    padding-left: 10px; */
 }
 
 /* .member_count {
@@ -38,7 +38,7 @@ html,body {
             <div class="count" v-if="room_member.length">{{ room_member.length }}</div>
             <font-awesome-icon class="icon" icon="user" />
         </div> -->
-        <div class="main">
+        <div class="container-fluid main">
             <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/>
         </div>
     </div>

@@ -1,24 +1,24 @@
 <template>
     <div>
-        <div class="row border pb-2">
+        <div class="row border url-body">
             <div class="col-2">
             </div>
             <div class="col-8">
-                <div class="input-group url_play">
-                    <input class="form-control" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Video URL">
+                <div class="input-group url-play">
+                    <input class="form-control url-input" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Video URL">
                     <div class="input-group-append">
-                        <button class="btn btn-secondary" @click="url_play"><font-awesome-icon icon="plus" /></button>
+                        <button class="btn btn-url-primary" @click="url_play"><font-awesome-icon icon="plus" /></button>
                     </div>
                     <div class="input-group-append">
-                        <button class="btn btn-secondary" @click="url_play('force')"><font-awesome-icon icon="play" /></button>
+                        <button class="btn btn-url-primary" @click="url_play('force')"><font-awesome-icon icon="play" /></button>
                     </div>
                 </div>
             </div>
             <div class="col-2">
             </div>
         </div>
-        <div class="row player-body pt-4">
-            <div class="video-body col-12 col-sm-12 col-md-9 col-lg-9">
+        <div class="row player-body">
+            <div class="video-body col-12 col-sm-12 col-md-9 col-lg-9 table-cell">
                 <div class="row">
                     <div class="col-12">
                         <div class="youtube-movie">
@@ -42,18 +42,16 @@
                             </vue-plyr> 
                         </div>
                     </div>
-                    <div class="col-0 col-sm-0 col-md-9 col-lg-10">
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-3 col-lg-2">
-                        <div class="icon py-2 float-left">
+                    <div class="col-12">
+                        <div class="icon py-2 float-right pr-1">
                             {{ 100000 }} <font-awesome-icon class="icon" icon="user" />
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="comment-body col-0 col-sm-0 col-md-3 col-lg-3">
+            <div class="comment-body col-0 col-sm-0 col-md-3 col-lg-3 table-cell">
                 <div class="row">
-                    <div class="comment-titile col-12 text-center pt-1" style="background-color: #920000; opacity: 0.80; color: #FFFFFF;">
+                    <div class="col-12 comment-titile text-center pt-1" style="background-color: #920000; color: #FFFFFF;">
                         <h5>chat</h5>
                     </div>
                     <div class="comment-text col-12">
@@ -61,9 +59,9 @@
                             guest_test{{ i }}: text{{ i }}<br>
                         </div>
                     </div>
-                    <div class="comment-input input-group">
+                    <div class="col-12 comment-input input-group">
                         <input type="text" maxlength="300" class="form-control">
-                        <span class="input-group-btn input-group-append">
+                        <span class="input-group-append">
                             <button type="button" class="btn">
                                 <font-awesome-icon icon="paper-plane"/>
                             </button>
