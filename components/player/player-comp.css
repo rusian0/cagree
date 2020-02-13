@@ -7,6 +7,7 @@
     height: 100%;
     width: 100%;
     overflow: hidden;
+    border: 1px solid #f8f8f8;
     /* padding-bottom: 56.25%; */
 }
 
@@ -118,14 +119,13 @@ ul.queue-list li:not(:first-child) img:hover {
 /* comment body */
 div.comment-body {
     background-color: #ffffff;
-    border: 1px solid #c0c0c0;
+    border: 1px solid #c9c9c9;
     padding-bottom: 5px;
 }
 
 /* comment title */
 div.comment-title {
     background-color: #920000;
-    opacity: 0.80;
     padding-top: 2px;
     padding-bottom: 2px;
     border: 1px solid #c0c0c0;
@@ -156,6 +156,22 @@ div.comment-input span > button:focus, .div.comment-input span > button:active {
 
 div.comment-body div.comment-input input {
     border: 0;
+    width: 80%;
+    height: 30px;
+    border-radius: 0;
+    margin-left: 10px;
+    border-bottom: 1px solid #920000;
+}
+
+/* * * * * * * * * * * * *
+ *      icon styles      *
+ * * * * * * * * * * * * */
+.icon-primary {
+    color: #920000;
+}
+
+.forward {
+    z-index: 100;
 }
 
 /* * * * * * * * * * * * *

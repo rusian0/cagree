@@ -38,6 +38,7 @@
                                         width="1920"
                                         height="1080"
                                     />
+                                    <font-awesome-icon class="forward" icon="forward"/>
                                 </div>
                             </vue-plyr> 
                         </div>
@@ -60,10 +61,10 @@
                         </div>
                     </div>
                     <div class="col-12 comment-input input-group">
-                        <input type="text" maxlength="300" class="form-control">
+                        <input type="text" maxlength="300" class="form-control" v-model="comments">
                         <span class="input-group-append">
                             <button type="button" class="btn">
-                                <font-awesome-icon icon="paper-plane"/>
+                                <font-awesome-icon class="mb-1" :class="{'icon-primary': comments }" icon="paper-plane"/>
                             </button>
                         </span>
                     </div>

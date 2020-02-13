@@ -38,7 +38,8 @@ export default {
         options: {
             animation: 300,
         },
-        loading: false
+        loading: false,
+        comments: '',
     }),
     mounted: function (){
 
