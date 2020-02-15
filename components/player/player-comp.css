@@ -1,16 +1,16 @@
-.video {
-    width: 100%;
-}
+/* * * * * * * * * * * * *
+ *    youtube styles     *
+ * * * * * * * * * * * * */
+
 .youtube-movie {
     position: relative;
-    max-width: 1624px;
-    max-height: 1026px;
-    /* max-height: 1080px; */
     height: 100%;
-    width: auto;
-    /* padding-bottom: 56.25%; */
+    width: 100%;
     overflow: hidden;
+    border: 1px solid #f8f8f8;
+    /* padding-bottom: 56.25%; */
 }
+
 .youtube-movie iframe {
     max-width: 100%;
     max-height: 100%;
@@ -32,13 +32,6 @@
     display: table;
 }
 
-.loading-txt {
-    position: relative;
-    display: table-cell;
-    vertical-align: middle;
-    color: #ffff;
-}
-
 .loading-enter-active, .loading-leave-active { transition: opacity .5s; }
 .loading-enter, .loading-leave-to { opacity: 0; }
 
@@ -47,104 +40,155 @@ p {
     margin: 0;
 }
 
+/* * * * * * * * * * * * *
+ *      URL styles       *
+ * * * * * * * * * * * * */
 
-/* input[type=text] {
-    border: 2px solid black;
-    padding: 5px 10px;
-    width: 50%;
-    font-size: 13px;
-} */
-
-
-@media screen and (min-width: 574px) {
-    .state { 
-        float: right;
-    }
+/* url body */
+.url-body {
+    padding-top: 15px;
+    padding-bottom: 17px;
+    background-color: #FFFFFF;
 }
 
-.state ul {
-    margin: 0;
-    padding: 10px 0px 0px 0px;
+/* url input */
+.input-group.url-play {
+    width: 100%;
 }
 
-@media screen and (min-width: 574px) {
-    .state ul {
-        margin: 0;
-        padding: 0;
-    }
+.url-input:focus, .url-input:active {
+    border-color: #920000;
+    opacity: 0.70;
+    outline: none;
+    box-shadow: none;
 }
 
-.state ul li {
-    border: 1px solid #797979;
-    background: rgb(209, 209, 209);
-    color: #181818;
-    font-size: 12px;
-    padding: 4px 8px;
-    display: inline;
-    list-style: none;
-    float: left;
+/* url button */
+.btn-url-primary {
+    color: #FFFFFF;
+    background-color: #920000;
+    opacity: 0.70;
 }
 
-.state ul li:first-child:not(.display-solo) {
-    border-right: none;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
+.btn-url-primary:hover{
+    color: #FFFFFF;
+    background-color: #920000;
+    opacity: 1;
+    transition: all 0.2s linear;
 }
 
-.state ul li:last-child:not(.display-solo) {
-    border-left: none;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
+.btn-url-primary:focus, .btn-url-primary:active {
+    outline: none;
+    box-shadow: none;
 }
 
-.state ul li.display-solo {
-    border-radius: 3px;
+/* * * * * * * * * * * * *
+ *  video queue styles   *
+ * * * * * * * * * * * * */
+
+/* queue body */
+div.queue-body {
+    height: 61.9vh;
+    background-color: black;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+    overflow: auto;
 }
 
-.input-group.url_play {
-    margin: 20px 0;
+div.queue-body div > div {
+    padding: 10px;
+    width: 1rem;
 }
 
-ul.queue-list {
-    padding: 15px 0;
-    /* text-align: center; */
-
-}
-
-ul.queue-list li{
-    list-style: none;
-    display: inline-block;
-    margin: 1%;
-    width: 30%;
-    position: relative;
-}
-
-ul.queue-list li:hover .queue_delete {
+div.queue-body > div > div:hover .queue_delete {
     display: block;
 }
 
-ul.queue-list li img {
-    width: 100%;
-    border: 5px solid #ffffff;
-    /* border-radius: 5%; */
-
+div.queue-body > div > div img {
+    width: 8vw;
+    height: 8vw;
+    object-fit: cover;
+    box-sizing: border-box;
+    border: 1px solid #c7c7c7c7;
 }
 
-ul.queue-list li:first-child img {
-    /* width: 70%; */
+/* 
+div.queue-list div:first-child img {
     border-color:#ff0000;
 }
 
-ul.queue-list li:not(:first-child) img:hover {
-    /* width: 70%; */
+div.queue-list div:not(:first-child) img:hover {
     transition: all 0.2s linear;
     border-color:#ff0000;
-}
+} */
 
+/* queue delete button */
 .queue_delete {
     border-radius: 50%;
     position: absolute;
     top: 10%;
     left: 7%;   
     display: none;
+}
+
+/* * * * * * * * * * * * *
+ *      icon styles      *
+ * * * * * * * * * * * * */
+.icon-primary {
+    color: #920000;
+}
+
+.forward {
+    z-index: 100;
+}
+
+/* * * * * * * * * * * * *
+ *  video player styles  *
+ * * * * * * * * * * * * */
+
+div.player-body {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.video-body {
+    padding-right: 25px;
+}
+
+/* * * * * * * * * * * * *
+ *   responsive styles   *
+ * * * * * * * * * * * * */
+
+@media screen and (min-width: 767px) {
+    div.player-body {
+        padding-top: 25px;
+        padding-left: 40px;
+        padding-right: 55px; /* bootstrapの auto padding 差分で右に+15pxが必要 */
+    }
+}
+
+@media screen and (max-width: 767px) {
+    div.comment-body {
+        margin-right: 14px;
+        margin-left: 14px;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    div.comment-text {
+        max-height: 450px;
+        overflow: auto;
+    }
+}
+
+
+/* * * * * * * * * * * * *
+ *      tag styles       *
+ * * * * * * * * * * * * */
+
+p {
+    font-size: 12px;
+    margin: 0;
 }

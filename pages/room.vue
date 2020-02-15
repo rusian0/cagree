@@ -1,137 +1,45 @@
 <style scoped>
-
-html,body {
-    height: 100%;
+.main {
+    width: 100%;
+    /* padding-right: 10px;
+    padding-left: 10px; */
 }
 
-    li {
-        list-style: none;
-    }
+/* .member_count {
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
 
-    input {
-        display: block;
-        margin-bottom: 20px;
-    }
+.member_count .count{
+    position: absolute;
+    top: -5px;
+    left: 16px;
+    font-size: 0.8em;
+}
 
-    .notice {
-        height: 100px;
-    }
+.member_count .icon{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+} */
 
-    .video {
-        float:left;
-    }
-
-    .chat {
-        /* margin: 50px 0; */
-        border: solid 1px orange;
-        height: 300px;
-        width: 400px;;
-        overflow: scroll;
-        position: relative;
-        margin-top: 30px;
-    }
-
-    .chat h3{
-        border-bottom: solid 1px black;
-    }
-
-    /* .chat input{
-        position: absolute;
-        bottom: 0;
-    } */
-
-    .main {
-        float: left;
-        width: 100%;
-        max-width: 800px;
-        /* width: 50%; */
-        /* padding: 20px; */
-    }
-
-    .side {
-        float: right;
-        width: 40%;
-        padding: 20px;
-    }
-
-    input {
-        margin: 10px;
-        padding: 5px 10px;
-        width: 300px;
-        display: inline-block;
-    }
-
-    button {
-        border: 2px solid #797979;
-        background: rgb(87, 87, 87);
-        color: #ffffff;
-        font-size: 20px;
-        padding: 5px 50px;
-        margin: 20px;
-    }
-
-    .room {
-        /* padding: 3%; */
-    }
-
-    .member_count {
-        position: relative;
-        width: 20px;
-        height: 20px;
-    }
-
-    .member_count .count{
-        position: absolute;
-        top: -5px;
-        left: 16px;
-        font-size: 0.8em;
-    }
-
-    .member_count .icon{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
 </style>
 
-
 <template>
-    <div class="row px-3">
-        <div class="col-12 col-sm-12 col-md-8 col-lg-8">
-            <!-- <h1>room_component</h1> -->
-            <br>
-            <div class="member_count">
-                <div class="count" v-if="room_member.length">{{ room_member.length }}</div>
-                <font-awesome-icon class="icon" icon="user" />
-            </div>
-            <!-- <button @click="join('2')">ルーム2</button>
-            <button @click="join('3')">ルーム3</button> -->
-            <!-- <button @click="$test()">plugin</button> -->
-            <div class="main">
-                <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/>
-                <!-- <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/> -->
-            </div>
-
-            <div class="side">
-                <!-- <youtubesearch :room="room" ref="youtubesearch"/> -->
-            </div>
-            <!-- <div class="chatbox">
-                <div class="chat">
-                    <h3>チャットログ</h3>
-                    <ul>
-                        <li v-for="chat in chats">{{ chat }}</li>
-                    </ul>
-                </div>
-                チャット：<input v-model="send_msg" @keydown.enter="msg_send">
-                <button @click="msg_send">送信</button>
-            </div> -->
-            <!-- <div v-if="room">{{ room }}</div> -->
-            <!-- <div v-if="roomLeader">ルームリーダーです</div> -->
+    <div>
+        <!-- <div class="member_count">
+            <div class="count" v-if="room_member.length">{{ room_member.length }}</div>
+            <font-awesome-icon class="icon" icon="user" />
+        </div> -->
+        <div class="container-fluid main">
+            <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/>
         </div>
     </div>
 </template>
+
 <script>
 import Peer from 'skyway-js';
 

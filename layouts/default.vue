@@ -65,8 +65,9 @@ data () {
 
 <style>
 
-   body {
-      margin: 0;
+   html, body {
+      height: 100%;
+      background-color: #f8f8f8;
    }
 
 </style>
@@ -76,7 +77,11 @@ data () {
 
    header.header{
       background-color: #920000;
-      padding: 30px;
+      padding: 30px 50px;
+      top: 0;
+      /* position: fixed;
+      z-index: 9999;
+      width: 100%; */
    }
 
    ul {

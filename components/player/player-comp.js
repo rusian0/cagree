@@ -38,6 +38,8 @@ export default {
         options: {
             animation: 300,
         },
+        loading: false,
+        comments: '',
     }),
     mounted: function (){
 
