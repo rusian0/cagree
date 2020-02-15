@@ -48,6 +48,7 @@ p {
 .url-body {
     padding-top: 15px;
     padding-bottom: 17px;
+    background-color: #FFFFFF;
 }
 
 /* url input */
@@ -87,6 +88,7 @@ p {
 
 /* queue body */
 div.queue-body {
+    height: 61.9vh;
     background-color: black;
     padding-top: 8px;
     padding-bottom: 8px;
@@ -96,7 +98,7 @@ div.queue-body {
 }
 
 div.queue-body div > div {
-    padding: 5px;
+    padding: 10px;
     width: 1rem;
 }
 
@@ -149,7 +151,6 @@ div.queue-list div:not(:first-child) img:hover {
 div.player-body {
     padding-top: 25px;
     padding-bottom: 25px;
-    display:flex;
 }
 
 .video-body {
@@ -162,7 +163,6 @@ div.player-body {
 
 @media screen and (min-width: 767px) {
     div.player-body {
-        background-color: #f8f8f8;
         padding-top: 25px;
         padding-left: 40px;
         padding-right: 55px; /* bootstrapの auto padding 差分で右に+15pxが必要 */

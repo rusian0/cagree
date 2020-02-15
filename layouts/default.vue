@@ -65,8 +65,9 @@ data () {
 
 <style>
 
-   body {
-      margin: 0;
+   html, body {
+      height: 100%;
+      background-color: #f8f8f8;
    }
 
 </style>

@@ -1,8 +1,4 @@
 <style scoped>
-
-html,body {
-    height: 100%;
-}
 .main {
     width: 100%;
     /* padding-right: 10px;
