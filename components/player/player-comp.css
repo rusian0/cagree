@@ -98,7 +98,8 @@ div.queue-body {
 }
 
 div.queue-body div > div {
-    padding: 10px;
+    padding: 0px;
+    padding-bottom: 10px;
     width: 1rem;
 }
 
@@ -107,8 +108,8 @@ div.queue-body > div > div:hover .queue_delete {
 }
 
 div.queue-body > div > div img {
-    width: 8vw;
-    height: 8vw;
+    width: 7vw;
+    height: 7vw;
     object-fit: cover;
     box-sizing: border-box;
     border: 1px solid #c7c7c7c7;
@@ -164,8 +165,8 @@ div.player-body {
 @media screen and (min-width: 768px) {
     div.player-body {
         padding-top: 25px;
-        padding-left: 120px;
-        padding-right: 135px; /* bootstrapの auto padding 差分で右に+15pxが必要 */
+        padding-left: 40px;
+        padding-right: 55px; /* bootstrapの auto padding 差分で右に+15pxが必要 */
     }
 }
 

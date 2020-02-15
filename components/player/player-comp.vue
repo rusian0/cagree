@@ -18,7 +18,9 @@
             </div>
         </div>
         <div class="row player-body">
-            <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+            <div class="col-1">
+            </div>
+            <div class="col-12 col-sm-12 col-md-8 col-lg-7">
                 <div class="youtube-movie">
                     <vue-plyr>
                         <div class="plyr__video-embed" style="height: 34.8vw;">
@@ -36,18 +38,19 @@
                                 width="1920"
                                 height="1080"
                             />
-                            <font-awesome-icon class="forward" icon="forward"/>
                         </div>
                     </vue-plyr> 
                 </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-4 col-lg-4 queue-body">
+            <div class="col-12 col-sm-12 col-md-4 col-lg-3 queue-body">
                 <draggable class="row" element="div" :options="options" v-model="queue_ids" @end="queueDragEnd">
-                    <div class="col-4" v-for="(queue_id, index) in queue_ids">
+                    <div class="col-4 text-center" v-for="(queue_id, index) in queue_ids">
                         <button @click="deleteQueue(index)" class="btn btn-danger queue_delete">✗</button>
                         <img :src="imgUrl + queue_id + '/mqdefault.jpg'" @click="selectQueue(index)" alt="">
                     </div>
                 </draggable> 
+            </div>
+            <div class="col-1">
             </div>
         </div>
     </div>
