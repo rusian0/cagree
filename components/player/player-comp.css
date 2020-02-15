@@ -99,6 +99,7 @@ div.queue-body {
 
 div.queue-body div > div {
     padding: 0px;
+    padding-top: 10px;
     padding-bottom: 10px;
     width: 1rem;
 }
@@ -108,8 +109,8 @@ div.queue-body > div > div:hover .queue_delete {
 }
 
 div.queue-body > div > div img {
-    width: 7vw;
-    height: 7vw;
+    width: 6vw;
+    height: 6vw;
     object-fit: cover;
     box-sizing: border-box;
     border: 1px solid #c7c7c7c7;
@@ -170,7 +171,44 @@ div.player-body {
     }
 }
 
-@media screen and (max-width: 1140px) {
+@media screen and (max-width: 992px) {
+    div.queue-body > div > div img {
+        width: 13vw;
+        height: 13vw;
+    }
+
+    div.queue-body {
+        margin-top: 10px;
+    }
+
+    div.queue-body div > div {
+        padding: 0px;
+        padding-top: 10px;
+        padding-bottom: 20px;
+        width: 1rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    div.queue-body > div > div img {
+        width: 13.5vw;
+        height: 13.5vw;
+    }
+    div.queue-body div > div {
+        padding: 0px;
+        padding-top: 5px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    div.queue-body > div > div img {
+        width: 20vw;
+        height: 20vw;
+    }
+    div.queue-body div > div {
+        padding: 0px;
+        padding-top: 5px;
+    }
 }
 
 /* * * * * * * * * * * * *
