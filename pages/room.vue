@@ -30,12 +30,20 @@
 
 <template>
     <div>
-        <!-- <div class="member_count">
-            <div class="count" v-if="room_member.length">{{ room_member.length }}</div>
-            <font-awesome-icon class="icon" icon="user" />
-        </div> -->
         <div class="container-fluid main">
             <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/>
+        </div>
+        <div class="row">
+            <div class="col-7">
+            </div>
+            <div class="col-2 member_count">
+                <span class="input-group">
+                    <font-awesome-icon class="icon mt-1 mr-1" icon="user" />
+                    <div class="count" v-if="room_member.length">{{ room_member.length }}</div>
+                </span>
+            </div>
+            <div class="col-3">
+            </div>
         </div>
     </div>
 </template>
