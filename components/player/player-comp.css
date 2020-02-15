@@ -153,6 +153,7 @@ div.queue-list div:not(:first-child) img:hover {
 div.player-body {
     padding-top: 25px;
     padding-bottom: 25px;
+    max-width: 1920px;
 }
 
 .video-body {
@@ -168,6 +169,12 @@ div.player-body {
         padding-top: 25px;
         padding-left: 40px;
         padding-right: 55px; /* bootstrapの auto padding 差分で右に+15pxが必要 */
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    div.player-body {
+        margin: auto;
     }
 }
 
