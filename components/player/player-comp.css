@@ -164,8 +164,8 @@ div.player-body {
 @media screen and (min-width: 768px) {
     div.player-body {
         padding-top: 25px;
-        padding-left: 40px;
-        padding-right: 55px; /* bootstrapの auto padding 差分で右に+15pxが必要 */
+        padding-left: 120px;
+        padding-right: 135px; /* bootstrapの auto padding 差分で右に+15pxが必要 */
     }
 }
 
