@@ -42,14 +42,12 @@
                 </div>
             </div>
             <div class="col-4 queue-body">
-                <div class="queue-list">
-                    <draggable class="row" element="div" :options="options" v-model="queue_ids" @end="queueDragEnd">
-                        <div class="col-4 text-center" v-for="(queue_id, index) in queue_ids">
-                            <button @click="deleteQueue(index)" class="btn btn-danger queue_delete">✗</button>
-                            <img :src="imgUrl + queue_id + '/mqdefault.jpg'" @click="selectQueue(index)" alt="">
-                        </div>
-                    </draggable> 
-                </div>
+                <draggable class="row" element="div" :options="options" v-model="queue_ids" @end="queueDragEnd">
+                    <div class="col-4 text-center float-right" v-for="(queue_id, index) in queue_ids">
+                        <button @click="deleteQueue(index)" class="btn btn-danger queue_delete">✗</button>
+                        <img :src="imgUrl + queue_id + '/mqdefault.jpg'" @click="selectQueue(index)" alt="">
+                    </div>
+                </draggable> 
             </div>
         </div>
     </div>

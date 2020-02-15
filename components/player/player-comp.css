@@ -88,26 +88,27 @@ p {
 /* queue body */
 div.queue-body {
     background-color: black;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     padding-left: 20px;
     padding-right: 20px;
+    overflow: auto;
 }
 
-/* queue list */
-
-div.queue-list div > div {
+div.queue-body div > div {
     padding: 5px;
     width: 100%;
-    position: relative;
 }
 
-div.queue-list > div > div:hover .queue_delete {
+div.queue-body > div > div:hover .queue_delete {
     display: block;
 }
 
-div.queue-list > div > div img {
-    width: 100%;
+div.queue-body > div > div img {
+    width: 80px;
+    height: 70px;
+    object-fit: cover;
+    box-sizing: border-box;
     border: 1px solid #c7c7c7c7;
 }
 
