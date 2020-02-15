@@ -97,7 +97,7 @@ div.queue-body {
 
 div.queue-body div > div {
     padding: 5px;
-    width: 100%;
+    width: 1rem;
 }
 
 div.queue-body > div > div:hover .queue_delete {
@@ -105,8 +105,8 @@ div.queue-body > div > div:hover .queue_delete {
 }
 
 div.queue-body > div > div img {
-    width: 80px;
-    height: 70px;
+    width: 8vw;
+    height: 8vw;
     object-fit: cover;
     box-sizing: border-box;
     border: 1px solid #c7c7c7c7;
@@ -148,6 +148,8 @@ div.queue-list div:not(:first-child) img:hover {
 
 div.player-body {
     padding-top: 25px;
+    padding-bottom: 25px;
+    display:flex;
 }
 
 .video-body {
