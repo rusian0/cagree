@@ -116,22 +116,25 @@ div.queue-body > div > div img {
     border: 1px solid #c7c7c7c7;
 }
 
-/* 
-div.queue-list div:first-child img {
+div.queue-body > div > div:first-child img {
     border-color:#ff0000;
 }
 
-div.queue-list div:not(:first-child) img:hover {
+div.queue-body > div > div:not(:first-child) img:hover {
     transition: all 0.2s linear;
     border-color:#ff0000;
-} */
+}
 
 /* queue delete button */
 .queue_delete {
     border-radius: 50%;
     position: absolute;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
     top: 10%;
-    left: 7%;   
+    left: 5%;
     display: none;
 }
 
@@ -175,6 +178,10 @@ div.player-body {
 @media screen and (min-width: 1920px) {
     div.player-body {
         margin: auto;
+    }
+    div.queue-body > div > div img {
+        width: 5vh;
+        height: 5vh;
     }
 }
 
