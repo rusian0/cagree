@@ -7,7 +7,6 @@
     height: 100%;
     width: 100%;
     overflow: hidden;
-    border: 1px solid #f8f8f8;
     /* padding-bottom: 56.25%; */
 }
 
@@ -88,19 +87,16 @@ p {
 
 /* queue body */
 div.queue-body {
-    height: 34.8vw;
     background-color: black;
     padding-top: 8px;
     padding-bottom: 8px;
     padding-left: 20px;
     padding-right: 20px;
-    overflow: auto;
 }
 
 div.queue-body div > div {
     padding: 0px;
     padding-top: 10px;
-    padding-bottom: 10px;
     width: 1rem;
 }
 
@@ -109,8 +105,8 @@ div.queue-body > div > div:hover .queue_delete {
 }
 
 div.queue-body > div > div img {
-    width: 6vw;
-    height: 6vw;
+    width: 8.5vw;
+    height: 8.5vw;
     object-fit: cover;
     box-sizing: border-box;
     border: 1px solid #c7c7c7c7;
@@ -154,6 +150,8 @@ div.queue-body > div > div:not(:first-child) img:hover {
  * * * * * * * * * * * * */
 
 div.player-body {
+    margin-left: 4%;
+    margin-right: 4%;
     padding-top: 25px;
     padding-bottom: 25px;
     max-width: 1920px;
@@ -170,18 +168,19 @@ div.player-body {
 @media screen and (min-width: 768px) {
     div.player-body {
         padding-top: 25px;
-        padding-left: 40px;
-        padding-right: 55px; /* bootstrapの auto padding 差分で右に+15pxが必要 */
+        /* bootstrapの auto padding 差分で右に+15pxが必要 */
     }
 }
 
 @media screen and (min-width: 1920px) {
     div.player-body {
+        padding-left: 40px;
+        padding-right: 55px;
         margin: auto;
     }
     div.queue-body > div > div img {
-        width: 5vh;
-        height: 5vh;
+        width: 15vh;
+        height: 15vh;
     }
 }
 
@@ -205,8 +204,8 @@ div.player-body {
 
 @media screen and (max-width: 768px) {
     div.queue-body > div > div img {
-        width: 13.5vw;
-        height: 13.5vw;
+        width: 13vw;
+        height: 13vw;
     }
     div.queue-body div > div {
         padding: 0px;
@@ -216,8 +215,8 @@ div.player-body {
 
 @media screen and (max-width: 576px) {
     div.queue-body > div > div img {
-        width: 20vw;
-        height: 20vw;
+        width: 17vw;
+        height: 17vw;
     }
     div.queue-body div > div {
         padding: 0px;
