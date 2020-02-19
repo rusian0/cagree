@@ -17,13 +17,11 @@
             <div class="col-2">
             </div>
         </div>
-        <div class="row player-body">
-            <div class="col-0 col-sm-0 col-md-0 col-lg-1">
-            </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-7">
+        <div class="row player-body" >
+            <div class="col-12 col-sm-12 col-md-12 col-lg-8">
                 <div class="youtube-movie">
                     <vue-plyr>
-                        <div class="plyr__video-embed" style="height: 34.8vw;">
+                        <div class="plyr__video-embed">
                             <youtube
                                 ref="youtube"
                                 :video-id="queue_ids[0]"
@@ -42,8 +40,8 @@
                     </vue-plyr> 
                 </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
-                <div class="queue-body">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
+                <div class="queue-body text-center">
                     <draggable class="row" element="div" :options="options" v-model="queue_ids" @end="queueDragEnd">
                         <div class="col-3 col-sm-2 col-md-2 col-lg-4 text-center" v-for="(queue_id, index) in queue_ids">
                             <button @click="deleteQueue(index)" class="btn btn-danger queue_delete">✗</button>
@@ -51,8 +49,6 @@
                         </div>
                     </draggable> 
                 </div>
-            </div>
-            <div class="col-0 col-sm-0 col-md-0 col-lg-1">
             </div>
         </div>
     </div>
