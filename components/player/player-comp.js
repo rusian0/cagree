@@ -11,8 +11,7 @@ export default {
     ],
     data: () => ({
         is_send: true,
-        firstPlay: 'before',
-        firstLoad: true,
+        seeking: false,
         videoId: '',
         state: '',
         video_url: '',
@@ -40,6 +39,8 @@ export default {
         },
         loading: false,
         comments: '',
+        timeInsepction: null,
+        timeInsepctionEnable: false
     }),
     mounted: function (){
 
@@ -50,8 +51,44 @@ export default {
             this.url_play('force', videoId)
         })
 
-        this.roomRef.onSnapshot(doc => {
-            this.getQueue()
+        this.roomRef.onSnapshot(async doc => {
+            const room = doc.data()
+
+            if(this.queue_ids != room.video_queue){
+                this.queue_ids = room.video_queue
+            }
+
+            const playerState = room.playerState
+            const myPlayerTime = await this.player.getCurrentTime()
+            const diffTime = Math.abs(room.currentTime - myPlayerTime)
+
+            if(diffTime > 0.5){
+                this.player.seekTo(room.currentTime)
+                console.log('diff take seek');
+                
+                this.seeking = true
+            }
+
+            if(this.state != room.playerState){
+
+                this.is_send = false
+                
+                if(playerState == 'playing'){
+                    this.player.playVideo()
+                    console.log('take playing')
+                }
+                else if(playerState == 'paused'){
+                    this.player.pauseVideo()
+                    console.log('take paused')
+                }
+            }
+
+            if(this.currentRate != room.currentRate){
+                this.is_send = false
+                this.player.setPlaybackRate(room.currentRate)
+            }
+
+            
         })
 
 
@@ -68,29 +105,16 @@ export default {
     methods: {
         deleteQueue(queueIndex){
             this.queue_ids.splice(queueIndex, 1);
-            this.room.send({event:'playerCtrl', action: 'rmQueue', datas:{position: queueIndex}})
-            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
-            // this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, position: queueIndex, action:'rm'})
+            this.roomRef.update({ video_queue: this.queue_ids })
         },
         selectQueue(queue_index){
             const limited_queue_id = this.queue_ids[queue_index];
             this.queue_ids.splice(queue_index, 1);
             this.queue_ids.unshift(limited_queue_id);
-            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids});
+            this.roomRef.update({ video_queue: this.queue_ids })
         },
         queueDragEnd(event){
-            // this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, action:'allUpdate'})
-            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
-            this.allUpdateQueue()
-        },
-        getSampleQueue(){
-            this.queue_ids = this.sample_ids
-            // this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, action:'allUpdate'})
-            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
-            this.allUpdateQueue()
-        },
-        allUpdateQueue(){
-            this.room.send({event:'playerCtrl', action: 'allUpdateQueue', datas:{newIds: this.queue_ids}})
+            this.roomRef.update({ video_queue: this.queue_ids })
         },
         onPlayerStateChange({target, data}){
             
@@ -105,26 +129,21 @@ export default {
             // this.previousTime = currentTime;
             // this.previousAction = data
         },
-        syncSeconds(target){
+        // syncSeconds(target){
 
-            const currentTime = target.getCurrentTime();
+        //     const currentTime = target.getCurrentTime();
 
-            // console.info(this.previousTime)
-            // console.info(currentTime)
-            const diffSeconds = Math.abs(this.previousTime - currentTime)
-            // console.info(diffSeconds)
-            if( diffSeconds > 1) {
-                this.room.send({event: 'playerCtrl', action: 'seekTo', datas:{currentTime}})
-            }
+        //     // console.info(this.previousTime)
+        //     // console.info(currentTime)
+        //     const diffSeconds = Math.abs(this.previousTime - currentTime)
+        //     // console.info(diffSeconds)
+        //     if( diffSeconds > 1) {
+        //         this.room.send({event: 'playerCtrl', action: 'seekTo', datas:{currentTime}})
+        //     }
 
-            this.previousTime = currentTime;
-            // this.previousAction = data
-        },
-        testplay: function(){
-            this.player.playVideo()
-
-            // console.info(this.$el.div)
-        },
+        //     this.previousTime = currentTime;
+        //     // this.previousAction = data
+        // },
         // addQueue: function(){
         //     console.log(this.roomId)
         //     this.$store.dispatch('room/addQueue', this.roomId)
@@ -152,31 +171,15 @@ export default {
 
             this.video_url = ''
 
-            if(this.queue_ids[0] == newVideoId && !this.firstLoad) return
-
-            this.firstLoad = false;
-
             if(priority == 'force' || this.videoId == ''){
                 this.queue_ids.unshift(newVideoId)
-                this.videoId = newVideoId
-                
-                // this.$store.dispatch('room/modifyQueue', {newVideoId, position: 'first', action:'add'})
-                this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
-
-                this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: this.videoId}})
-                this.room.send({event:'playerCtrl', action: 'unshiftQueue', datas:{videoId: newVideoId}})
-
             }
             else
             {
                 this.queue_ids.push(newVideoId)
-                // this.addQueue(newVideoId)
-                // this.$store.dispatch('room/modifyQueue', {newVideoId, position: 'last', action:'add'})
-                this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
-                this.room.send({event:'playerCtrl', action: 'addQueue', datas:{videoId: newVideoId}})
-
             }
 
+            this.roomRef.update({ video_queue: this.queue_ids })
 
         },
         id_play(video_id){
@@ -200,58 +203,54 @@ export default {
         playing(target) {
             this.state = 'playing';
 
-            if(this.firstPlay == 'done'){
-                this.firstPlay == 'not'
-            }
+            this.timeInsepctionStop()
 
-            if(this.firstPlay == 'before'){
-                this.player.setPlaybackRate(this.currentRate)
-                this.player.seekTo(this.currentTime)
-
-                this.firstPlay = 'done';
-                return;
-            }
-
-
-            if(!this.firstPlay == 'not'){
-                console.log('not')
+            if(this.seeking){
+                this.seeking = false
                 return
             }
 
             if(this.is_send){
                 console.log('playing')
 
-                this.syncSeconds(target)
-                this.room.send({event: 'playerCtrl', action: 'playing'})
+                this.roomRef.update({ 
+                    playerState: 'playing',
+                    currentTime: target.getCurrentTime()
+                })
 
             } else {
-                console.log('take playing')
                 this.is_send = true
             }
 
         },
         paused(target){
-            this.state = 'pause'
+            this.state = 'paused'
+
+            this.timeInsepctionStart(target)
+
+            if(this.seeking) return
+
             if(this.is_send){
-                console.log('pause')
+                console.log('paused')
 
-                this.room.send({event: 'playerCtrl', action: 'paused'})
-                this.syncSeconds(target)
-
+                this.roomRef.update({ 
+                    playerState: 'paused',
+                    currentTime: target.getCurrentTime()
+                })
                 
             } else {
-                console.log('take pause')
                 this.is_send = true;
             }
         },
         error: function(){this.state = 'error' },
         cued: function(){this.state = 'cued' },
-        playbackRateChange: function(event){
+        playbackRateChange({data}){
+            this.currentRate = data
+
             if(this.is_send){
-                this.room.send({event: 'playerCtrl', action: 'changeRate', datas: {rate: event.target.getPlaybackRate()}})
                 console.log('rateChange')
+                this.roomRef.update({ currentRate:  data})
             } else {
-                console.log('take rateChange')
                 this.is_send = true;
             }
         },
@@ -277,21 +276,35 @@ export default {
         },
 
         nextQueue: function(){
-            let newVideoId = this.queue_ids[1]
             this.queue_ids.splice(0, 1);
-            this.videoId = newVideoId
-
-            // this.$store.dispatch('room/modifyQueue', {newVideoId, position: 0, action:'rm'})
-            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
-
-
-            this.$nuxt.$emit('getRelatedVideo', newVideoId)
-
-            this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: newVideoId}})
-            this.room.send({event:'playerCtrl', action: 'rmQueue', datas:{position: 0}})
-
+            this.roomRef.update({ video_queue: this.queue_ids })
         },
 
+        timeInsepctionStart(target){
+            clearInterval(this.timeInsepction)
+
+            this.timeInsepctionEnable = true
+
+            this.currentTime = target.getCurrentTime()
+
+            this.timeInsepction = setInterval(() => {
+                if(!this.timeInsepctionEnable) return
+
+                const playerCurrentTime = target.getCurrentTime() 
+
+                if(this.currentTime ==  playerCurrentTime) return
+
+                console.log('send pauseSeek')
+                this.roomRef.update({ currentTime: playerCurrentTime })
+
+                this.currentTime = playerCurrentTime
+
+            }, 300);
+        },
+        timeInsepctionStop(){
+            this.timeInsepctionEnable = false
+            clearInterval(this.timeInsepction)
+        },
         tellPlayerStatus: function(){
 
             let _this = this;
@@ -338,51 +351,6 @@ export default {
             }
         },
 
-        playerCtrl: function(action, data){
-            this.is_send = false;
-            
-            switch (action) {
-                case 'playing':
-                    this.player.playVideo()
-                    break;
-                case 'playById':
-                    this.player.loadVideoById(data.videoId)
-                    // this.videoId = data.videoId
-                    break;
-                case 'addQueue':
-                    // this.player.loadVideoById(data.videoId)
-                    this.queue_ids.push(data.videoId)
-                    break;
-                case 'unshiftQueue':
-                    this.queue_ids.unshift(data.videoId)
-                    this.videoId = data.videoId
-                    break;
-                case 'rmQueue':
-                    this.queue_ids.splice(data.position, 1)
-                    break
-                case 'allUpdateQueue':
-                    this.queue_ids = data.newIds
-                    break;
-                case 'paused':
-                    this.player.pauseVideo()
-                    break;
-                case 'seekTo':
-                    this.player.seekTo(data.currentTime)
-                    console.info('take seek')
-                    break;
-                case 'changeRate':
-                    this.player.setPlaybackRate(data.rate)
-                    console.log('take changeRate')
-                    break;
-                case 'tellPlayerStatus':
-                    this.catchPlayingData(data.videoId, data.currentRate, data.currentTime, data.queue_ids)
-                    break;
-                case 'addRelated':
-                    this.updateRelated(data.relatedItems)
-                default:
-                    break;
-            }
-        },
     },
 
 }
