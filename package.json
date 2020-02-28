@@ -10,7 +10,7 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "deploy:dev": "git push && firebase use dev && yarn generate && firebase deploy",
-    "deploy":"yarn build && firebase deploy"
+    "deploy": "yarn build && firebase deploy"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
@@ -19,8 +19,6 @@
     "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/google-gtag": "^1.0.4",
-    "aws-amplify": "^1.1.36",
-    "aws-amplify-vue": "^0.2.14",
     "aws-sdk": "^2.506.0",
     "bootstrap-vue": "^2.0.2",
     "core-js": "2.6.9",
