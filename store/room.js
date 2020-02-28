@@ -8,15 +8,15 @@ export const state = () => ({
 })
 
 export const getters = {
-    check: state => !! state.username,
-    username: state => state.username ? state.username : '',
+    // check: state => !! state.username,
+    // username: state => state.username ? state.username : '',
     roomInfo: state => state.room
 }
 
 export const mutations = {
-    setUser (state, username){
-        state.username = username;
-    },
+    // setUser (state, username){
+        // state.username = username;
+    // },
     setRoomInfo (state, roomInfo){
         state.room = roomInfo
     },

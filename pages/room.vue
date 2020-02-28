@@ -69,8 +69,6 @@ export default {
         this.$store.commit('room/setRoomId', this.roomId)
         // this.$store.dispatch('room/clearMember')
 
-        this.$refs.youtubeplayer.getQueue()
-
         this.peer.on('open', peerId => {
             this.join();
         })
@@ -112,7 +110,7 @@ export default {
             // this.roomId = "ルーム";
             
             this.room = this.peer.joinRoom(this.roomId, {mode: 'sfu'});
-            this.$store.commit('room/setRoomInfo', this.room)
+            // this.$store.commit('room/setRoomInfo', this.room)
 
             console.info(this.room.name +" に入室完了")
             //チャットログの初期化
