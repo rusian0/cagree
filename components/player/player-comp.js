@@ -25,7 +25,6 @@ export default {
             '1E2y6834kYM'
         ],
         queue_ids:[],
-        queue_ids_fs:[],
         sampleRoomId: 'testroomid',
         playerVars: {
             autoplay: 1,
@@ -55,19 +54,13 @@ export default {
         this.roomRef.onSnapshot(async doc => {
             const room = doc.data()
 
-            // const myQueue = this.queue_ids.map( queue => { return queue  })
-            // const roomQueue = room.video_queue.map( queue => { return queue  })
-            // console.dir(myQueue)
-            // console.dir(roomQueue)
+            console.log(this.queue_ids)
+            console.log(room.video_queue)
 
-            this.queue_ids_fs = room.video_queue
-
-            console.log(this.queue_ids);
-            console.log(this.queue_ids_fs);
-
-            if(this.queue_ids != this.queue_ids_fs){
+            if(this.queue_ids != room.video_queue){
                 this.queue_ids = room.video_queue
                 console.log('かわった');
+                
             }
 
             const playerState = room.playerState
