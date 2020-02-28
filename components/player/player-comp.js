@@ -40,7 +40,8 @@ export default {
         loading: false,
         comments: '',
         timeInsepction: null,
-        timeInsepctionEnable: false
+        timeInsepctionEnable: false,
+        queueChanger: false
     }),
     mounted: function (){
 
@@ -54,24 +55,31 @@ export default {
         this.roomRef.onSnapshot(async doc => {
             const room = doc.data()
 
-            console.log(this.queue_ids)
-            console.log(room.video_queue)
+            const roomQueue = JSON.stringify(room.video_queue)
+            const myQueue = JSON.stringify(this.queue_ids)
 
-            if(this.queue_ids != room.video_queue){
+            let queueDiff = false
+
+            if(roomQueue != myQueue){
+                // console.log('キューに差分がありました')
+                queueDiff = true
                 this.queue_ids = room.video_queue
-                console.log('かわった');
-                
             }
 
             const playerState = room.playerState
             const myPlayerTime = await this.player.getCurrentTime()
             const diffTime = Math.abs(room.currentTime - myPlayerTime)
 
-            if(diffTime > 0.5){
-                this.player.seekTo(room.currentTime)
-                console.log('diff take seek');
-                
-                this.seeking = true
+            if(!this.queueChanger){
+                if(diffTime > 0.5 && !queueDiff){
+                    this.player.seekTo(room.currentTime)
+                    console.log('diff take seek');
+                    
+                    this.seeking = true
+                }
+            }
+            else {
+                this.queueChanger = false
             }
 
             if(this.state != room.playerState){
@@ -111,14 +119,19 @@ export default {
         deleteQueue(queueIndex){
             this.queue_ids.splice(queueIndex, 1);
             this.roomRef.update({ video_queue: this.queue_ids })
+
+            this.queueChanger = true
         },
         selectQueue(queue_index){
             const limited_queue_id = this.queue_ids[queue_index];
             this.queue_ids.splice(queue_index, 1);
             this.queue_ids.unshift(limited_queue_id);
+            this.queueChanger = true
+
             this.roomRef.update({ video_queue: this.queue_ids })
         },
         queueDragEnd(event){
+            this.queueChanger = true
             this.roomRef.update({ video_queue: this.queue_ids })
         },
         onPlayerStateChange({target, data}){
@@ -184,11 +197,9 @@ export default {
                 this.queue_ids.push(newVideoId)
             }
 
+            this.queueChanger = true
             this.roomRef.update({ video_queue: this.queue_ids })
 
-        },
-        id_play(video_id){
-            this.videoId = video_id;
         },
         ready(target) {
             this.getQueue();
