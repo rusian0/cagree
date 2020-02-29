@@ -58,6 +58,10 @@ export default {
     watch: {
         queue_ids: function(newQueues, oldQueues){
             if(newQueues[0] != oldQueues[0]){
+                if(this.state == 'playing'){
+                    this.is_send = false
+                }
+
                 this.timeInsepctionStop()
                 this.firstQueueChange = true
             }
@@ -166,11 +170,6 @@ export default {
             this.timeInsepctionStart(target)
 
             if(this.seeking) return
-
-            if(this.firstQueueChange){
-                this.firstQueueChange = false
-                return
-            }
 
             if(this.is_send){
                 console.log('paused')
