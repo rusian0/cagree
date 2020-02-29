@@ -143,24 +143,27 @@ export default {
             if(!this.startedSnapshot){
                 this.roomSnapshotStart()
                 this.startedSnapshot = true
+                console.log('not playing startedsnapshhot')
                 return
             }
-
+            
             if(this.seeking){
                 this.seeking = false
+                console.log('not playing seeking')
                 return
             }
-
+            
             if(this.is_send){
                 console.log('playing')
-
+                
                 this.roomRef.update({ 
                     playerState: 'playing',
                     currentTime: target.getCurrentTime()
                 })
-
+                
             } else {
                 this.is_send = true
+                console.log('not playing not sender')
             }
 
         },
@@ -270,34 +273,6 @@ export default {
         timeInsepctionStop(){
             this.timeInsepctionEnable = false
             clearInterval(this.timeInsepction)
-        },
-        tellPlayerStatus: function(){
-
-            let _this = this;
-
-            _this.player.getPlaybackRate()
-                .then((rate) => {
-                    _this.currentRate = rate
-
-                    return _this.player.getCurrentTime()
-                })
-                .then((time) => {
-                    _this.currentTime = time
-
-                    this.room.send(
-                        {
-                            event: 'playerCtrl',
-                            action: 'tellPlayerStatus',
-                            datas:{
-                                videoId: _this.videoId,
-                                currentTime: _this.currentTime,
-                                currentRate: _this.currentRate,
-                                queue_ids: _this.queue_ids,
-                            }
-                        }
-                    )
-                    console.log('response')
-                })
         },
         roomSnapshotStart: function() {
             this.roomRef.onSnapshot(async doc => {
