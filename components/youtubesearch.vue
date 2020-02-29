@@ -141,13 +141,6 @@ export default {
     },
     mounted: function (){
 
-
-        this.$nuxt.$on('getRelatedVideo', videoId => {
-            this.getRelatedVideo(videoId)
-        })
-        this.$nuxt.$on('updateRelated', items => {
-            this.related_items = items
-        })
     },
     computed: {
     },
