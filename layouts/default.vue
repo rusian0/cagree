@@ -1,7 +1,9 @@
 <template>
 <div>
    <header class="header">
-      <nuxt-link tag="h2" to=/><a>PulScreen</a></nuxt-link>
+      <nuxt-link tag="h2" to=/>
+         <a><img src="/images/logo.png" alt="" width="280"></a>
+      </nuxt-link>
 
       <!-- <nav>
 
@@ -77,7 +79,7 @@ data () {
 
    header.header{
       background-color: #920000;
-      padding: 30px 50px;
+      padding: 20px 50px 10px 50px;
       top: 0;
       /* position: fixed;
       z-index: 9999;
