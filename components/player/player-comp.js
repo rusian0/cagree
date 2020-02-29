@@ -10,6 +10,7 @@ export default {
         'room'
     ],
     data: () => ({
+        dontSnapshot: true,
         is_send: true,
         seeking: false,
         videoId: '',
@@ -53,6 +54,9 @@ export default {
         })
 
         this.roomRef.onSnapshot(async doc => {
+            
+            if(this.dontSnapshot) return
+
             const room = doc.data()
 
             const roomQueue = JSON.stringify(room.video_queue)
@@ -97,7 +101,6 @@ export default {
             }
 
             if(this.currentRate != room.currentRate){
-                this.is_send = false
                 this.player.setPlaybackRate(room.currentRate)
             }
 
@@ -217,6 +220,7 @@ export default {
 
         },
         playing(target) {
+            this.dontSnapshot = false
             this.state = 'playing';
 
             this.timeInsepctionStop()
