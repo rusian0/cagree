@@ -57,12 +57,7 @@ export default {
     },
     watch: {
         queue_ids: function(newQueues, oldQueues){
-            console.log('キュー変化');
-
-            console.log(newQueues[0] )
-            console.log(oldQueues[0])
             if(newQueues[0] != oldQueues[0]){
-                console.log('一番目のキュー変更');
                 this.timeInsepctionStop()
                 this.firstQueueChange = true
             }
