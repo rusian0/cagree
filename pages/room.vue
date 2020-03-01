@@ -138,7 +138,6 @@ export default {
             })
 
             this.room.on('peerJoin', (data) => {
-                this.$refs.youtubeplayer.tellPlayerStatus()
                 // this.$store.dispatch('room/modifyMember', {memberId: this.peer.id, action: 'join'})
             })
 

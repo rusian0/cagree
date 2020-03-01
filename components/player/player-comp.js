@@ -45,7 +45,8 @@ export default {
         timeInsepction: null,
         timeInsepctionEnable: false,
         queueChanger: false,
-        firstQueueChange: false
+        firstQueueChange: false,
+        tmpRoomData: null,
     }),
     computed: {
         player() { return this.$refs.youtube.player },
@@ -281,6 +282,10 @@ export default {
             this.roomRef.onSnapshot(async doc => {
     
                 const room = doc.data()
+
+                if(this.tmpRoomData == null){
+                    this.tmpRoomData = room
+                }
     
                 const roomQueue = JSON.stringify(room.video_queue)
                 const myQueue = JSON.stringify(this.queue_ids)
@@ -295,8 +300,8 @@ export default {
                 const playerState = room.playerState
                 const myPlayerTime = await this.player.getCurrentTime()
                 const diffTime = Math.abs(room.currentTime - myPlayerTime)
-    
-                if(!this.queueChanger){
+                
+                if(!this.queueChanger && this.tmpRoomData.currentTime != room.currentTime){
                     if(diffTime > 0.5 && !queueDiff){
                         this.player.seekTo(room.currentTime)
                         console.log('diff take seek');
@@ -327,7 +332,7 @@ export default {
                     this.player.setPlaybackRate(room.currentRate)
                 }
     
-                
+                this.tmpRoomData = room
             })
         }
     },
