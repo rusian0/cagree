@@ -7,7 +7,8 @@ export default {
     components: { draggable },
     props: [
         'roomId',
-        'room'
+        'room',
+        'room_member',
     ],
     data: () => ({
         startedSnapshot: false,
@@ -65,6 +66,12 @@ export default {
                 this.timeInsepctionStop()
                 this.firstQueueChange = true
             }
+        },
+        room_member: async function(newMembers, oldMembers){
+            // if(newMembers.length > oldMembers.length && newMembers[0] == this.room._peerId){
+            //     const currentTime = await this.player.getCurrentTime()
+            //     this.roomRef.update({ currentTime: currentTime })
+            // }　
         }
     },
     mounted: async function (){
@@ -126,14 +133,7 @@ export default {
             console.log('ready')
             this.state = 'ready';
             this.videoId = this.queue_ids[0]
-            this.$nuxt.$emit('getRelatedVideo', this.videoId)
-
-
-            // if(this.firstPlay == 'before'){
-            //     this.requestPlayingData()
-            // }
             this.player.on('playbackRateChange', this.playbackRateChange)
-            this.player.on('stateChange', this.onPlayerStateChange)
 
         },
         playing(target) {
@@ -188,12 +188,15 @@ export default {
         },
         error: function(){this.state = 'error' },
         cued: function(){this.state = 'cued' },
-        playbackRateChange({data}){
+        playbackRateChange({target, data}){
             this.currentRate = data
 
             if(this.is_send){
                 console.log('rateChange')
-                this.roomRef.update({ currentRate:  data})
+                this.roomRef.update({ 
+                    currentRate:  data,
+                    // currentTime: target.getCurrentTime()
+                })
             } else {
                 this.is_send = true;
             }
@@ -285,7 +288,6 @@ export default {
                 let queueDiff = false
     
                 if(roomQueue != myQueue){
-                    // console.log('キューに差分がありました')
                     queueDiff = true
                     this.queue_ids = room.video_queue
                 }
@@ -321,6 +323,7 @@ export default {
                 }
     
                 if(this.currentRate != room.currentRate){
+                    this.currentRate = room.currentRate
                     this.player.setPlaybackRate(room.currentRate)
                 }
     

@@ -31,7 +31,7 @@
 <template>
     <div>
         <div class="container-fluid main">
-            <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/>
+            <youtubeplayer :room="room" :roomId="roomId" :room_member="room_member" :yt_key="yt_key" ref="youtubeplayer"/>
         </div>
         <div class="row">
             <div class="col-7">
