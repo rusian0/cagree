@@ -141,7 +141,6 @@ import youtubeplayer from '~/components/player/player-comp.vue'
 import youtubesearch from '~/components/youtubesearch.vue'
 
 export default {
-    middleware: 'room_auth',
     components: {
         youtubeplayer,
         youtubesearch
