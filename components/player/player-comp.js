@@ -7,12 +7,14 @@ export default {
     components: { draggable },
     props: [
         'roomId',
-        'room'
+        'room',
+        'room_member',
     ],
     data: () => ({
+        startedSnapshot: false,
+        firstSeeked: false,
         is_send: true,
-        firstPlay: 'before',
-        firstLoad: true,
+        seeking: false,
         videoId: '',
         state: '',
         video_url: '',
@@ -26,6 +28,7 @@ export default {
             '1E2y6834kYM'
         ],
         queue_ids:[],
+        tmp_queue_ids: [],
         sampleRoomId: 'testroomid',
         playerVars: {
             autoplay: 1,
@@ -40,22 +43,12 @@ export default {
         },
         loading: false,
         comments: '',
+        timeInsepction: null,
+        timeInsepctionEnable: false,
+        queueChanger: false,
+        firstQueueChange: false,
+        tmpRoomData: null,
     }),
-    mounted: function (){
-
-        this.$nuxt.$on('id_play', videoId => {
-            this.url_play('', videoId)
-        })
-        this.$nuxt.$on('unshift_id_play', videoId => {
-            this.url_play('force', videoId)
-        })
-
-        this.roomRef.onSnapshot(doc => {
-            this.getQueue()
-        })
-
-
-    },
     computed: {
         player() { return this.$refs.youtube.player },
         roomRef (){ 
@@ -65,71 +58,44 @@ export default {
             return db.collection('room').doc(this.$nuxt.$route.query.id)
         }
     },
-    methods: {
-        deleteQueue(queueIndex){
-            this.queue_ids.splice(queueIndex, 1);
-            this.room.send({event:'playerCtrl', action: 'rmQueue', datas:{position: queueIndex}})
-            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
-            // this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, position: queueIndex, action:'rm'})
-        },
-        selectQueue(queue_index){
-            const limited_queue_id = this.queue_ids[queue_index];
-            this.queue_ids.splice(queue_index, 1);
-            this.queue_ids.unshift(limited_queue_id);
-            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids});
-        },
-        queueDragEnd(event){
-            // this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, action:'allUpdate'})
-            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
-            this.allUpdateQueue()
-        },
-        getSampleQueue(){
-            this.queue_ids = this.sample_ids
-            // this.$store.dispatch('room/modifyQueue', {newVideoId: this.queue_ids, action:'allUpdate'})
-            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
-            this.allUpdateQueue()
-        },
-        allUpdateQueue(){
-            this.room.send({event:'playerCtrl', action: 'allUpdateQueue', datas:{newIds: this.queue_ids}})
-        },
-        onPlayerStateChange({target, data}){
-            
-            // const currentTime = target.getCurrentTime();
+    watch: {
+        queue_ids: function(newQueues, oldQueues){
+            if(newQueues[0] != oldQueues[0]){
+                if(this.state == 'playing'){
+                    this.is_send = false
+                }
 
-            // // console.info(this.previousTime)
-            // // console.info(currentTime)
-            // if(Math.abs(this.previousTime - currentTime) > 1) {
-            //     // this.room.send({event: 'playerCtrl', action: 'seekTo', datas:{currentTime: currentTime}})
-            // }
-
-            // this.previousTime = currentTime;
-            // this.previousAction = data
-        },
-        syncSeconds(target){
-
-            const currentTime = target.getCurrentTime();
-
-            // console.info(this.previousTime)
-            // console.info(currentTime)
-            const diffSeconds = Math.abs(this.previousTime - currentTime)
-            // console.info(diffSeconds)
-            if( diffSeconds > 1) {
-                this.room.send({event: 'playerCtrl', action: 'seekTo', datas:{currentTime}})
+                this.timeInsepctionStop()
+                this.firstQueueChange = true
             }
-
-            this.previousTime = currentTime;
-            // this.previousAction = data
         },
-        testplay: function(){
-            this.player.playVideo()
+        room_member:async function (newMembers, oldMembers) {
+            const host = newMembers.length > oldMembers.length && newMembers[0] == this.room._peerId
 
-            // console.info(this.$el.div)
-        },
-        // addQueue: function(){
-        //     console.log(this.roomId)
-        //     this.$store.dispatch('room/addQueue', this.roomId)
+            if(host){
+                const currentTime = await this.player.getCurrentTime()
+                this.roomRef.update({ currentTime })
+                
+            }　
+        }
+    },
+    mounted: async function (){
 
-        // },
+        this.$nuxt.$on('id_play', videoId => {
+            this.url_play('', videoId)
+        })
+        this.$nuxt.$on('unshift_id_play', videoId => {
+            this.url_play('force', videoId)
+        })
+
+        const room = await this.roomRef.get()
+        const roomData = room.data()
+
+        this.queue_ids = roomData.video_queue
+
+
+    },
+    methods: {
         url_play(priority, videoId){
             
             let newVideoId
@@ -152,106 +118,88 @@ export default {
 
             this.video_url = ''
 
-            if(this.queue_ids[0] == newVideoId && !this.firstLoad) return
-
-            this.firstLoad = false;
+            this.tmp_queue_ids = this.queue_ids.filter(queue => queue)
 
             if(priority == 'force' || this.videoId == ''){
-                this.queue_ids.unshift(newVideoId)
-                this.videoId = newVideoId
-                
-                // this.$store.dispatch('room/modifyQueue', {newVideoId, position: 'first', action:'add'})
-                this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
-
-                this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: this.videoId}})
-                this.room.send({event:'playerCtrl', action: 'unshiftQueue', datas:{videoId: newVideoId}})
-
+                this.tmp_queue_ids.unshift(newVideoId)
             }
             else
             {
-                this.queue_ids.push(newVideoId)
-                // this.addQueue(newVideoId)
-                // this.$store.dispatch('room/modifyQueue', {newVideoId, position: 'last', action:'add'})
-                this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
-                this.room.send({event:'playerCtrl', action: 'addQueue', datas:{videoId: newVideoId}})
-
+                this.tmp_queue_ids.push(newVideoId)
             }
 
+            this.queue_ids = this.tmp_queue_ids
+
+            this.queueChanger = true
+            this.roomRef.update({ video_queue: this.queue_ids })
 
         },
-        id_play(video_id){
-            this.videoId = video_id;
-        },
         ready(target) {
-            this.getQueue();
             console.log('ready')
             this.state = 'ready';
             this.videoId = this.queue_ids[0]
-            this.$nuxt.$emit('getRelatedVideo', this.videoId)
-
-
-            // if(this.firstPlay == 'before'){
-            //     this.requestPlayingData()
-            // }
             this.player.on('playbackRateChange', this.playbackRateChange)
-            this.player.on('stateChange', this.onPlayerStateChange)
 
         },
         playing(target) {
             this.state = 'playing';
+            this.timeInsepctionStop()
 
-            if(this.firstPlay == 'done'){
-                this.firstPlay == 'not'
-            }
-
-            if(this.firstPlay == 'before'){
-                this.player.setPlaybackRate(this.currentRate)
-                this.player.seekTo(this.currentTime)
-
-                this.firstPlay = 'done';
-                return;
-            }
-
-
-            if(!this.firstPlay == 'not'){
-                console.log('not')
+            if(!this.startedSnapshot){
+                this.roomSnapshotStart()
+                this.startedSnapshot = true
                 return
             }
-
+            
+            if(this.seeking){
+                this.seeking = false
+                return
+            }
+            
             if(this.is_send){
                 console.log('playing')
-
-                this.syncSeconds(target)
-                this.room.send({event: 'playerCtrl', action: 'playing'})
-
+                
+                this.roomRef.update({ 
+                    playerState: 'playing',
+                    currentTime: target.getCurrentTime()
+                })
+                
             } else {
-                console.log('take playing')
                 this.is_send = true
             }
 
         },
         paused(target){
-            this.state = 'pause'
+            this.state = 'paused'
+
+            this.timeInsepctionStart(target)
+
+            if(this.seeking) return
+
             if(this.is_send){
-                console.log('pause')
+                console.log('paused')
 
-                this.room.send({event: 'playerCtrl', action: 'paused'})
-                this.syncSeconds(target)
-
+                this.roomRef.update({ 
+                    playerState: 'paused',
+                    currentTime: target.getCurrentTime()
+                })
                 
             } else {
-                console.log('take pause')
                 this.is_send = true;
             }
         },
         error: function(){this.state = 'error' },
         cued: function(){this.state = 'cued' },
-        playbackRateChange: function(event){
+        playbackRateChange({target, data}){
+            this.currentRate = data
+
             if(this.is_send){
-                this.room.send({event: 'playerCtrl', action: 'changeRate', datas: {rate: event.target.getPlaybackRate()}})
                 console.log('rateChange')
+                this.roomRef.update({ 
+                    currentRate:  data,
+                    // currentTime: target.getCurrentTime()
+                })
             } else {
-                console.log('take rateChange')
                 this.is_send = true;
             }
         },
@@ -277,112 +225,122 @@ export default {
         },
 
         nextQueue: function(){
-            let newVideoId = this.queue_ids[1]
-            this.queue_ids.splice(0, 1);
-            this.videoId = newVideoId
-
-            // this.$store.dispatch('room/modifyQueue', {newVideoId, position: 0, action:'rm'})
-            this.$store.dispatch('room/modifyQueue', {newVideoIds: this.queue_ids})
-
-
-            this.$nuxt.$emit('getRelatedVideo', newVideoId)
-
-            this.room.send({event:'playerCtrl', action: 'playById', datas:{videoId: newVideoId}})
-            this.room.send({event:'playerCtrl', action: 'rmQueue', datas:{position: 0}})
-
+            this.tmp_queue_ids = this.queue_ids.filter(queue => queue)
+            this.tmp_queue_ids.splice(0, 1);
+            this.queue_ids = this.tmp_queue_ids
+            this.roomRef.update({ video_queue: this.queue_ids })
         },
+        deleteQueue(queueIndex){
+            this.tmp_queue_ids = this.queue_ids.filter(queue => queue)
+            this.tmp_queue_ids.splice(queueIndex, 1);
 
-        tellPlayerStatus: function(){
+            this.queue_ids = this.tmp_queue_ids
+            this.roomRef.update({ video_queue: this.queue_ids })
 
-            let _this = this;
+            this.queueChanger = true
+        },
+        selectQueue(queue_index){
+            this.tmp_queue_ids = this.queue_ids.filter(queue => queue)
+            const limited_queue_id = this.queue_ids[queue_index];
 
-            _this.player.getPlaybackRate()
-                .then((rate) => {
-                    _this.currentRate = rate
+            this.tmp_queue_ids.splice(queue_index, 1);
+            this.tmp_queue_ids.unshift(limited_queue_id);
+            this.queueChanger = true
 
-                    return _this.player.getCurrentTime()
-                })
-                .then((time) => {
-                    _this.currentTime = time
+            this.queue_ids = this.tmp_queue_ids
+            this.roomRef.update({ video_queue: this.queue_ids })
+        },
+        queueDragEnd(event){
+            this.queueChanger = true
+            this.roomRef.update({ video_queue: this.queue_ids })
+        },
+        timeInsepctionStart(target){
+            clearInterval(this.timeInsepction)
 
-                    this.room.send(
-                        {
-                            event: 'playerCtrl',
-                            action: 'tellPlayerStatus',
-                            datas:{
-                                videoId: _this.videoId,
-                                currentTime: _this.currentTime,
-                                currentRate: _this.currentRate,
-                                queue_ids: _this.queue_ids,
-                            }
+            this.timeInsepctionEnable = true
+
+            this.currentTime = target.getCurrentTime()
+
+            this.timeInsepction = setInterval(() => {
+                if(!this.timeInsepctionEnable) return
+
+                const playerCurrentTime = target.getCurrentTime() 
+
+                if(this.currentTime ==  playerCurrentTime) return
+
+                console.log('send pauseSeek')
+                this.roomRef.update({ currentTime: playerCurrentTime })
+
+                this.currentTime = playerCurrentTime
+
+            }, 300);
+        },
+        timeInsepctionStop(){
+            this.timeInsepctionEnable = false
+            clearInterval(this.timeInsepction)
+        },
+        roomSnapshotStart: function() {
+            this.roomRef.onSnapshot(async doc => {
+    
+                const room = doc.data()
+
+                if(this.tmpRoomData == null){
+                    this.tmpRoomData = room
+                }
+    
+                const roomQueue = JSON.stringify(room.video_queue)
+                const myQueue = JSON.stringify(this.queue_ids)
+    
+                let queueDiff = false
+    
+                if(roomQueue != myQueue){
+                    queueDiff = true
+                    this.queue_ids = room.video_queue
+                }
+    
+                const playerState = room.playerState
+                const myPlayerTime = await this.player.getCurrentTime()
+                const diffTime = Math.abs(room.currentTime - myPlayerTime)
+                
+                if((!this.queueChanger && this.tmpRoomData.currentTime != room.currentTime) || !this.firstSeeked){
+
+                    if(diffTime > 0.5 && !queueDiff){
+                        this.player.seekTo(room.currentTime)
+                        console.log('diff take seek');
+                        
+                        if(this.firstSeeked){
+                            this.seeking = true
                         }
-                    )
-                    console.log('response')
-                })
-        },
+                    }
 
-        updateRelated: function(items){
-            this.$nuxt.$emit('updateRelated', items)
-        },
-
-        async getQueue() {
-
-            let videoQueue = await this.$store.dispatch('room/getQueue')
-
-            if(videoQueue) {
-                this.queue_ids = videoQueue
-                this.videoId = videoQueue[0]
-            }
-            else {
-                this.queue_ids = this.sample_ids
-            }
-        },
-
-        playerCtrl: function(action, data){
-            this.is_send = false;
-            
-            switch (action) {
-                case 'playing':
-                    this.player.playVideo()
-                    break;
-                case 'playById':
-                    this.player.loadVideoById(data.videoId)
-                    // this.videoId = data.videoId
-                    break;
-                case 'addQueue':
-                    // this.player.loadVideoById(data.videoId)
-                    this.queue_ids.push(data.videoId)
-                    break;
-                case 'unshiftQueue':
-                    this.queue_ids.unshift(data.videoId)
-                    this.videoId = data.videoId
-                    break;
-                case 'rmQueue':
-                    this.queue_ids.splice(data.position, 1)
-                    break
-                case 'allUpdateQueue':
-                    this.queue_ids = data.newIds
-                    break;
-                case 'paused':
-                    this.player.pauseVideo()
-                    break;
-                case 'seekTo':
-                    this.player.seekTo(data.currentTime)
-                    console.info('take seek')
-                    break;
-                case 'changeRate':
-                    this.player.setPlaybackRate(data.rate)
-                    console.log('take changeRate')
-                    break;
-                case 'tellPlayerStatus':
-                    this.catchPlayingData(data.videoId, data.currentRate, data.currentTime, data.queue_ids)
-                    break;
-                case 'addRelated':
-                    this.updateRelated(data.relatedItems)
-                default:
-                    break;
-            }
-        },
+                    this.firstSeeked = true
+                }
+                else {
+                    this.queueChanger = false
+                }
+    
+                if(this.state != room.playerState){
+    
+                    this.is_send = false
+                    
+                    if(playerState == 'playing'){
+                        this.player.playVideo()
+                        console.log('take playing')
+                    }
+                    else if(playerState == 'paused'){
+                        this.player.pauseVideo()
+                        console.log('take paused')
+                    }
+                }
+    
+                if(this.currentRate != room.currentRate){
+                    this.currentRate = room.currentRate
+                    this.player.setPlaybackRate(room.currentRate)
+                }
+    
+                this.tmpRoomData = room
+            })
+        }
     },
 
 }

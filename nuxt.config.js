@@ -40,7 +40,6 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    // {src: 'plugins/amplify.js',ssr: false},
     {src: 'plugins/vue-youtube.js',ssr: false},
     {src: 'plugins/vue-plyr.js',ssr: false},
     {src: 'plugins/firebase.js',ssr: false},
@@ -82,7 +81,6 @@ export default {
   },
 
   router:{
-    middleware: ['init_auth']
   },
   /*
   ** Build configuration

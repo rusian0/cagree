@@ -23,7 +23,6 @@
             <input type="submit" value="ログイン">
         </form>
     <router-link to=/register>会員登録はこちら</router-link>
-    <!-- <amplify-authenticator></amplify-authenticator> -->
     </div>
 </template>
 <script>
@@ -43,12 +42,6 @@ export default {
 
     methods: {
 
-        async login () {
-            await this.$store.dispatch('auth/login', this.formData)
-
-            // this.$router.push('/mypage')
-            // console.log('ok');
-        },
     }
 
 }

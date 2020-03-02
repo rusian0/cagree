@@ -4,32 +4,6 @@
       <nuxt-link tag="h2" to=/>
          <a><img src="/images/logo.png" alt="" width="280"></a>
       </nuxt-link>
-
-      <!-- <nav>
-
-         <ul>
-            <nuxt-link tag="li" to=/><a>Top</a></nuxt-link>
-            <nuxt-link tag="li" to=/room><a>Room</a></nuxt-link>
-         </ul>
-
-         <div class="auth">
-
-            <div v-if="isLogin">
-               <nuxt-link to=/mypage>Mypage</nuxt-link>
-               <a @click="logout">Logout</a>
-            </div>
-
-            <div v-else>
-               <nuxt-link to=/auth/register>Register</nuxt-link>
-               <nuxt-link to=/auth/login>Login</nuxt-link>
-            </div>
-
-         <div>
-
-            </div>
-         </div>
-      </nav> -->
-
    </header>
    <Nuxt />
 </div>
@@ -47,19 +21,15 @@ data () {
 
    computed: {
       isLogin () {
-         return this.$store.getters['auth/check']
       },
       username () {
-         return this.$store.getters['auth/username']
       }
    },
 
 
    methods: {
       async logout () {
-         await this.$store.dispatch('auth/logout')
 
-         // this.$router.push('/auth/login')
       }
 }
 }

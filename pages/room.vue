@@ -31,7 +31,7 @@
 <template>
     <div>
         <div class="container-fluid main">
-            <youtubeplayer :room="room" :roomId="roomId" :yt_key="yt_key" ref="youtubeplayer"/>
+            <youtubeplayer :room="room" :roomId="roomId" :room_member="room_member" :yt_key="yt_key" ref="youtubeplayer"/>
         </div>
         <div class="row">
             <div class="col-7">
@@ -59,7 +59,6 @@ import youtubeplayer from '~/components/player/player-comp.vue'
 import youtubesearch from '~/components/youtubesearch.vue'
 
 export default {
-    middleware: 'room_auth',
     components: {
         youtubeplayer,
         youtubesearch
@@ -69,8 +68,6 @@ export default {
 
         this.$store.commit('room/setRoomId', this.roomId)
         // this.$store.dispatch('room/clearMember')
-
-        this.$refs.youtubeplayer.getQueue()
 
         this.peer.on('open', peerId => {
             this.join();
@@ -113,37 +110,20 @@ export default {
             // this.roomId = "ルーム";
             
             this.room = this.peer.joinRoom(this.roomId, {mode: 'sfu'});
-            this.$store.commit('room/setRoomInfo', this.room)
+            // this.$store.commit('room/setRoomInfo', this.room)
 
             console.info(this.room.name +" に入室完了")
             //チャットログの初期化
             this.chats.length = 0;
             this.chats.push(this.roomId + 'に入室しました')
 
-            //dataイベント受信
-            this.room.on('data', ({data}) => {
-                switch (data.event) {
-                    case 'chat':
-                        this.chats.push(data.msg);
-                        break;
-
-                    case 'playerCtrl':
-                        this.$refs.youtubeplayer.playerCtrl(data.action, data.datas)
-                
-                    default:
-                        break;
-                }
-
-            });
-
             this.room.on('log', (room_log) => {
                 this.initMember(room_log)
             })
 
-            this.room.on('peerJoin', (data) => {
-                this.$refs.youtubeplayer.tellPlayerStatus()
-                // this.$store.dispatch('room/modifyMember', {memberId: this.peer.id, action: 'join'})
-            })
+            // this.room.on('peerJoin', (data) => {
+            //     // this.$store.dispatch('room/modifyMember', {memberId: this.peer.id, action: 'join'})
+            // })
 
             this.room.on('peerLeave', (peer_id) => {
                 this.$store.dispatch('room/modifyMember', {memberId: peer_id, action: 'leave'})
@@ -154,7 +134,7 @@ export default {
 
                 this.$store.dispatch('room/modifyMember', {memberId: this.peer.id, action: 'join'})
 
-                 itemRef.doc(this.roomId)
+                itemRef.doc(this.roomId)
                     .onSnapshot((doc) => {
                         this.room_member = doc.data().room_member
                     })
