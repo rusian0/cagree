@@ -117,29 +117,13 @@ export default {
             this.chats.length = 0;
             this.chats.push(this.roomId + 'に入室しました')
 
-            //dataイベント受信
-            this.room.on('data', ({data}) => {
-                switch (data.event) {
-                    case 'chat':
-                        this.chats.push(data.msg);
-                        break;
-
-                    case 'playerCtrl':
-                        this.$refs.youtubeplayer.playerCtrl(data.action, data.datas)
-                
-                    default:
-                        break;
-                }
-
-            });
-
             this.room.on('log', (room_log) => {
                 this.initMember(room_log)
             })
 
-            this.room.on('peerJoin', (data) => {
-                // this.$store.dispatch('room/modifyMember', {memberId: this.peer.id, action: 'join'})
-            })
+            // this.room.on('peerJoin', (data) => {
+            //     // this.$store.dispatch('room/modifyMember', {memberId: this.peer.id, action: 'join'})
+            // })
 
             this.room.on('peerLeave', (peer_id) => {
                 this.$store.dispatch('room/modifyMember', {memberId: peer_id, action: 'leave'})
@@ -150,7 +134,7 @@ export default {
 
                 this.$store.dispatch('room/modifyMember', {memberId: this.peer.id, action: 'join'})
 
-                 itemRef.doc(this.roomId)
+                itemRef.doc(this.roomId)
                     .onSnapshot((doc) => {
                         this.room_member = doc.data().room_member
                     })

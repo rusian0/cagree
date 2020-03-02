@@ -12,6 +12,7 @@ export default {
     ],
     data: () => ({
         startedSnapshot: false,
+        firstSeeked: false,
         is_send: true,
         seeking: false,
         videoId: '',
@@ -68,11 +69,14 @@ export default {
                 this.firstQueueChange = true
             }
         },
-        room_member: async function(newMembers, oldMembers){
-            // if(newMembers.length > oldMembers.length && newMembers[0] == this.room._peerId){
-            //     const currentTime = await this.player.getCurrentTime()
-            //     this.roomRef.update({ currentTime: currentTime })
-            // }　
+        room_member:async function (newMembers, oldMembers) {
+            const host = newMembers.length > oldMembers.length && newMembers[0] == this.room._peerId
+
+            if(host){
+                const currentTime = await this.player.getCurrentTime()
+                this.roomRef.update({ currentTime })
+                
+            }　
         }
     },
     mounted: async function (){
@@ -144,13 +148,11 @@ export default {
             if(!this.startedSnapshot){
                 this.roomSnapshotStart()
                 this.startedSnapshot = true
-                console.log('not playing startedsnapshhot')
                 return
             }
             
             if(this.seeking){
                 this.seeking = false
-                console.log('not playing seeking')
                 return
             }
             
@@ -164,7 +166,6 @@ export default {
                 
             } else {
                 this.is_send = true
-                console.log('not playing not sender')
             }
 
         },
@@ -301,13 +302,18 @@ export default {
                 const myPlayerTime = await this.player.getCurrentTime()
                 const diffTime = Math.abs(room.currentTime - myPlayerTime)
                 
-                if(!this.queueChanger && this.tmpRoomData.currentTime != room.currentTime){
+                if((!this.queueChanger && this.tmpRoomData.currentTime != room.currentTime) || !this.firstSeeked){
+
                     if(diffTime > 0.5 && !queueDiff){
                         this.player.seekTo(room.currentTime)
                         console.log('diff take seek');
                         
-                        this.seeking = true
+                        if(this.firstSeeked){
+                            this.seeking = true
+                        }
                     }
+
+                    this.firstSeeked = true
                 }
                 else {
                     this.queueChanger = false
