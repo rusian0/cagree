@@ -2,7 +2,7 @@
 <div>
    <header class="header">
       <nuxt-link tag="h2" to=/>
-         <a><img src="/images/logo.png" alt="" width="280"></a>
+         <a><img src="/images/logo.png" alt="" width="160"></a>
       </nuxt-link>
    </header>
    <Nuxt />
