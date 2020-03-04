@@ -53,6 +53,7 @@ import Peer from 'skyway-js';
 
 import firebase from "~/plugins/firebase.js"
 const db = firebase.firestore();
+const auth = firebase.auth()
 const itemRef = db.collection('room')
 
 import youtubeplayer from '~/components/player/player-comp.vue'
@@ -75,15 +76,10 @@ export default {
 
     },
 
-    state: {
-        chats: []
-    },
-
     data: function(){
         return {
             msg: '',
             send_msg: '',
-            chats: [],
             room: '',
             yt_key: process.env.YOUTUBEDATA_APIKEY,
             room_member: []
@@ -113,9 +109,6 @@ export default {
             // this.$store.commit('room/setRoomInfo', this.room)
 
             console.info(this.room.name +" に入室完了")
-            //チャットログの初期化
-            this.chats.length = 0;
-            this.chats.push(this.roomId + 'に入室しました')
 
             this.room.on('log', (room_log) => {
                 this.initMember(room_log)
@@ -149,19 +142,6 @@ export default {
                 await this.$store.dispatch('room/clearMember')
                 this.$store.dispatch('room/modifyMember', {memberId: this.peer.id, action: 'join'})
             }
-        },
-
-        //チャット送信処理
-        msg_send: function(){
-            // console.log(this.send_msg)
-            if(this.room == ''){
-                this.msg = 'ルームへ入室してください';
-                return;
-            }
-            // console.log(this.send_msg)
-            this.room.send({event: 'chat', msg: this.send_msg})
-            this.chats.push(this.send_msg);
-            this.send_msg = '';
         },
     }
 }
