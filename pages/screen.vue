@@ -64,11 +64,7 @@ export default {
         youtubeplayer,
         youtubesearch
     },
-    middleware ({ store, redirect, query }) {
-        if (!query.id) {
-            return redirect('/')
-        }
-    },
+    middleware : 'room_auth',
     mounted: function (){
         this.peer = new Peer({key: process.env.SKYWAY_APIKEY,debug: 3});
 
