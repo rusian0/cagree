@@ -64,6 +64,11 @@ export default {
         youtubeplayer,
         youtubesearch
     },
+    middleware ({ store, redirect, query }) {
+        if (!query.id) {
+            return redirect('/')
+        }
+    },
     mounted: function (){
         this.peer = new Peer({key: process.env.SKYWAY_APIKEY,debug: 3});
 
@@ -72,6 +77,16 @@ export default {
 
         this.peer.on('open', peerId => {
             this.join();
+        })
+
+        auth.signInAnonymously().catch( (error) => {
+            console.log(error)
+        })
+
+        auth.onAuthStateChanged((user) => {
+            if(!user) return
+            
+
         })
 
     },
@@ -92,7 +107,7 @@ export default {
                 return this.$nuxt.$route.query.id
             }
             else {
-                return 'testroomid'
+                return null
             }
 
         }
