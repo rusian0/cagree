@@ -75,14 +75,9 @@ export default {
             this.join();
         })
 
-        auth.signInAnonymously().catch( (error) => {
-            console.log(error)
-        })
-
         auth.onAuthStateChanged((user) => {
             if(!user) return
-            
-
+            console.log(user);
         })
 
     },
