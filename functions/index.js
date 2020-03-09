@@ -1,2 +1,1 @@
-exports.createRoom = require('./createRoom')
-exports.createProfile = require('./createProfile')
+exports.joinRoom = require('./joinRoom')

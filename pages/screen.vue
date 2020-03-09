@@ -30,6 +30,7 @@
 
 <template>
     <div>
+    <headerComponent></headerComponent>
         <div class="container-fluid main">
             <youtubeplayer :room="room" :roomId="roomId" :room_member="room_member" :yt_key="yt_key" ref="youtubeplayer"/>
         </div>
@@ -58,11 +59,13 @@ const itemRef = db.collection('room')
 
 import youtubeplayer from '~/components/player/player-comp.vue'
 import youtubesearch from '~/components/youtubesearch.vue'
+import headerComponent from '~/components/header.vue'
 
 export default {
     components: {
         youtubeplayer,
-        youtubesearch
+        youtubesearch,
+        headerComponent
     },
     middleware : 'room_auth',
     mounted: function (){
@@ -88,7 +91,7 @@ export default {
             send_msg: '',
             room: '',
             yt_key: process.env.YOUTUBEDATA_APIKEY,
-            room_member: []
+            room_member: [],
         }
     },
 
