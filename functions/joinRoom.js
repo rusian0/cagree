@@ -19,7 +19,10 @@ module.exports = functions.https.onCall(async (data, context) => {
 
     // ユーザー権限の初期データが作成されていなければ作成
     if(!userPowerDoc.exists) {
-        await userPowerDocRef.set({ createdAt: now })
+        await userPowerDocRef.set({ 
+            createdAt: now,
+            ownerRooms: [auth.uid]
+        })
     }
 
     const roomCol = db.collection('room')
