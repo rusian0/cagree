@@ -8,6 +8,10 @@
     ],
     "rewrites": [
       {
+        "source": "/screen/*",
+        "functions": "addUserPower"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
