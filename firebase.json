@@ -9,7 +9,7 @@
     "rewrites": [
       {
         "source": "/screen/*",
-        "functions": "addUserPower"
+        "function": "addUserPower"
       },
       {
         "source": "**",
