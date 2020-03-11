@@ -1,2 +1,2 @@
 exports.joinRoom = require('./joinRoom')
-exports.addUserPower = require('./addUserPower')
+exports.enteredRoom = require('./enteredRoom')

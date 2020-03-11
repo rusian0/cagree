@@ -6,4 +6,5 @@ const db = admin.firestore()
 module.exports = {
     db: db,
     functions: functions,
+    admin: admin
 }

@@ -5,12 +5,12 @@
             </div>
             <div class="col-8">
                 <div class="input-group url-play">
-                    <input class="form-control url-input" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Video URL">
-                    <div class="input-group-append">
-                        <button class="btn btn-url-primary" @click="url_play"><font-awesome-icon icon="plus" /></button>
-                    </div>
+                    <input class="form-control url-input" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Youtube動画のURLを貼り付けて右のボタンを押してください">
                     <div class="input-group-append">
                         <button class="btn btn-url-primary" @click="url_play('force')"><font-awesome-icon icon="play" /></button>
+                    </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-url-primary" @click="url_play"><font-awesome-icon icon="plus" /></button>
                     </div>
                 </div>
             </div>

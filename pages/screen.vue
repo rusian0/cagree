@@ -32,7 +32,7 @@
     <div>
     <headerComponent></headerComponent>
         <div class="container-fluid main">
-            <youtubeplayer :room="room" :roomId="roomId" :room_member="room_member" :yt_key="yt_key" ref="youtubeplayer"/>
+            <youtubeplayer v-if="enteredRoom" :room="room" :roomId="roomId" :room_member="room_member" :yt_key="yt_key" ref="youtubeplayer"/>
         </div>
         <div class="row">
             <div class="col-7">
@@ -54,8 +54,10 @@ import Peer from 'skyway-js';
 
 import firebase from "~/plugins/firebase.js"
 const db = firebase.firestore();
+const functions = firebase.functions();
 const auth = firebase.auth()
 const itemRef = db.collection('room')
+
 
 import youtubeplayer from '~/components/player/player-comp.vue'
 import youtubesearch from '~/components/youtubesearch.vue'
@@ -68,7 +70,13 @@ export default {
         headerComponent
     },
     middleware : 'room_auth',
-    mounted: function (){
+    mounted: async function (){
+        const enteredRoomRun = functions.httpsCallable('enteredRoom')
+        const response = await enteredRoomRun({ roomId: this.roomId })
+        console.log(response);
+        
+        this.enteredRoom = true
+
         this.peer = new Peer({key: process.env.SKYWAY_APIKEY,debug: 3});
 
         this.$store.commit('room/setRoomId', this.roomId)
@@ -92,6 +100,7 @@ export default {
             room: '',
             yt_key: process.env.YOUTUBEDATA_APIKEY,
             room_member: [],
+            enteredRoom: false
         }
     },
 
