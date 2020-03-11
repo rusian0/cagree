@@ -71,6 +71,8 @@ export default {
     },
     middleware : 'room_auth',
     mounted: async function (){
+        await auth.signInAnonymously()
+
         const enteredRoomRun = functions.httpsCallable('enteredRoom')
         const response = await enteredRoomRun({ roomId: this.roomId })
         console.log(response);

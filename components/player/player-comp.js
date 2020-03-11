@@ -2,6 +2,8 @@ import draggable from 'vuedraggable'
 
 import firebase from "~/plugins/firebase.js"
 const db = firebase.firestore();
+const auth = firebase.auth()
+const functions = firebase.functions();
 
 export default {
     components: { draggable },
@@ -76,6 +78,7 @@ export default {
         }
     },
     mounted: async function (){
+        await auth.signInAnonymously()
 
         this.$nuxt.$on('id_play', videoId => {
             this.url_play('', videoId)
@@ -84,10 +87,11 @@ export default {
             this.url_play('force', videoId)
         })
 
-        const room = await this.roomRef.get()
-        const roomData = room.data()
+        const enteredRoomRun = functions.httpsCallable('getVideoQueue')
+        const response = await enteredRoomRun({ roomId: this.roomId })
+        // console.log(response);
 
-        this.queue_ids = roomData.video_queue
+        this.queue_ids = response.data.video_queue
 
 
     },
