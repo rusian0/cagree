@@ -80,19 +80,18 @@ export default {
     mounted: async function (){
         await auth.signInAnonymously()
 
-        this.$nuxt.$on('id_play', videoId => {
-            this.url_play('', videoId)
-        })
-        this.$nuxt.$on('unshift_id_play', videoId => {
-            this.url_play('force', videoId)
-        })
-
         const enteredRoomRun = functions.httpsCallable('getVideoQueue')
         const response = await enteredRoomRun({ roomId: this.roomId })
         // console.log(response);
 
         this.queue_ids = response.data.video_queue
 
+        this.$nuxt.$on('id_play', videoId => {
+            this.url_play('', videoId)
+        })
+        this.$nuxt.$on('unshift_id_play', videoId => {
+            this.url_play('force', videoId)
+        })
 
     },
     methods: {

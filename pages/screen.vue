@@ -69,7 +69,6 @@ export default {
         youtubesearch,
         headerComponent
     },
-    middleware : 'room_auth',
     mounted: async function (){
         await auth.signInAnonymously()
 

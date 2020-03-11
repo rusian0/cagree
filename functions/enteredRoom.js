@@ -3,6 +3,11 @@ const db = firebase_function.db
 const functions = firebase_function.functions
 const admin = firebase_function.admin
 
+const moment = require('moment-timezone')
+moment.tz.setDefault("Asia/Tokyo");
+
+const now = moment().format('YYYY-MM-DD-HH:mm:ss')
+
 module.exports = functions.https.onCall(async (data, context) => {
     
     const auth = context.auth ? context.auth : null
