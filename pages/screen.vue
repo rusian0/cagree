@@ -6,11 +6,14 @@
 }
 
 /* .member_count {
-    position: relative;
-    width: 20px;
-    height: 20px;
-}
+    position: fixed;
+    left: 3%;
+    bottom: 6%;
+    color: #c13eb7;
+    opacity: .8;
+} */
 
+/* 
 .member_count .count{
     position: absolute;
     top: -5px;
@@ -30,14 +33,14 @@
 
 <template>
     <div>
-    <headerComponent></headerComponent>
-        <div class="container-fluid main">
+        <headerComponent></headerComponent>
+        <div class="container-fluid px-0 main">
             <youtubeplayer v-if="enteredRoom" :room="room" :roomId="roomId" :room_member="room_member" :yt_key="yt_key" ref="youtubeplayer"/>
         </div>
         <div class="row">
             <div class="col-7">
             </div>
-            <div class="col-2 member_count">
+            <div class="member_count">
                 <span class="input-group">
                     <font-awesome-icon class="icon mt-1 mr-1" icon="user" />
                     <div class="count" v-if="room_member.length">{{ room_member.length }}</div>

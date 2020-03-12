@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div class="row border url-body">
-            <div class="col-2">
-            </div>
-            <div class="col-8">
+        <div class="row border justify-content-center url-body">
+            <!-- <div class="col-2">
+            </div> -->
+            <div class="col-11 col-lg-9">
                 <div class="input-group url-play">
                     <input class="form-control url-input" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Youtube動画のURLを貼り付けて右のボタンを押してください">
                     <div class="input-group-append">
@@ -14,8 +14,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-2">
-            </div>
+            <!-- <div class="col-2">
+            </div> -->
         </div>
         <div class="row player-body" >
             <div class="col-12 col-sm-12 col-md-12 col-lg-8">

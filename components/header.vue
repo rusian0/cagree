@@ -48,12 +48,11 @@ data () {
 
 
    header.header{
-      background-color: #920000;
-      padding: 20px 50px 10px 50px;
+      background: linear-gradient(-135deg, #c3207c, #d06426) fixed;
+      padding: 5vh 5vw 4vh 5vw;
       top: 0;
-      /* position: fixed;
-      z-index: 9999;
-      width: 100%; */
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);     
+      text-align: center;
    }
 
    ul {
@@ -76,6 +75,7 @@ data () {
    a {
       text-decoration: none;
       color: #ffffff;
+      width: 37%;
    }
 
    .auth {
