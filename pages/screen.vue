@@ -5,13 +5,13 @@
     padding-left: 10px; */
 }
 
-/* .member_count {
+.member_count {
     position: fixed;
     left: 3%;
     bottom: 6%;
     color: #c13eb7;
     opacity: .8;
-} */
+}
 
 /* 
 .member_count .count{
