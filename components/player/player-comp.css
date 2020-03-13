@@ -65,6 +65,8 @@ p {
 
 .input-group.url-play input[type=text]::placeholder {
     font-size: 15px;
+    position: relative;
+    top: 0.2em;
 }
 
 .url-input:focus, .url-input:active {
@@ -340,6 +342,7 @@ div.player-body {
 
     .input-group.url-play input[type=text]::placeholder {
         font-size: 10px;
+        top: 0.65em;
     }
 
     .queue_delete {
