@@ -48,7 +48,7 @@ data () {
 
 
    header.header{
-      background: linear-gradient(-135deg, #c3207c, #d06426) fixed;
+      background: linear-gradient(-135deg, #d06426 -19%, #c3207c 50%,#d06426 80%) fixed;
       padding: 5vh 5vw 4vh 5vw;
       top: 0;
       box-shadow: 0 3px 6px rgba(0,0,0,0.2);     

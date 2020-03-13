@@ -7,7 +7,7 @@
     /* height: 100%; */
     width: 100%;
     overflow: hidden;
-    box-shadow: 2px 2px 25px 9px#ccccccdc;
+    /* box-shadow: 2px 2px 25px 9px#ccccccdc; */
     /* padding-bottom: 56.25%; */
 }
 
@@ -117,16 +117,19 @@ div.queue-body > div > div:hover .queue_delete {
 div.queue-body > div > div img {
     width: 8.3vw;
     height: 8.3vw;
+    -o-object-fit: cover;
     object-fit: cover;
     box-sizing: border-box;
-    border: 5px solid #c7c7c7c7;
-    animation: fadeIn 2s ease 0s 1 normal;
-    box-shadow: 5px 5px 10px #9b9b9b;
-    border-radius: 10%;
+    -webkit-animation: fadeIn-data-v-13a74519 2s ease 0s 1 normal;
+    animation: fadeIn-data-v-13a74519 2s ease 0s 1 normal;
+    box-shadow: 4px 4px 10px #b7b7b7;
+    border-radius: 6%;
+    transition: all 0.1s linear;
+
 }
 
 .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
+    transition: opacity .3s;
 }
 .fade-enter, .fade-leave-to {
     opacity: 0;
@@ -139,11 +142,14 @@ div.queue-body > div > div img {
 
 div.queue-body > div > div:first-child img {
     border-color:#ff0000;
+    border-width: 5px;
+    border-style: solid;
 }
 
 div.queue-body > div > div:not(:first-child) img:hover {
-    transition: all 0.2s linear;
     border-color:#ff0000;
+    border-width: 5px;
+    border-style: solid;
 }
 
 /* queue delete button */
