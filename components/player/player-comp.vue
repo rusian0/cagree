@@ -3,14 +3,14 @@
         <div class="row border justify-content-center url-body">
             <!-- <div class="col-2">
             </div> -->
-            <div class="col-11 col-lg-9">
+            <div class="col-11 col-lg-7 col-xl-5">
                 <div class="input-group url-play">
                     <input class="form-control url-input" type="text" v-model="video_url" v-on:keydown.enter="url_play" placeholder="Youtube動画のURLを貼り付けて右のボタンを押してください">
-                    <div class="input-group-append">
-                        <button class="btn btn-url-primary" @click="url_play('force')"><font-awesome-icon icon="play" /></button>
+                    <div>
+                        <button class="btn btn-url-primary play" @click="url_play('force')"><font-awesome-icon icon="play" /></button>
                     </div>
-                    <div class="input-group-append">
-                        <button class="btn btn-url-primary" @click="url_play"><font-awesome-icon icon="plus" /></button>
+                    <div>
+                        <button class="btn btn-url-primary plus" @click="url_play"><font-awesome-icon icon="plus" /></button>
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                 <div class="queue-body text-center">
                     <draggable class="row" element="div" :options="options" v-model="queue_ids" @end="queueDragEnd">
                         <div class="col-3 col-sm-2 col-md-2 col-lg-4 text-center" v-for="(queue_id, index) in queue_ids">
-                            <button @click="deleteQueue(index)" class="btn btn-danger queue_delete">✗</button>
+                            <button @click="deleteQueue(index)" class="queue_delete"><font-awesome-icon icon="times-circle" /></button>
                             <img :src="imgUrl + queue_id + '/mqdefault.jpg'" @click="selectQueue(index)" alt="">
                         </div>
                     </draggable> 
