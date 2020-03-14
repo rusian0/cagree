@@ -49,6 +49,7 @@
 
 <template>
     <div>
+        <loadingComponent :loading="!enteredRoom" :loadTxt="'入室中...'" ></loadingComponent>
         <headerComponent></headerComponent>
         <div class="container-fluid px-0 main">
             <youtubeplayer v-if="enteredRoom" :room="room" :roomId="roomId" :room_member="room_member" :yt_key="yt_key" ref="youtubeplayer"/>
@@ -81,12 +82,14 @@ const itemRef = db.collection('room')
 import youtubeplayer from '~/components/player/player-comp.vue'
 import youtubesearch from '~/components/youtubesearch.vue'
 import headerComponent from '~/components/header.vue'
+import loadingComponent from '~/components/loading.vue'
 
 export default {
     components: {
         youtubeplayer,
         youtubesearch,
-        headerComponent
+        headerComponent,
+        loadingComponent
     },
     mounted: async function (){
         await auth.signInAnonymously()
@@ -120,7 +123,7 @@ export default {
             room: '',
             yt_key: process.env.YOUTUBEDATA_APIKEY,
             room_member: [],
-            enteredRoom: false
+            enteredRoom: false,
         }
     },
 

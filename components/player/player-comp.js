@@ -341,5 +341,7 @@ export default {
             })
         }
     },
-
+    beforeDestroy: function ()  {
+        // this.player.removeEventListener("onStateChange");
+    }
 }

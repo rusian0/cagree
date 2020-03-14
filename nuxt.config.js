@@ -22,7 +22,7 @@ export default {
   },
 
   server: {
-    port: 80,
+    port: 3000,
     host: '0.0.0.0',
   },
   /*
@@ -35,6 +35,7 @@ export default {
   ** Global CSS
   */
   css: [
+    '@/assets/heartbeat.css',
   ],
   /*
   ** Plugins to load before mounting the App

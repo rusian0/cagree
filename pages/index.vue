@@ -1,15 +1,13 @@
 <template>
-  <div class="container">
-    <div>
-      <h1 class="title">PulScreen</h1>
-      <button @click="initRoomAndProfile" class="btn btn-success">Let's Join Room!</button>
-    </div>
+  <div>
+      <loading-component :loadTxt="'あなたの部屋を探しています...'"></loading-component>
   </div>
 </template>
 
   <script>
 import { uuid } from 'vue-uuid';
 import firebase from "~/plugins/firebase.js"
+import loadinComponent from "~/components/loading"
 const auth = firebase.auth()
 const functions = firebase.functions()
 
@@ -30,6 +28,9 @@ export default {
 
       this.$router.push('/screen?id=' + response.data.roomId)
     },
+  },
+  components: {
+    'loading-component': loadinComponent
   }
 }
 </script>
@@ -38,6 +39,41 @@ export default {
 html {
   font-size: 100%;
 }
+/* 
+.top-loading {
+  top: 0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-135deg, #d06426 -90%, #c3207c 70%,#D06626 210%) fixed;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-loading .txt {
+  margin-top: 40px;
+}
+
+.load-animate {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.icon-image {
+  position: absolute;
+  width: 32px;
+  top: 24%;
+  left: 44%;
+  z-index: 2;
+}
+
+.heartbeat-loader {
+  position: absolute;
+} */
 
 .container {
   margin: 0 auto;
