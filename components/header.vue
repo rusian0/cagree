@@ -4,11 +4,17 @@
       <nuxt-link tag="h2" to=/>
          <a><img class="logo" src="/images/logo.png" alt="" width="160"></a>
       </nuxt-link>
-      <button class="btn-invite" >
+      <button @click="inviteMember" class="btn-invite" >
          <font-awesome-icon class="user" icon="user" />
          <font-awesome-icon class="plus" icon="plus" />
       </button>
    </header>
+   <transition name="modal">
+      <div v-if="inviteModal" class="invite_modal">
+         この部屋のURLをクリップボードにコピーしました<br>
+         一緒に動画を見たい方に共有してください！
+      </div>
+   </transition>
    <Nuxt />
 </div>
 </template>
@@ -20,6 +26,7 @@
 export default {
 data () {
       return {
+         inviteModal: false
       }
    },
 
@@ -34,8 +41,26 @@ data () {
    methods: {
       async logout () {
 
+      },
+
+      inviteMember(){
+         var copyFrom = document.createElement("textarea");
+         copyFrom.textContent = location.href;
+
+         var bodyElm = document.getElementsByTagName("body")[0];
+         bodyElm.appendChild(copyFrom);
+
+         copyFrom.select();
+         var retVal = document.execCommand('copy');
+         bodyElm.removeChild(copyFrom);
+
+         this.inviteModal = true
+         setTimeout(() => {
+            this.inviteModal = false
+         }, 4000);
+         return retVal;
       }
-}
+   }
 }
 </script>
 
@@ -82,6 +107,29 @@ data () {
    .btn-invite .plus {
       font-size: 14px;
       margin-left: -2px;
+   }
+
+   .invite_modal {
+      position: fixed;
+      background: #dc7391dc;
+      /* width: 500px;
+      height: 300px; */
+      color: #ffffff;
+      padding: 15px 20px;
+      right: 0;
+      top: 15%;
+      z-index: 1;
+      width: auto;
+      transition: all .7s ease;
+      max-width: 100%;
+   }
+
+   .modal-enter {
+      transform: translateX(100%);
+   }
+
+   .modal-leave-to {
+      transform: translateX(100%);   
    }
 
    ul {
@@ -141,6 +189,11 @@ data () {
 
       .btn-invite .plus {
          font-size: 10px;
+      }
+
+      .invite_modal {
+         font-size: 14px;
+         top: 18%;
       }
    }
 </style>
