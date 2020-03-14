@@ -2,8 +2,12 @@
 <div>
    <header class="header">
       <nuxt-link tag="h2" to=/>
-         <a><img src="/images/logo.png" alt="" width="160"></a>
+         <a><img class="logo" src="/images/logo.png" alt="" width="160"></a>
       </nuxt-link>
+      <button class="btn-invite" >
+         <font-awesome-icon class="user" icon="user" />
+         <font-awesome-icon class="plus" icon="plus" />
+      </button>
    </header>
    <Nuxt />
 </div>
@@ -45,14 +49,39 @@ data () {
 </style>
 <style scoped>
 
-
-
    header.header{
       background: linear-gradient(-135deg, #d06426 -19%, #c3207c 50%,#d06426 80%) fixed;
       padding: 5vh 5vw 4vh 5vw;
       top: 0;
       box-shadow: 0 3px 6px rgba(0,0,0,0.2);     
       text-align: center;
+      position: relative;
+   }
+
+   header.header img.logo {
+      width: 130px;
+   }
+
+   .btn-invite {
+      position: absolute;
+      right: 2%;
+      bottom: 8%;
+      /* background-color: #dc7390; */
+      background: none;
+      border-radius: 20%;
+      border: none;
+      color: #ffffff;
+      box-shadow: 0px 0px 26px -1px #ffadad;
+      transition: background-color .3s;
+   }
+
+   .btn-invite:hover {
+      background-color: #ff4848;
+   }
+
+   .btn-invite .plus {
+      font-size: 14px;
+      margin-left: -2px;
    }
 
    ul {
@@ -99,6 +128,20 @@ data () {
       letter-spacing: 2px;
 
       font-family:"游ゴシック Medium",YuGothic,YuGothicM,"Hiragino Kaku Gothic ProN","Hiragino Kaku Gothic Pro",メイリオ,Meiryo,sans-serif;
+   }
+
+   @media screen and (max-width: 576px) {
+      header.header img.logo {
+         width: 90px;
+      }
+
+      .btn-invite {
+         font-size: 13px;
+      }
+
+      .btn-invite .plus {
+         font-size: 10px;
+      }
    }
 </style>
 
