@@ -54,7 +54,7 @@ p {
 /* url input */
 .input-group.url-play {
     width: 100%;
-    border-bottom: 1px solid #c5c5c5;
+    border-bottom: 1px solid #aaaaaa;
     padding-bottom: 5px;
 }
 
@@ -150,6 +150,11 @@ div.queue-body > div > div img {
     border-radius: 6%;
     transition: all 0.1s linear;
 
+}
+
+
+div.queue-body > div > div img:active {
+    cursor: move;
 }
 
 div.queue-body .queue_desc {

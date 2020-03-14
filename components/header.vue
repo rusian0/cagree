@@ -4,10 +4,10 @@
       <nuxt-link tag="h2" to=/>
          <a><img class="logo" src="/images/logo.png" alt="" width="160"></a>
       </nuxt-link>
-      <button @click="inviteMember" class="btn-invite" >
+      <div @click="inviteMember" class="btn-invite" >
          <font-awesome-icon class="user" icon="user" />
          <font-awesome-icon class="plus" icon="plus" />
-      </button>
+      </div>
    </header>
    <transition name="modal">
       <div v-if="inviteModal" class="invite_modal">
@@ -95,8 +95,10 @@ data () {
       background: none;
       border-radius: 20%;
       border: none;
+      padding: 3px 9px;
       color: #ffffff;
-      box-shadow: 0px 0px 26px -1px #ffadad;
+      cursor: pointer;
+      box-shadow: 0px 0px 26px -1px #e0a4a4;
       transition: background-color .3s;
    }
 
@@ -185,14 +187,20 @@ data () {
 
       .btn-invite {
          font-size: 13px;
+         padding: 3px 10px;
+         box-shadow: 0px 0px 26px -1px #e08383;
+      }
+
+      .btn-invite .user {
+         font-size: 12px;
       }
 
       .btn-invite .plus {
-         font-size: 10px;
+         font-size: 9px;
       }
 
       .invite_modal {
-         font-size: 14px;
+         font-size: 12px;
          top: 18%;
       }
    }

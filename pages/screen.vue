@@ -7,27 +7,43 @@
 
 .member_count {
     position: fixed;
-    left: 3%;
-    bottom: 6%;
-    color: #c13eb7;
+    left: 0%;
+    bottom: 0%;
+    color: #ffffff;
+    background-color: #dc7390;
+    border-top-right-radius: 20%;
+    font-size: 13px;
+    padding: 4px 13px;
     opacity: .8;
 }
 
-/* 
 .member_count .count{
-    position: absolute;
-    top: -5px;
-    left: 16px;
-    font-size: 0.8em;
+    font-size: 14px;
+    margin-left: -2px;
 }
 
 .member_count .icon{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-} */
+    font-size: 15px;
+}
+
+
+@media screen and (max-width: 576px) {
+    .member_count {
+        font-size : 13px;
+        padding: 3px 9px;
+    }
+
+    .member_count .count{
+        font-size: 10px;
+        margin-left: -4px;
+    }
+
+    .member_count .icon{
+        font-size: 10px;
+    }
+
+}
+
 
 </style>
 
