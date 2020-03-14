@@ -1,9 +1,11 @@
 <template>
 <div>
    <header class="header">
-      <nuxt-link tag="h2" to=/>
-         <a><img class="logo" src="/images/logo.png" alt="" width="160"></a>
-      </nuxt-link>
+      <!-- <nuxt-link tag="h2" to=/> -->
+         <a href="/">
+            <img class="logo" src="/images/logo.png" alt="" width="160">
+         </a>
+      <!-- </nuxt-link> -->
       <div @click="inviteMember" class="btn-invite" >
          <font-awesome-icon class="user" icon="user" />
          <font-awesome-icon class="plus" icon="plus" />

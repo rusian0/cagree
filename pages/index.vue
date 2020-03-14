@@ -1,6 +1,6 @@
 <template>
   <div>
-      <loading-component :loadTxt="'あなたの部屋を探しています...'"></loading-component>
+      <loading-component　:loading=true :loadTxt="'あなたの部屋を探しています...'"></loading-component>
   </div>
 </template>
 
