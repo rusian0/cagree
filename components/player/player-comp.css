@@ -117,7 +117,7 @@ div.queue-body {
     /* background-color: black; */
     padding-top: 0px;
     padding-bottom: 8px;
-    padding-left: 25px;
+    padding-left: 35px;
     padding-right: 20px;
     margin-right: 20px;
     transition: outline 3s;
@@ -328,7 +328,8 @@ div.player-body {
 
 @media screen and (max-width: 576px) {
     div.queue-body {
-        margin-top: 40px;
+        margin-top: 30px;
+        padding: 0 5px;
     }
 
     div.queue-body .queue_imgs {
@@ -349,6 +350,10 @@ div.player-body {
     }
     div.queue-body > div > div:not(:first-child) img:hover {
         border-width: 3px;
+    }
+
+    div.queue-body .queue_desc {
+        font-size: 11px;
     }
         
     .input-group.url-play input[type=text]{
@@ -380,9 +385,7 @@ div.player-body {
         padding: 6px 8px 5px 10px;
     }
 
-    div.queue-body .queue_desc {
-        font-size: 11px;
-    }
+
 }
 
 /* * * * * * * * * * * * *
