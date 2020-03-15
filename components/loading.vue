@@ -5,7 +5,7 @@
         <div>
           <div class="load-animate">
             <div class="heartbeat-loader">
-              <img class="icon-image" src="/images/icon.png" width="50" alt="">
+              <img class="icon-image" src="/images/icon.svg" width="50" alt="">
             </div>
           </div>
         </div>
