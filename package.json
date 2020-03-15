@@ -6,7 +6,9 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
-    "build": "nuxt build && yarn htmlfunc",
+    "build": "nuxt build",
+    "buildprod": "cp ./.prod_env ./.env && yarn build && yarn htmlfunc",
+    "builddev": "cp ./.dev_env ./.env && yarn build && yarn htmlfunc",
     "htmlfunc": "mkdir -p ./functions/html && mv ./dist/index.html ./functions/html/",
     "start": "nuxt start",
     "generate": "nuxt generate && yarn htmlfunc",

@@ -1,6 +1,7 @@
 {
   "projects": {
     "default": "dev-pulscreen",
-    "dev": "dev-pulscreen"
+    "dev": "dev-pulscreen",
+    "prod": "pulscreen"
   }
 }
