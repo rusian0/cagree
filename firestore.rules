@@ -1,11 +1,8 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    match /{document=**} {
-      match /room/{roomId}{
-        allow read, update: if request.auth.uid != null && (resource.id == request.auth.uid || resource.id in get(/databases/$(database)/documents/userPower/$(request.auth.uid)).data.ownerRooms);
-      }
+    match /room/{roomId}{
+      allow read, update: if request.auth.uid != null && (resource.id == request.auth.uid || resource.id in get(/databases/$(database)/documents/userPower/$(request.auth.uid)).data.ownerRooms);
     }
   }
 }
