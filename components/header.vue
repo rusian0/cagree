@@ -11,7 +11,10 @@
          <font-awesome-icon class="plus" icon="plus" />
       </div>
       <div class="contact">
-         <a href="https://forms.gle/quzht66eqsAjzmfR8" target="_blank">お問い合わせ</a>
+         <a href="https://forms.gle/quzht66eqsAjzmfR8" target="_blank">
+            <font-awesome-icon class="mail" icon="envelope" />
+            <font-awesome-icon class="question" icon="question" />
+         </a>
       </div>
    </header>
    <transition name="modal">
@@ -144,7 +147,12 @@ data () {
       right: initial;
       border-radius: 5%;
       /* font-size:  */
+   }
 
+   .contact .question {
+      font-size: 13px;
+      margin-bottom: 2px;
+      margin-left: -3px;
    }
 
    ul {
@@ -198,7 +206,7 @@ data () {
          width: 90px;
       }
 
-      .btn-invite {
+      .btn-invite, .contact {
          font-size: 13px;
          padding: 3px 10px;
          box-shadow: 0px 0px 26px -1px #e08383;
@@ -217,8 +225,10 @@ data () {
          top: 18%;
       }
 
-      .contact {
+      .contact .question {
          font-size: 10px;
+         margin-left: -3px;
+         margin-bottom: 3px;
       }
    }
 </style>
