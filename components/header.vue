@@ -10,6 +10,9 @@
          <font-awesome-icon class="user" icon="user" />
          <font-awesome-icon class="plus" icon="plus" />
       </div>
+      <div class="contact">
+         <a href="https://forms.gle/quzht66eqsAjzmfR8" target="_blank">お問い合わせ</a>
+      </div>
    </header>
    <transition name="modal">
       <div v-if="inviteModal" class="invite_modal">
@@ -89,7 +92,7 @@ data () {
       width: 130px;
    }
 
-   .btn-invite {
+   .btn-invite, .contact {
       position: absolute;
       right: 2%;
       bottom: 8%;
@@ -134,6 +137,14 @@ data () {
 
    .modal-leave-to {
       transform: translateX(100%);   
+   }
+
+   .contact {
+      left: 3%;
+      right: initial;
+      border-radius: 5%;
+      /* font-size:  */
+
    }
 
    ul {
@@ -204,6 +215,10 @@ data () {
       .invite_modal {
          font-size: 12px;
          top: 18%;
+      }
+
+      .contact {
+         font-size: 10px;
       }
    }
 </style>

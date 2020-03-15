@@ -26,7 +26,6 @@
     font-size: 15px;
 }
 
-
 @media screen and (max-width: 576px) {
     .member_count {
         font-size : 13px;

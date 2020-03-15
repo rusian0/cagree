@@ -326,6 +326,14 @@ div.player-body {
 }
 
 @media screen and (max-width: 576px) {
+    div.queue-body {
+        margin-top: 40px;
+    }
+
+    div.queue-body .queue_imgs {
+        margin: 10px 0;
+    }
+
     div.queue-body > div > div img {
         width: 17vw;
         height: 17vw;
