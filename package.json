@@ -7,9 +7,9 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build && yarn htmlfunc",
-    "htmlfunc": "cp ./dist/index.html ./functions/html/index.html && cp ./dist/screen.html ./functions/html/screen.html && mv ./dist/index.html ./dist/top.html",
+    "htmlfunc": "mkdir -p ./functions/html && mv ./dist/index.html ./functions/html/",
     "start": "nuxt start",
-    "generate": "nuxt generate",
+    "generate": "nuxt generate && yarn htmlfunc",
     "deploy:dev": "git push && firebase use dev && yarn generate && firebase deploy",
     "deploy": "yarn build && firebase deploy"
   },

@@ -7,7 +7,7 @@ module.exports = functions.https.onRequest(async (req, res) => {
     const jsdom = require('jsdom')
     const { JSDOM } = jsdom
 
-    const defaultHtml = fs.readFileSync('./html/top.html')
+    const defaultHtml = fs.readFileSync('./html/index.html')
     const dom = new JSDOM(defaultHtml)
     const { document } = dom.window;
     
