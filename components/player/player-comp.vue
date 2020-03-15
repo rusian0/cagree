@@ -1,5 +1,6 @@
 <template>
     <div>
+        <loadingComponent :loading="!functionsEnd" :loadTxt="'入室中...'" ></loadingComponent>
         <div class="row border justify-content-center url-body">
             <!-- <div class="col-2">
             </div> -->

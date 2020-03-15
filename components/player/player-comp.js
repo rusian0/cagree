@@ -4,9 +4,11 @@ import firebase from "~/plugins/firebase.js"
 const db = firebase.firestore();
 const auth = firebase.auth()
 const functions = firebase.functions();
+import loadingComponent from '~/components/loading.vue'
+
 
 export default {
-    components: { draggable },
+    components: { draggable,loadingComponent },
     props: [
         'roomId',
         'room',
@@ -49,7 +51,8 @@ export default {
         queueChanger: false,
         firstQueueChange: false,
         tmpRoomData: null,
-        mute: true
+        mute: false,
+        functionsEnd: false
     }),
     computed: {
         player() { return this.$refs.youtube.player },
@@ -79,19 +82,16 @@ export default {
         }
     },
     mounted: async function (){
-        if(!this.$ua.isFromPc() || this.$ua.browser() == 'Safari') {
-            this.player.mute()
-        }
-        else {
-            this.mute = false
-        }
+        if(!this.$ua.isFromPc() || this.$ua.browser() == 'Safari') this.player.mute()
+
         await auth.signInAnonymously()
 
         const enteredRoomRun = functions.httpsCallable('getVideoQueue')
         const response = await enteredRoomRun({ roomId: this.roomId })
-        // console.log(response);
+        // console.log(response)
 
         this.queue_ids = response.data.video_queue
+        this.functionsEnd = true
 
         this.$nuxt.$on('id_play', videoId => {
             this.url_play('', videoId)

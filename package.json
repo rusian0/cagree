@@ -1,12 +1,13 @@
 {
   "name": "PulScreen",
   "version": "1.0.0",
-  "description": "YouTube動画のリアルタイム共有サービス",
+  "description": "何台でも。何人でも。複数人で同じ動画を同じタイミングで視聴できる。YouTube動画のリアルタイム共有サービス「PulScreen(プルスクリーン)」",
   "author": "",
   "private": true,
   "scripts": {
     "dev": "nuxt",
-    "build": "nuxt build",
+    "build": "nuxt build && yarn htmlfunc",
+    "htmlfunc": "cp ./dist/index.html ./functions/html/index.html && cp ./dist/screen.html ./functions/html/screen.html && mv ./dist/index.html ./dist/top.html",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "deploy:dev": "git push && firebase use dev && yarn generate && firebase deploy",
