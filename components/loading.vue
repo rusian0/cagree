@@ -15,7 +15,10 @@
   </transition>
 </template>
 
+<style src="~/assets/heartbeat.css" scoped></style>
 <script>
+
+
 export default {
   props: {
     loadTxt: String,

@@ -34,9 +34,7 @@ export default {
   /*
   ** Global CSS
   */
-  css: [
-    '@/assets/heartbeat.css',
-  ],
+  css: [],
   /*
   ** Plugins to load before mounting the App
   */
