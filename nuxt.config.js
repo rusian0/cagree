@@ -55,6 +55,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
     'bootstrap-vue/nuxt',
+    'nuxt-user-agent',
     'nuxt-fontawesome',
     [
       '@nuxtjs/google-gtag',

@@ -52,6 +52,12 @@
                 </div>
             </div>
         </div>
+        <transition name="muteModal">
+            <div v-if="mute" class="mute-modal" @click="player.unMute(); mute=false">
+                <font-awesome-icon class="mute" icon="volume-mute" />
+                <p>ミュート解除</p>
+            </div>
+        </transition>
     </div>
 </template>
 

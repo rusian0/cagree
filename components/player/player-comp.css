@@ -124,9 +124,9 @@ div.queue-body {
 }
 
 div.queue-body .queue_imgs:hover {
-    outline: 1px solid black;
+    /* outline: 1px solid black;
     outline-style: auto;
-    outline-color: rgb(226, 43, 202);
+    outline-color: rgb(226, 43, 202); */
 }
 
 div.queue-body div > div {
@@ -160,7 +160,7 @@ div.queue-body > div > div img:active {
 
 div.queue-body .queue_desc {
     font-size: 13px;
-    background-color: #dc7390;
+    background-color: #e6aaba;
     color: #ffffff;
     padding: 15px 3px;
     width: 100%;
@@ -229,6 +229,44 @@ div.player-body {
 
 .video-body {
     padding-right: 25px;
+}
+
+.mute-modal {
+    position: fixed;
+    background: #ee5b85;
+    /* width: 500px;
+    height: 300px; */
+    color: #ffffff;
+    padding: 15px 20px;
+    right: 0;
+    bottom: 4%;
+    z-index: 1;
+    width: auto;
+    transition: all .3s ease;
+    max-width: 100%;
+    border-top-left-radius: 10%;
+    border-bottom-left-radius: 10%;
+    font-size: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 3px 3px 6px #585858;
+    cursor: pointer;
+}
+.mute-modal:hover {
+    background-color: #e71651;
+}
+.mute-modal .mute {
+    font-size: 26px;
+    margin: 3px auto;
+}
+.muteModal-enter {
+    transform: translateX(100%);
+}
+.muteModal-leave-to {
+    transform: translateX(100%);   
 }
 
 /* * * * * * * * * * * * *

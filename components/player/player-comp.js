@@ -49,6 +49,7 @@ export default {
         queueChanger: false,
         firstQueueChange: false,
         tmpRoomData: null,
+        mute: true
     }),
     computed: {
         player() { return this.$refs.youtube.player },
@@ -78,6 +79,12 @@ export default {
         }
     },
     mounted: async function (){
+        if(!this.$ua.isFromPc() || this.$ua.browser() == 'Safari') {
+            this.player.mute()
+        }
+        else {
+            this.mute = false
+        }
         await auth.signInAnonymously()
 
         const enteredRoomRun = functions.httpsCallable('getVideoQueue')
@@ -92,6 +99,10 @@ export default {
         this.$nuxt.$on('unshift_id_play', videoId => {
             this.url_play('force', videoId)
         })
+
+        setInterval(async () => {
+            this.mute = await this.player.isMuted()
+        }, 250);
 
     },
     methods: {

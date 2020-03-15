@@ -132,6 +132,7 @@ data () {
       width: auto;
       transition: all .7s ease;
       max-width: 100%;
+      box-shadow: 2px 1px 6px #dcdcdc;
    }
 
    .modal-enter {
