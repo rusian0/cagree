@@ -32,7 +32,7 @@ module.exports = functions.https.onRequest(async (req, res) => {
 
     const ogDesc = doc.createElement('meta')
     ogDesc.setAttribute('property', 'og:description')
-    ogDesc.setAttribute('content', '何台でも。何人でも。複数人で同じ動画を同じタイミングで視聴できる。YouTube動画のリアルタイム共有サービス「PulScreen(プルスクリーン)」')
+    ogDesc.setAttribute('content', '異なったデバイス同士でも。複数人で同じ動画を同じタイミングで視聴できる。YouTube動画のリアルタイム共有サービス「PulScreen(プルスクリーン)」')
     head.appendChild(ogDesc)
 
     const twitterCard = doc.createElement('meta')
