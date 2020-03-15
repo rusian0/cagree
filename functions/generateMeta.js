@@ -2,28 +2,14 @@ const firebase_function = require('./firebase_function')
 const functions = firebase_function.functions
 
 
-
 module.exports = functions.https.onRequest(async (req, res) => {
     const fs = require('fs')
     const jsdom = require('jsdom')
     const { JSDOM } = jsdom
-    
-    let htmlPath
-    if(req.path = '/'){
-        htmlPath = './html/index.html'
-    }
-    else if(req.path = '/screen'){
-        htmlPath = './html/screen.html'
-    }
-    else {
-        htmlPath = './html/index.html'
-    }
 
-    const defaultHtml = fs.readFileSync(htmlPath, 'utf8')
+    const defaultHtml = fs.readFileSync('./html/top.html')
     const dom = new JSDOM(defaultHtml)
     const { document } = dom.window;
-    
-    // console.log(req.path)
     
     const doc = document
 
@@ -59,9 +45,8 @@ module.exports = functions.https.onRequest(async (req, res) => {
     twitterSite.setAttribute('content', '@Rusian0')
     head.appendChild(twitterSite)
 
-
     // const meta = document.querySelector('meta[data-hid="description"]')
     // meta.setAttribute('content', 'testdescription')
     
-    res.send(doc.documentElement.outerHTML)
+    res.send('<!doctype html>' + "\n" + doc.documentElement.outerHTML)
 })
