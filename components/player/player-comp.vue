@@ -17,7 +17,7 @@
             <!-- <div class="col-2">
             </div> -->
         </div>
-        <div class="row player-body" >
+        <div class="row player-body no-gutters" >
             <div class="col-12 col-sm-12 col-md-12 col-lg-8">
                 <div class="youtube-movie">
                     <vue-plyr>
