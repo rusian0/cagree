@@ -73,7 +73,7 @@ import Peer from 'skyway-js';
 
 import firebase from "~/plugins/firebase.js"
 const db = firebase.firestore();
-const functions = firebase.functions('asia-northeast1');
+const functions = firebase.app().functions('asia-northeast1')
 const auth = firebase.auth()
 const itemRef = db.collection('room')
 

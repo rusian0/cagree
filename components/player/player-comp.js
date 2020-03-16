@@ -3,7 +3,7 @@ import draggable from 'vuedraggable'
 import firebase from "~/plugins/firebase.js"
 const db = firebase.firestore();
 const auth = firebase.auth()
-const functions = firebase.functions('asia-northeast1');
+const functions = firebase.app().functions('asia-northeast1')
 import loadingComponent from '~/components/loading.vue'
 
 

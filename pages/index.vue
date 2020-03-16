@@ -9,7 +9,7 @@ import { uuid } from 'vue-uuid';
 import firebase from "~/plugins/firebase.js"
 import loadinComponent from "~/components/loading"
 const auth = firebase.auth()
-const functions = firebase.functions('asia-northeast1')
+const functions = firebase.app().functions('asia-northeast1')
 
 
 export default {
