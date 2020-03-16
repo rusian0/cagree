@@ -7,13 +7,14 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "buildprod": "cp .prod_env .env && yarn build && yarn htmlfunc",
-    "builddev": "cp .dev_env .env && yarn build && yarn htmlfunc",
     "htmlfunc": "mkdir -p ./functions/html && mv ./dist/index.html ./functions/html/",
     "start": "nuxt start",
-    "generate": "nuxt generate && yarn htmlfunc",
-    "deploy:dev": "git push && firebase use dev && yarn generate && firebase deploy",
-    "deploy": "yarn build && firebase deploy"
+    "change:dev": "cp .dev_env .env",
+    "change:prod": "cp .prod_env .env",
+    "build:dev": "yarn change:dev && yarn build && yarn htmlfunc",
+    "build:prod": "yarn change:prod && yarn build && yarn htmlfunc",
+    "deploy:dev": "git push && firebase use dev && yarn build:dev && firebase deploy",
+    "deploy:prod": "git push && firebase use prod && yarn build:prod && firebase deploy"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.25",

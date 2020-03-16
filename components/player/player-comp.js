@@ -82,7 +82,7 @@ export default {
         }
     },
     mounted: async function (){
-        if(!this.$ua.isFromPc() || this.$ua.browser() == 'Safari') this.player.mute()
+        this.player.mute()
 
         await auth.signInAnonymously()
 

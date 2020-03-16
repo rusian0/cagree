@@ -237,7 +237,7 @@ div.player-body {
     /* width: 500px;
     height: 300px; */
     color: #ffffff;
-    padding: 15px 20px;
+    padding: 25px 30px;
     right: 0;
     bottom: 4%;
     z-index: 1;
@@ -254,19 +254,30 @@ div.player-body {
     flex-direction: column;
     box-shadow: 3px 3px 6px #585858;
     cursor: pointer;
+
 }
 .mute-modal:hover {
     background-color: #e71651;
 }
 .mute-modal .mute {
-    font-size: 26px;
-    margin: 3px auto;
+    font-size: 36px;
+    margin: 5px auto;
+    animation: anime1 0.7s ease 0s infinite alternate;
 }
 .muteModal-enter {
     transform: translateX(100%);
 }
 .muteModal-leave-to {
     transform: translateX(100%);   
+}
+
+@keyframes anime1 {
+    from {
+    transform: scale(0.9,0.9);
+    }
+    to {
+    transform: scale(1.3,1.3);
+    }
 }
 
 /* * * * * * * * * * * * *
@@ -423,7 +434,15 @@ div.player-body {
         padding: 6px 8px 5px 10px;
     }
 
+    .mute-modal {
+        font-size: 16px;
+        padding: 15px 25px;
+    }
 
+    .mute-modal .mute {
+        font-size: 30px;
+        margin: 3px auto;
+    }
 }
 
 /* * * * * * * * * * * * *
