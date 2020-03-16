@@ -73,7 +73,7 @@ import Peer from 'skyway-js';
 
 import firebase from "~/plugins/firebase.js"
 const db = firebase.firestore();
-const functions = firebase.functions();
+const functions = firebase.functions('asia-northeast1');
 const auth = firebase.auth()
 const itemRef = db.collection('room')
 
@@ -93,7 +93,7 @@ export default {
     mounted: async function (){
         await auth.signInAnonymously()
 
-        const enteredRoomRun = functions.region('asia-northeast1').httpsCallable('enteredRoom')
+        const enteredRoomRun = functions.httpsCallable('enteredRoom')
         const response = await enteredRoomRun({ roomId: this.roomId })
         console.log(response);
         

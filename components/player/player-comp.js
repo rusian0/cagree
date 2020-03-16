@@ -3,7 +3,7 @@ import draggable from 'vuedraggable'
 import firebase from "~/plugins/firebase.js"
 const db = firebase.firestore();
 const auth = firebase.auth()
-const functions = firebase.functions();
+const functions = firebase.functions('asia-northeast1');
 import loadingComponent from '~/components/loading.vue'
 
 
@@ -86,7 +86,7 @@ export default {
 
         await auth.signInAnonymously()
 
-        const enteredRoomRun = functions.region('asia-northeast1').httpsCallable('getVideoQueue')
+        const enteredRoomRun = functions.httpsCallable('getVideoQueue')
         const response = await enteredRoomRun({ roomId: this.roomId })
         // console.log(response)
 

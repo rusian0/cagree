@@ -9,7 +9,7 @@ import { uuid } from 'vue-uuid';
 import firebase from "~/plugins/firebase.js"
 import loadinComponent from "~/components/loading"
 const auth = firebase.auth()
-const functions = firebase.functions()
+const functions = firebase.functions('asia-northeast1')
 
 
 export default {
@@ -21,7 +21,7 @@ export default {
 
       await auth.signInAnonymously()
 
-      const joinRoomRun = functions.region('asia-northeast1').httpsCallable('joinRoom')
+      const joinRoomRun = functions.httpsCallable('joinRoom')
       const response = await joinRoomRun()
 
       if(response.data === null) return
