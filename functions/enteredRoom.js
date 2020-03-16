@@ -8,7 +8,7 @@ moment.tz.setDefault("Asia/Tokyo");
 
 const runtimeOpts = {
     timeoutSeconds: 60,
-    memory: '1GB'
+    memory: '2GB'
 }  
 
 const now = moment().format('YYYY-MM-DD-HH:mm:ss')

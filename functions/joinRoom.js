@@ -9,7 +9,7 @@ const now = moment().format('YYYY-MM-DD-HH:mm:ss')
 
 const runtimeOpts = {
     timeoutSeconds: 60,
-    memory: '1GB'
+    memory: '2GB'
 }  
 
 module.exports = functions.region('asia-northeast1').runWith(runtimeOpts).https.onCall(async (data, context) => {
