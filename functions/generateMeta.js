@@ -1,8 +1,12 @@
 const firebase_function = require('./firebase_function')
 const functions = firebase_function.functions
 
+const runtimeOpts = {
+    timeoutSeconds: 60,
+    memory: '2GB'
+}  
 
-module.exports = functions.https.onRequest(async (req, res) => {
+module.exports = functions.region('asia-northeast1').runWith(runtimeOpts).https.onRequest(async (req, res) => {
     const fs = require('fs')
     const jsdom = require('jsdom')
     const { JSDOM } = jsdom
