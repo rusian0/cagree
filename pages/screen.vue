@@ -93,7 +93,7 @@ export default {
     mounted: async function (){
         await auth.signInAnonymously()
 
-        const enteredRoomRun = functions.httpsCallable('enteredRoom')
+        const enteredRoomRun = functions.region('asia-northeast1').httpsCallable('enteredRoom')
         const response = await enteredRoomRun({ roomId: this.roomId })
         console.log(response);
         

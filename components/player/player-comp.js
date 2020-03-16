@@ -86,7 +86,7 @@ export default {
 
         await auth.signInAnonymously()
 
-        const enteredRoomRun = functions.httpsCallable('getVideoQueue')
+        const enteredRoomRun = functions.region('asia-northeast1').httpsCallable('getVideoQueue')
         const response = await enteredRoomRun({ roomId: this.roomId })
         // console.log(response)
 

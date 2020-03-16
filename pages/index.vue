@@ -21,7 +21,7 @@ export default {
 
       await auth.signInAnonymously()
 
-      const joinRoomRun = functions.httpsCallable('joinRoom')
+      const joinRoomRun = functions.region('asia-northeast1').httpsCallable('joinRoom')
       const response = await joinRoomRun()
 
       if(response.data === null) return
