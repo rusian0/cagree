@@ -9,7 +9,7 @@
             </div>
           </div>
         </div>
-        <div class="txt">{{ loadTxt }}</div>
+        <div class="txt" v-html="loadTxt"></div>
       </div>
     </div>
   </transition>
@@ -47,6 +47,7 @@ export default {
 
 .top-loading .txt {
   margin: 30px;
+  text-align: center;
 }
 
 .top-loading .txt p{

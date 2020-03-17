@@ -81,11 +81,23 @@ export default {
   },
 
   router:{
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'notFound',
+        path: '*',
+        component: resolve(__dirname, 'pages/errors/404.vue')
+      })
+    }
   },
   /*
   ** Build configuration
   */
   build: {
+    terser: {
+      terserOptions: {
+        compress: { drop_console: true }
+      },
+    },
     /*
     ** You can extend webpack config here
     */
