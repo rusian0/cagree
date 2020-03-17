@@ -13,8 +13,8 @@
     "change:prod": "cp .prod_env .env",
     "build:dev": "yarn change:dev && yarn build && yarn htmlfunc && firebase use dev",
     "build:prod": "yarn change:prod && yarn build && yarn htmlfunc && firebase use prod",
-    "deploy:dev": "git push && firebase use dev && yarn build:dev && firebase deploy",
-    "deploy:prod": "git push && firebase use prod && yarn build:prod && firebase deploy"
+    "deploy:dev": "firebase use dev && yarn build:dev && firebase deploy",
+    "deploy:prod": "firebase use prod && yarn build:prod && firebase deploy"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
