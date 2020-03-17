@@ -1,5 +1,6 @@
 const firebase_function = require('./firebase_function')
 const functions = firebase_function.functions
+const db = firebase_function.db
 
 const runtimeOpts = {
     timeoutSeconds: 60,
@@ -7,10 +8,24 @@ const runtimeOpts = {
 }  
 
 module.exports = functions.runWith(runtimeOpts).https.onRequest(async (req, res) => {
+
+    if(req.params[0] == 'screen'){
+        console.log('Path:', req.params)
+        console.log('query:', req.query)
+
+        if(req.query.id == undefined || req.query.id == '') return res.redirect('/notfound')
+
+        const roomData = await db.collection('room').doc(req.query.id).get()
+        
+        console.log('exists:', roomData.exists)
+        if(!roomData.exists){
+            return res.redirect('/notfound')
+        }
+    }
+
     const fs = require('fs')
     const jsdom = require('jsdom')
     const { JSDOM } = jsdom
-
     const defaultHtml = fs.readFileSync('./html/index.html')
     const dom = new JSDOM(defaultHtml)
     const { document } = dom.window;
@@ -52,5 +67,5 @@ module.exports = functions.runWith(runtimeOpts).https.onRequest(async (req, res)
     // const meta = document.querySelector('meta[data-hid="description"]')
     // meta.setAttribute('content', 'testdescription')
     
-    res.send('<!doctype html>' + "\n" + doc.documentElement.outerHTML)
+    return res.send('<!doctype html>' + "\n" + doc.documentElement.outerHTML)
 })
