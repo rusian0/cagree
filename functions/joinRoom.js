@@ -46,13 +46,13 @@ module.exports = functions.region('asia-northeast1').runWith(runtimeOpts).https.
     await roomCol.doc(auth.uid).set({ 
         createdAt: now,
         video_queue:[
+            'WiXV2_3nhaU',
             'WJzSBLCaKc8',
             '8rRhLmhIFDI',
             's9JnNUFqXJA',
             'kX5FkzCjNrk',
             'FTrSmDKT0sM',
-            'e9mKp1npBhY',
-            '1E2y6834kYM'
+            'e9mKp1npBhY'
         ],
     })
 
