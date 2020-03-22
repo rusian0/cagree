@@ -163,6 +163,7 @@ export default {
             
             if(this.seeking){
                 this.seeking = false
+                console.log('seeking now')
                 return
             }
             
@@ -184,7 +185,7 @@ export default {
 
             this.timeInsepctionStart(target)
 
-            if(this.seeking) return
+            if(this.seeking) return console.log('seeking now')
 
             if(this.is_send){
                 console.log('paused')
@@ -318,12 +319,13 @@ export default {
                         this.player.seekTo(room.currentTime)
                         console.log('diff take seek');
                         
-                        if(this.firstSeeked){
+                        if(!this.firstSeeked){
                             this.seeking = true
                         }
                     }
 
                     this.firstSeeked = true
+
                 }
                 else {
                     this.queueChanger = false
