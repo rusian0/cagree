@@ -82,8 +82,6 @@ export default {
         }
     },
     mounted: async function (){
-        this.player.mute()
-
         await auth.signInAnonymously()
 
         const enteredRoomRun = functions.httpsCallable('getVideoQueue')
@@ -145,6 +143,7 @@ export default {
 
         },
         ready(target) {
+            target.mute()
             console.log('ready')
             this.state = 'ready';
             this.videoId = this.queue_ids[0]
