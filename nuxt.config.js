@@ -54,6 +54,7 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
+    '@nuxtjs/pwa',
     'bootstrap-vue/nuxt',
     'nuxt-user-agent',
     'nuxt-fontawesome',
@@ -106,5 +107,11 @@ export default {
   },
   generate: {
     subFolders: false
-  }
+  },
+  manifest: {
+    name: 'PulScreen',
+    short_name: 'プルスク',
+    lang: 'ja'
+  
+  },
 }
