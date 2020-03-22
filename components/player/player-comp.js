@@ -143,7 +143,7 @@ export default {
 
         },
         ready(target) {
-            target.mute()
+            this.player.mute()
             console.log('ready')
             this.state = 'ready';
             this.videoId = this.queue_ids[0]
