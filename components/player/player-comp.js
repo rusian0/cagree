@@ -1,4 +1,5 @@
 import draggable from 'vuedraggable'
+import moment from 'moment'
 
 import firebase from "~/plugins/firebase.js"
 const db = firebase.firestore();
@@ -52,7 +53,8 @@ export default {
         firstQueueChange: false,
         tmpRoomData: null,
         mute: false,
-        functionsEnd: false
+        functionsEnd: false,
+        pauseAt: moment()
     }),
     computed: {
         player() { return this.$refs.youtube.player },
@@ -102,15 +104,16 @@ export default {
             this.mute = await this.player.isMuted()
         }, 250);
 
-        // document.addEventListener('visibilitychange', function(){
-        //     if (document.visibilityState) {
-        //         this.is_send = false
-        //         this.roomRef.update({playerState: 'playing'})
-        //     } else {
-        //         this.is_send = false
-        //     }
-        // });
-
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState) {
+                const nowAt = moment()
+                this.is_send = false
+                if(nowAt.diff(this.pauseAt) > 500) return
+                this.roomRef.update({playerState: 'playing'})
+            } else {
+                this.is_send = true
+            }
+        });
     },
     methods: {
         url_play(priority, videoId){
@@ -198,6 +201,7 @@ export default {
             if(this.is_send){
                 console.log('paused')
 
+                this.pauseAt = moment()
                 this.roomRef.update({ 
                     playerState: 'paused',
                     currentTime: target.getCurrentTime()
