@@ -111,6 +111,12 @@ export default {
                 if(nowAt.diff(this.pauseAt) > 1500) return
                 this.roomRef.update({playerState: 'playing'})
             }
+            else {
+                const nowState = await this.player.getPlayerState()
+                if(nowState !== 2){
+                    this.player.playVideo()
+                }
+            }
         });
     },
     methods: {
@@ -330,7 +336,7 @@ export default {
                 
                 if((!this.queueChanger && this.tmpRoomData.currentTime != room.currentTime) || !this.firstSeeked){
 
-                    if(diffTime > 0.5 && !queueDiff){
+                    if(diffTime > 1 && !queueDiff){
                         this.player.seekTo(room.currentTime)
                         console.log('diff take seek');
                         
