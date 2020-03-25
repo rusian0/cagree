@@ -107,3 +107,6 @@ db_data
 #firebase
 .firebase/hosting.*.cache
 .config/*
+
+#android
+android/

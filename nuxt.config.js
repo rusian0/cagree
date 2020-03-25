@@ -22,7 +22,7 @@ export default {
   },
 
   server: {
-    port: 3000,
+    port: 80,
     host: '0.0.0.0',
   },
   /*
@@ -64,7 +64,20 @@ export default {
         id: process.env.GA_ID, 
         debug: true 
       }
-    ]
+    ],
+    ['nuxt-twa-module', {
+      /* module options */
+      defaultUrl: 'https://pulscreen.com',
+      hostName: 'pulscreen.com',
+      sha256Fingerprints: ['91:75:A7:D1:FF:3C:CF:52:A3:4F:9A:F7:0A:1A:37:91:40:8C:AE:D7:37:B9:CB:26:02:78:36:ED:53:21:DE:69'],
+      applicationId: 'com.rusian0.pulscreen',
+      launcherName: 'PulScreen',
+      versionCode: 2,
+      versionName: '1.0',
+      statusBarColor: '#c3207c',
+      iconPath: '/static/icon.png',
+      distFolder: '.nuxt/dist',
+    }],
   ],
 
   //この部分を追記
