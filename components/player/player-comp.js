@@ -54,7 +54,8 @@ export default {
         tmpRoomData: null,
         mute: false,
         functionsEnd: false,
-        pauseAt: moment()
+        pauseAt: moment(),
+        is_host: false
     }),
     computed: {
         player() { return this.$refs.youtube.player },
@@ -74,9 +75,9 @@ export default {
             }
         },
         room_member:async function (newMembers, oldMembers) {
-            const host = newMembers.length > oldMembers.length && newMembers[0] == this.room._peerId
+            this.is_host = newMembers.length > oldMembers.length && newMembers[0] == this.room._peerId
 
-            if(host){
+            if(this.is_host){
                 const currentTime = await this.player.getCurrentTime()
                 this.roomRef.update({ currentTime })
                 
@@ -104,14 +105,11 @@ export default {
             this.mute = await this.player.isMuted()
         }, 250);
 
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState) {
+        document.addEventListener('visibilitychange',async () => {
+            if (document.visibilityState === 'hidden') {
                 const nowAt = moment()
-                this.is_send = false
-                if(nowAt.diff(this.pauseAt) > 500) return
+                if(nowAt.diff(this.pauseAt) > 1500) return
                 this.roomRef.update({playerState: 'playing'})
-            } else {
-                this.is_send = true
             }
         });
     },
@@ -197,6 +195,11 @@ export default {
             this.timeInsepctionStart(target)
 
             if(this.seeking) return console.log('seeking now')
+
+            if(document.visibilityState == 'hidden'){
+                this.player.playVideo()
+                return
+            }
 
             if(this.is_send){
                 console.log('paused')
