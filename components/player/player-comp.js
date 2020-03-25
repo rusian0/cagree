@@ -102,6 +102,15 @@ export default {
             this.mute = await this.player.isMuted()
         }, 250);
 
+        // document.addEventListener('visibilitychange', function(){
+        //     if (document.visibilityState) {
+        //         this.is_send = false
+        //         this.roomRef.update({playerState: 'playing'})
+        //     } else {
+        //         this.is_send = false
+        //     }
+        // });
+
     },
     methods: {
         url_play(priority, videoId){
@@ -318,12 +327,12 @@ export default {
                         this.player.seekTo(room.currentTime)
                         console.log('diff take seek');
                         
+                        this.firstSeeked = true
                         if(!this.firstSeeked){
                             this.seeking = true
                         }
                     }
 
-                    this.firstSeeked = true
 
                 }
                 else {
