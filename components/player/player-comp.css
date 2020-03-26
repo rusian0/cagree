@@ -435,13 +435,17 @@ div.player-body {
     }
 
     .mute-modal {
-        font-size: 16px;
-        padding: 15px 25px;
+        font-size: 14px;
+        padding: 12px 20px;
     }
 
     .mute-modal .mute {
-        font-size: 30px;
-        margin: 3px auto;
+        font-size: 20px;
+        margin: 2px auto;
+    }
+
+    .mute-modal p {
+        font-size: 10px;
     }
 }
 

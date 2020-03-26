@@ -1,6 +1,6 @@
 <template>
 <div>
-   <header class="header">
+   <header :class="headerClass">
       <!-- <nuxt-link tag="h2" to=/> -->
          <a href="/">
             <img class="logo" src="/images/logo.png" alt="" width="160">
@@ -10,13 +10,14 @@
          <font-awesome-icon class="user" icon="user" />
          <font-awesome-icon class="plus" icon="plus" />
       </div>
-      <div class="contact">
+      <!-- <div class="contact">
          <a href="https://forms.gle/quzht66eqsAjzmfR8" target="_blank">
             <font-awesome-icon class="mail" icon="envelope" />
             <font-awesome-icon class="question" icon="question" />
          </a>
-      </div>
+      </div> -->
    </header>
+   <div class="dummy-header" v-if="dummyOn"></div>
    <transition name="modal">
       <div v-if="inviteModal" class="invite_modal">
          この部屋のURLをクリップボードにコピーしました<br>
@@ -30,11 +31,15 @@
 
 
 <script>
-
 export default {
+created() {
+   window.addEventListener('scroll', this.headerScroll)
+},
 data () {
       return {
-         inviteModal: false
+         inviteModal: false,
+         headerClass: 'header',
+         dummyOn: false
       }
    },
 
@@ -67,6 +72,17 @@ data () {
             this.inviteModal = false
          }, 4000);
          return retVal;
+      },
+
+      headerScroll(event) {
+         if(window.scrollY > 200){
+            this.headerClass = 'header min-header'
+            this.dummyOn = true
+         }
+         else {
+            this.headerClass = 'header'
+            this.dummyOn = false
+         }
       }
    }
 }
@@ -84,21 +100,39 @@ data () {
 
    header.header{
       background: linear-gradient(-135deg, #d06426 -19%, #c3207c 50%,#d06426 80%) fixed;
-      padding: 5vh 5vw 4vh 5vw;
+      padding: 20px 5vw 20px 5vw;
       top: 0;
       box-shadow: 0 3px 6px rgba(0,0,0,0.2);     
       text-align: center;
       position: relative;
+      transition: .4s;
    }
 
    header.header img.logo {
       width: 130px;
    }
 
+   header.min-header {
+      position: fixed;
+      z-index: 10;
+      width: 100%;
+      height: 44px;
+      padding: 0;
+   }
+
+   header.min-header img.logo {
+      width: 100px;
+      margin-top: 5px;
+   }
+
+   .dummy-header {
+      margin-top: 85px;
+   }
+
    .btn-invite, .contact {
       position: absolute;
       right: 2%;
-      bottom: 8%;
+      bottom: 22%;
       /* background-color: #dc7390; */
       background: none;
       border-radius: 20%;
@@ -128,7 +162,7 @@ data () {
       padding: 15px 20px;
       right: 0;
       top: 15%;
-      z-index: 1;
+      z-index: 11;
       width: auto;
       transition: all .7s ease;
       max-width: 100%;
@@ -202,9 +236,24 @@ data () {
       font-family:"游ゴシック Medium",YuGothic,YuGothicM,"Hiragino Kaku Gothic ProN","Hiragino Kaku Gothic Pro",メイリオ,Meiryo,sans-serif;
    }
 
+   header.min-header .btn-invite {
+      bottom: 15%;
+   }
+   header.min-header .contact {
+      bottom: 15%;
+   }
+
    @media screen and (max-width: 576px) {
       header.header img.logo {
-         width: 90px;
+         width: 100px;
+      }
+      header.min-header img.logo {
+         width: 80px;
+         margin-top: 10px;
+      }
+      
+      .dummy-header {
+         margin-top: 71px;
       }
 
       .btn-invite, .contact {
