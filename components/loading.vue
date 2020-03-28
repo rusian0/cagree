@@ -35,7 +35,8 @@ export default {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: linear-gradient(-135deg, #d06426 -90%, #c3207c 70%,#D06626 210%) fixed;
+  /* background: linear-gradient(-135deg, #d06426 -90%, #c3207c 70%,#D06626 210%) fixed; */
+  background: #dc3b69;
   color: #ffffff;
   display: flex;
   justify-content: center;

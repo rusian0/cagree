@@ -99,7 +99,8 @@ data () {
 <style scoped>
 
    header.header{
-      background: linear-gradient(-135deg, #d06426 -19%, #c3207c 50%,#d06426 80%) fixed;
+      /* background: linear-gradient(-135deg, #d06426 -19%, #c3207c 50%,#d06426 80%) fixed; */
+      background: #dc3b69;
       padding: 20px 5vw 20px 5vw;
       top: 0;
       box-shadow: 0 3px 6px rgba(0,0,0,0.2);     
@@ -140,7 +141,7 @@ data () {
       padding: 3px 9px;
       color: #ffffff;
       cursor: pointer;
-      box-shadow: 0px 0px 26px -1px #e0a4a4;
+      /* box-shadow: 0px 0px 26px -1px #e0a4a4; */
       transition: background-color .3s;
    }
 

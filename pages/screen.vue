@@ -157,7 +157,7 @@
 
                 <ul>
                     <li><a href="https://forms.gle/quzht66eqsAjzmfR8" target="_blank">お問い合わせ・要望</a></li>
-                    <li>
+                    <!-- <li>
                         <a href="https://forms.gle/quzht66eqsAjzmfR8" target="_blank">オーナーモード</a>
                         <div class="switch3">
                             <label class="switch3__label">
@@ -166,7 +166,7 @@
                                 <span class="switch3__circle"></span>
                             </label>
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </transition>
@@ -228,7 +228,7 @@ export default {
             yt_key: process.env.YOUTUBEDATA_APIKEY,
             room_member: [],
             enteredRoom: false,
-            openMenu: true
+            openMenu: false
         }
     },
 
