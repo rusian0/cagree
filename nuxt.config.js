@@ -18,7 +18,8 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    ],
+    script: [{src: "cordova/cordova.js"}]
   },
 
   server: {
@@ -116,7 +117,8 @@ export default {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
-    }
+    },
+    publicPath: "/nuxt/"
   },
   generate: {
     subFolders: false

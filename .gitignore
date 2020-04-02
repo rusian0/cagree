@@ -110,3 +110,11 @@ db_data
 
 #android
 android/
+
+#ios
+app/
+/cordova/*
+/static/cordova/*
+# !/cordova/config.xml
+# !/cordova/package.json
+# !/cordova/package-lock.json
