@@ -41,7 +41,7 @@ module.exports = functions.runWith(runtimeOpts).https.onRequest(async (req, res)
 
     const ogTitle = doc.createElement('meta')
     ogTitle.setAttribute('property', 'og:title')
-    ogTitle.setAttribute('content', 'PulScreen | Youtube動画のリアルタイム共有サービス')
+    ogTitle.setAttribute('content', 'PulScreen | YouTube動画のリアルタイム共有(同期再生)サービス')
     head.appendChild(ogTitle)
 
 
