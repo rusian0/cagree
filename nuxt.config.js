@@ -10,7 +10,7 @@ export default {
     }
   },
   head: {
-    title: process.env.npm_package_name || '',
+    title: "PulScreen | YouTube動画のリアルタイム共有(同期再生)サービス",
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
