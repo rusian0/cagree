@@ -19,7 +19,7 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
-    script: [{src: "cordova/cordova.js"}]
+    // script: [{src: "cordova/cordova.js"}]
   },
 
   server: {
@@ -55,7 +55,7 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
-    '@nuxtjs/pwa',
+    // '@nuxtjs/pwa',
     'bootstrap-vue/nuxt',
     'nuxt-user-agent',
     'nuxt-fontawesome',
