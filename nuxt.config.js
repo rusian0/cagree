@@ -55,7 +55,8 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
-    // '@nuxtjs/pwa',
+    '@nuxtjs/vuetify',
+    '@nuxtjs/pwa',
     'bootstrap-vue/nuxt',
     'nuxt-user-agent',
     'nuxt-fontawesome',
