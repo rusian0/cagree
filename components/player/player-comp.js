@@ -239,11 +239,14 @@ export default {
             this.state = 'buffering'
         },
 
-        ended: function(){
+        ended: async function(){
             console.log('ended')
             this.state = 'ended'
 
             if(this.queue_ids[1]){
+                const currentTime = await this.player.getCurrentTime()
+                const duration = await this.player.getDuration()
+                if (currentTime / duration < 0.1) return
                 this.nextQueue()
             }
 
