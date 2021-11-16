@@ -25,7 +25,7 @@
     "@nuxtjs/google-gtag": "^1.0.4",
     "@nuxtjs/pwa": "^3.3.4",
     "@nuxtjs/vuetify": "^1.11.3",
-    "aws-sdk": "^2.506.0",
+    "aws-sdk": "^2.814.0",
     "bootstrap-vue": "^2.0.2",
     "cordova-plugin-statusbar": "^2.4.3",
     "core-js": "2.6.9",
